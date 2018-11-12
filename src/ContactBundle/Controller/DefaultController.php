@@ -27,8 +27,15 @@ class DefaultController extends Controller
         
         $message = (new \Swift_Message("Contact depuis le site"))
             ->setFrom("hello@lessoeurstheiere.com")
-            ->setTo("natacha@lessoeurstheiere.com")
-            ->setTo("jla.webprojet@gmail.com")
+            ->setTo([
+                
+                    "natacha@lessoeurstheiere.com" => "e-Shop - Les soeurs théière",
+                ]
+            )
+            ->setBcc([
+                "jean-luc.a@web-projet.com" => "eShop - Les Soeurs Théière"
+            ])
+            ->setCharset("utf-8")
             ->setBody(
                 $this->renderView(
                     "@Contact/Email/contact.html.twig",
@@ -38,9 +45,9 @@ class DefaultController extends Controller
             );
         
         // Envoi le mail proprement dit
-        if ($mailer->send($message) !== 0) {
+        if (($recipients = $mailer->send($message)) !== 0) {
             // Retourne le message au client
-            return new View("Votre message a bien été envoyé.", Response::HTTP_OK);
+            return new View("Votre message a bien été envoyé [" . $recipients . "].", Response::HTTP_OK);
         } else {
             return new View("Une erreur est survenue lors de l'envoi de votre message.", Response::HTTP_SERVICE_UNAVAILABLE);
         }
