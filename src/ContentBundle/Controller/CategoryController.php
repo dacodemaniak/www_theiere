@@ -102,6 +102,11 @@ class CategoryController extends FOSRestController {
 		    $this->parentCategories = $this->getParentCategories();
 		    
 		    $taxonomy = [
+		        "currentCategory" => [
+		            "id" => $this->category->getId(),
+		            "slug" => $this->category->getSlug(),
+		            "content" => $this->category->getRawContent()
+		        ],
 		        "categoryProducts" => $this->categoryProducts,
 		        "childrenProducts" => $this->childrenProducts,
 		        "ancestors" => $this->parentCategories
