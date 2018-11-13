@@ -160,7 +160,7 @@ class Article
             for($i = 0; $i <count($content["pricing"]); $i++) {
                 $pricing = $content["pricing"][$i];
                 $ttc = $pricing["ht"] * (1 + $content["vat"]);
-                $pricing["ttc"] = round($ttc, 2, PHP_ROUND_HALF_UP);
+                $pricing["ttc"] = round($ttc, 2);
                 // Remplace le prix...
                 $content["pricing"][$i] = $pricing;
             }
