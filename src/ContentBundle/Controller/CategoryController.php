@@ -230,12 +230,13 @@ class CategoryController extends FOSRestController {
 	        foreach($category->getChildren() as $child) {
 	            $childrenProducts[] = [
 	                "category" => [
-	                    "id" => $this->category->getId(),
-	                    "slug" => $this->category->getSlug(),
-	                    "content" => $this->category->getRawContent()
+	                    "id" => $child->getId(),
+	                    "slug" => $child->getSlug(),
+	                    "content" => $child->getRawContent()
 	                ],
 	                //"category" => $child->getRawContent(),
-	                "products" => $child->getRawArticles()
+	                "products" => $child->getRawArticles(),
+	                "childrenCategory" => $this->getChildrenProducts($child)
 	            ];
 	            $this->getChildrenProducts($child, $childrenProducts);
 	        }
