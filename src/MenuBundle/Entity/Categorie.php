@@ -366,7 +366,11 @@ class Categorie
         
         if ($hasParent) {
             $ancestors[] = [
-                "parent" => $currentCategorie->getParent()->getRawContent(),
+                "parent" => [
+                    "id" => $currentCategorie->getParent()->getId(),
+                    "slug" => $currentCategorie->getParent()->getSlug(),
+                    "content" => $currentCategorie->getParent()->getRawContent()
+                ],
                 "ancestors" => $this->hydrateAncestors($currentCategorie->getParent(), $ancestors)
             ];
         }
