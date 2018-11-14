@@ -20,7 +20,7 @@ use ContentBundle\Entity\Article;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class ProductController extends FOSRestController {
+class ManageProductController extends FOSRestController {
     
     /**
      * Produit complet avec les décors
