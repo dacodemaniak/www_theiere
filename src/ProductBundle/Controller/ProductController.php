@@ -34,7 +34,7 @@ class ProductController extends FOSRestController {
     public function __construct() {}
     
     /**
-     * @Rest\Put("/product/price/{slug}")
+     * @Rest\Put("/price/{slug}")
      */
     public function updatePriceAction(Request $request) {
         $routeComponent = $request->get("slug");
