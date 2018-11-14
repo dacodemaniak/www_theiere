@@ -10,7 +10,8 @@
 			"SiteBundle\\" : "src/SiteBundle",
 			"MenuBundle\\" : "src/MenuBundle",
 			"ContentBundle\\" : "src/ContentBundle",
-			"ContactBundle\\" : "src/ContactBundle"
+			"ContactBundle\\" : "src/ContactBundle",
+			"ProductBundle\\" : "src/ProductBundle"
 		},
 		"classmap" : [
 			"app/AppKernel.php",

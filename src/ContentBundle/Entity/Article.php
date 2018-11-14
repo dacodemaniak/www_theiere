@@ -134,7 +134,7 @@ class Article
     /**
      * Get content
      *
-     * @return string
+     * @return Object | Array
      */
     public function getContent()
     {
