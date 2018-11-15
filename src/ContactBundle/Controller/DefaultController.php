@@ -47,7 +47,7 @@ class DefaultController extends Controller
         // Envoi le mail proprement dit
         if (($recipients = $mailer->send($message)) !== 0) {
             // Retourne le message au client
-            return new View("Votre message a bien été envoyé [" . $recipients . "].", Response::HTTP_OK);
+            return new View("Votre message a bien été envoyé", Response::HTTP_OK);
         } else {
             return new View("Une erreur est survenue lors de l'envoi de votre message.", Response::HTTP_SERVICE_UNAVAILABLE);
         }
