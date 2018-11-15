@@ -165,9 +165,6 @@ class Article
                 $content["pricing"][$i] = $pricing;
             }
             
-
-            
-            
             return $content;
         }
         
