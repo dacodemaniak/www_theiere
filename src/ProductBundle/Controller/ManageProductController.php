@@ -5,7 +5,7 @@
  * @package \ContentBundle\Controller
  * @version 1.0.0
  */
-namespace ContentBundle\Controller;
+namespace ProductBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -34,7 +34,7 @@ class ManageProductController extends FOSRestController {
     public function __construct() {}
     
     /**
-     * @Rest\Put("/price/{slug}")
+     * @Rest\Put("/product/price/{slug}")
      */
     public function updatePriceAction(Request $request) {
         $routeComponent = $request->get("slug");
@@ -66,7 +66,7 @@ class ManageProductController extends FOSRestController {
             $content = $this->product->getRawContent();
             
             if ($content) {
-                $ht = $request->get('ttc') / (1 + $content->vat);
+                $ht = $request->get('ttc') / (1 + $content["vat"]);
                 $content["pricing"][$declinaison]["ht"] = $ht;
                 $this->product->setContent(json_encode($content));
                 $manager = $this->getDoctrine()
