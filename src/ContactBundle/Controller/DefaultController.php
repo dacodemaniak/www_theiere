@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 
-class DefaultController extends Controller
+class DefaultController extends FOSRestController
 {
     /**
      * @Rest\Put("/contact")
