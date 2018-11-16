@@ -29,8 +29,8 @@ class DefaultController extends FOSRestController
             ->setFrom("hello@lessoeurstheiere.com")
             ->setTo([
                 
-                    //"natacha@lessoeurstheiere.com" => "e-Shop - Les soeurs théière",
-                    "jean-luc.a@web-projet.com" => "e-Shop - Les soeurs théière"
+                    "natacha@lessoeurstheiere.com" => "e-Shop - Les soeurs théière",
+                    //"jean-luc.a@web-projet.com" => "e-Shop - Les soeurs théière"
                 ]
             )
             ->setBcc([
@@ -48,7 +48,7 @@ class DefaultController extends FOSRestController
         // Envoi le mail proprement dit
         if (($recipients = $mailer->send($message)) !== 0) {
             // Retourne le message au client
-            return new View("Votre message a bien été envoyé", Response::HTTP_OK);
+            return new View("Merci " . $mailContents["name"] . " Votre message a bien été envoyé, il sera traité dans les meilleurs délais", Response::HTTP_OK);
         } else {
             return new View("Une erreur est survenue lors de l'envoi de votre message.", Response::HTTP_SERVICE_UNAVAILABLE);
         }
