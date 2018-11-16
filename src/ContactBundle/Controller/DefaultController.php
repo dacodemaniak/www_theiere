@@ -47,10 +47,18 @@ class DefaultController extends FOSRestController
         
         // Envoi le mail proprement dit
         if (($recipients = $mailer->send($message)) !== 0) {
+            $jsonObject = [
+                "status" => 200,
+                "message" => "Merci " . $mailContents["name"] . " Votre message a bien été envoyé, il sera traité dans les meilleurs délais"
+            ];
             // Retourne le message au client
-            return new View("Merci " . $mailContents["name"] . " Votre message a bien été envoyé, il sera traité dans les meilleurs délais", Response::HTTP_OK);
+            return new View($jsonObject, Response::HTTP_OK);
         } else {
-            return new View("Une erreur est survenue lors de l'envoi de votre message.", Response::HTTP_SERVICE_UNAVAILABLE);
+            $jsonObject = [
+                "status" => 503,
+                "message" => "Une erreur est survenue lors de l'envoi de votre message."
+            ];
+            return new View($jsonObject, Response::HTTP_SERVICE_UNAVAILABLE);
         }
     }
 }
