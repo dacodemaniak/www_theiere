@@ -29,7 +29,8 @@ class DefaultController extends FOSRestController
             ->setFrom("hello@lessoeurstheiere.com")
             ->setTo([
                 
-                    "natacha@lessoeurstheiere.com" => "e-Shop - Les soeurs théière",
+                    //"natacha@lessoeurstheiere.com" => "e-Shop - Les soeurs théière",
+                    "jean-luc.a@web-projet.com" => "e-Shop - Les soeurs théière"
                 ]
             )
             ->setBcc([
