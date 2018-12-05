@@ -55,8 +55,18 @@ class Article
      */
     private $decors;
 
+    
+    /**
+     * @ORM\OneToMany(targetEntity=CategorieToArticles::class, mappedBy="article")
+     * 
+     * @var ArrayCollection
+     */
+    private $categorieToArticles;
+    
+    
     public function __construct() {
     	$this->decors = new ArrayCollection();
+    	$this->categorieToArticles = new ArrayCollection();
     }
     
     /**

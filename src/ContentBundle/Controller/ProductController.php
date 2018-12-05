@@ -48,7 +48,24 @@ class ProductController extends FOSRestController {
             
         $results = $articleRepository->fullContentSearch($request->get("terms"));
         
-        return new View($results, Response::HTTP_OK);
+        if ($results) {
+            $datas = [];
+            
+            
+            foreach ($results as $result) {
+                $product = $result[0];
+                $datas[] = [
+                    "id" => $product->getId(),
+                    "slug" => $product->getSlug(),
+                    "content" => $product->getRawContent(),
+                    "decorators" => $product->getDecorators(),
+                    "score" => $result["score"]
+                ];
+            }
+            return new View($datas, Response::HTTP_OK);
+            
+        }
+        return new View("Aucun résultat ne correspond à votre demande", Response::HTTP_NOT_FOUND);
         
         
         
