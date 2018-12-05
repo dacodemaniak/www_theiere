@@ -6,6 +6,7 @@ imports:
     - { resource: "@SiteBundle/Resources/config/services.yml" }
     - { resource: "@MenuBundle/Resources/config/services.yml" }
     - { resource: "@ContentBundle/Resources/config/services.yml" }
+    - { resource: "@ContentBundle/Resources/config/config.yml" }
     - { resource: "@ContactBundle/Resources/config/services.yml" }
     - { resource: "@ProductBundle/Resources/config/services.yml" }
 
@@ -59,11 +60,11 @@ doctrine:
         #   3. Uncomment next line:
         #path: '%database_path%'
 
-    orm:
+    orm: 
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
-
+        
 # Swiftmailer Configuration
 swiftmailer:
     transport: '%mailer_transport%'

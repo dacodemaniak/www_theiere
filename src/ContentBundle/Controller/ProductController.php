@@ -19,6 +19,7 @@ use ContentBundle\Entity\Article;
 
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use ContentBundle\Repository\ArticleRepository;
 
 class ProductController extends FOSRestController {
     
@@ -32,6 +33,43 @@ class ProductController extends FOSRestController {
      * Constructeur du contrôleur
      */
     public function __construct() {}
+    
+    /**
+     * @Rest\Get("/product/search/{terms}")
+     * 
+     * @param Request $request
+     */
+    public function fullSearch(Request $request) {
+        $articleRepository = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Article::class);
+        
+            
+            
+        $results = $articleRepository->fullContentSearch($request->get("terms"));
+        
+        if ($results) {
+            $datas = [];
+            
+            
+            foreach ($results as $result) {
+                $product = $result[0];
+                $datas[] = [
+                    "id" => $product->getId(),
+                    "slug" => $product->getSlug(),
+                    "content" => $product->getRawContent(),
+                    "decorators" => $product->getDecorators(),
+                    "score" => $result["score"]
+                ];
+            }
+            return new View($datas, Response::HTTP_OK);
+            
+        }
+        return new View("Aucun résultat ne correspond à votre demande", Response::HTTP_NOT_FOUND);
+        
+        
+        
+    }
     
     /**
      * @Rest\Get("/product/{slug}")

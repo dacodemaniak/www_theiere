@@ -35,7 +35,7 @@ class CategorieToArticles
     protected $category;
     
     /**
-     * @ORM\ManyToOne(targetEntity=Article::class)
+     * @ORM\ManyToOne(targetEntity=Article::class, inversedBy="categorieToArticles")
      */
     protected $article;
     
