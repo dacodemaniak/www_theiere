@@ -1,0 +1,28 @@
+/**
+* @name variables.less
+**/
+@import "style.css";
+#main-header {
+  height: 10em;
+  line-height: 10em;
+  vertical-align: middle;
+}
+#user-menu a {
+  color: #000000;
+  text-decoration: none;
+  border-radius: 3px;
+  height: 3em;
+  padding: .5em;
+  text-align: center;
+}
+#user-menu a:hover {
+  background-color: #ffcbbb;
+}
+/**
+* Styles globaux
+**/
+i[class^="icon-"],
+i [class*=" icon-"] {
+  display: inline-block;
+  margin-right: .5em;
+}
