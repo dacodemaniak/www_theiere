@@ -18,11 +18,11 @@
     	<div class="container-fluid">
     		<header class="header row" id="main-header">
     			{% block header %}
-    				<div id="user-menu" class="mb-3">
+    				<div id="user-menu" class="col">
     					<div class="wrapper"></div>
     				</div>
     				
-    				<div id="search" class="mb-3">
+    				<div id="search" class="col">
     					<form id="search-form" class="form form-stacked">
     						<div class="input-group">
   								<input type="search" class="form-control" placeholder="Chercher..." aria-label="Chercher" aria-describedby="basic-addon2">
@@ -33,15 +33,15 @@
     					</form>
     				</div>
     				
-    				<div class="logo mb-4">
+    				<div class="logo col">
     					<img src="{{ asset('images/logo_blanc_soeurs_theieres.png') }}" title="Les Soeurs Théière" class="img-responsive">
     				</div>
     				
-    				<div class="mb-3" id="user-basket">
+    				<div class="col" id="user-basket">
     					<div class="wrapper"></div>
     				</div>
     				
-    				<div class="user-contact">
+    				<div class="col" id="user-contact">
     				</div>
     			{% endblock %}
     		</header>
