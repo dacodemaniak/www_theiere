@@ -1,0 +1,35 @@
+{
+  "name": "lessoeurstheiere_web",
+  "version": "1.0.0",
+  "description": "Site web en ligne les soeurs Théière",
+  "main": "index.js",
+  "scripts": {
+    "babel": "babel --presets es2015 app.ts -o build/bundle.js",
+    "webpack:dev": "webpack --watch --mode=development",
+    "webpack:prod": "webpack --watch --mode=production"
+  },
+  "keywords": [
+    "symfony",
+    "3",
+    "bootstrap",
+    "jquery"
+  ],
+  "author": "IDea Factory",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "jquery": "^3.3.1",
+    "moment": "^2.23.0"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.3.27",
+    "babel": "^6.23.0",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.5",
+    "babel-preset-es2015": "^6.24.1",
+    "ts-loader": "^5.3.1",
+    "typescript": "^3.2.2",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
+  }
+}

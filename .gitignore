@@ -1,6 +1,7 @@
 /.web-server-pid
 /app/config/parameters.yml
 /build/
+/web/build/
 /phpunit.xml
 /var/*
 !/var/cache
@@ -15,5 +16,6 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+/web/node_modules/
 /.buildpath
 /.project

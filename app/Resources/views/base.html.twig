@@ -1,13 +1,68 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0">
+        <meta charset="UTF-8">
+        
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        
+        {% block stylesheets %}
+        	<link rel="stylesheet" href="{{ asset("node_modules/bootstrap/dist/css/bootstrap.min.css") }}">
+        	<link rel="stylesheet" href="{{ asset("main.css") }}">
+        {% endblock %}
+        
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     </head>
+    
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    	<div class="container-fluid">
+    		<header class="header row" id="main-header">
+    			{% block header %}
+    				<div id="user-menu" class="mb-3">
+    					<div class="wrapper"></div>
+    				</div>
+    				
+    				<div id="search" class="mb-3">
+    					<form id="search-form" class="form form-stacked">
+    						<div class="input-group">
+  								<input type="search" class="form-control" placeholder="Chercher..." aria-label="Chercher" aria-describedby="basic-addon2">
+  								<div class="input-group-append">
+    								<button class="btn btn-outline-secondary" type="button"><i class="icon-search"></i></button>
+  								</div>
+							</div>
+    					</form>
+    				</div>
+    				
+    				<div class="logo mb-4">
+    					<img src="{{ asset('images/logo_blanc_soeurs_theieres.png') }}" title="Les Soeurs Théière" class="img-responsive">
+    				</div>
+    				
+    				<div class="mb-3" id="user-basket">
+    					<div class="wrapper"></div>
+    				</div>
+    				
+    				<div class="user-contact">
+    				</div>
+    			{% endblock %}
+    		</header>
+    		
+    		<nav id="main-nav">
+    			{% block menu %}{% endblock %}
+    		</nav>
+    		
+    		<main id="main-container" eshop-app>
+        		{% block body %}
+        		{% endblock %}
+        	</main>
+        	
+        	<footer id="main-footer">
+        		{% block footer %}{% endblock %}
+        	</footer>
+        
+        </div>
+        {% block javascripts %}
+        	<script src="./build/bundle.js"></script>
+        {% endblock %}
     </body>
+    
 </html>

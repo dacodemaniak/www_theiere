@@ -1,0 +1,8 @@
+{    
+     "less.compile": {
+     	"main": "./main.less",
+        "compress":  true, 
+        "sourceMap": true,
+        "out": "./build/eshop.min.css"
+     }
+ }
