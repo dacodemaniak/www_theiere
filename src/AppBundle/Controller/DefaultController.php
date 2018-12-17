@@ -3,16 +3,18 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
 	/**
-	 * @Route("/menu")
+	 * @Route("/", defaults={"_format"="html"})
 	 */
-	public function indexAction()
-	{
-		return $this->render('MenuBundle:Default:index.html.twig');
+	public function indexAction(Request $request) {
+	    $request->setRequestFormat("html");
+		return $this->render("@App/Default/index.html.twig");
 	}
     
 }
