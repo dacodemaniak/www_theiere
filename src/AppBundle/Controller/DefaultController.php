@@ -10,11 +10,6 @@ use ContentBundle\ContentBundle;
 
 class DefaultController extends Controller
 {
-    /**
-     * Objet contenant les données de l'éditorial
-     * @var unknown
-     */
-    public $editorial;
     
 	/**
 	 * @Route("/", defaults={"_format"="html"})
@@ -22,8 +17,11 @@ class DefaultController extends Controller
 	public function indexAction(Request $request) {
 	    $request->setRequestFormat("html");
 	    
-	    $this->editorial = $this->getEditorial();
+	    $editorial = $this->getEditorial();
 	    
+	    $discovering = $this->getDiscovering();
+	    
+	    // Promotions en cours...
 	    $promotion = $this->getBySlug("promotions");
 	    $products = [];
 	    
@@ -37,10 +35,27 @@ class DefaultController extends Controller
 	        }
 	    }
 	    
+	    // Produit du mois
+	    $monthProductCategory = $this->getBySlug("monthly-product");
+	    $monthProduct = [];
+	    if ($monthProductCategory) {
+	        $categoryContent = $monthProductCategory->getContent();
+	        $monthProduct["category"] = $categoryContent;
+	        $catToArticles = $promotion->getArticles();
+	        $catToArticle = $catToArticles[0];
+	        $product = [
+	           "product" => $catToArticle->getArticle(),
+	            "image" => $catToArticle->getArticle()->getMainImage()
+	        ];
+	        $monthProduct["product"] = $product;
+	    }
+	    
 		return $this->render("@App/Default/index.html.twig",
 		  [
-		      "editorial" => $this->editorial,
-		      "promotions" => $products
+		      "editorial" => $editorial,
+		      "discovering" => $discovering,
+		      "promotions" => $products,
+		      "monthProduct" => $monthProduct
 		  ]
 		);
 	}
@@ -61,6 +76,25 @@ class DefaultController extends Controller
 	   }
 	   
 	   return $content;
+	    
+	}
+	
+	/**
+	 * Retourne l'article spécifique Découverte des boxes
+	 *
+	 */
+	private function getDiscovering() {
+	    $content = null;
+	    $discover = $this->getDoctrine()
+	       ->getManager()
+	       ->getRepository("ContentBundle:Article")
+	       ->findOneBySlug("box-discovering");
+	    
+	    if ($discover) {
+	        $content = $discover->getContent();
+	    }
+	    
+	    return $content;
 	    
 	}
 	

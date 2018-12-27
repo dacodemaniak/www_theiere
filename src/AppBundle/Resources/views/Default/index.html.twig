@@ -40,5 +40,44 @@
     		</div>
 		{% endif %}
 	{% endblock %}
+	
+	{% block box %}
+		<div class="row">
+			<article id="box-discovering" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<header>
+					<h3>{{ discovering.title.fr|raw }}</h3>
+				</header>
+				<blockquote>
+					{{ discovering.content.fr|raw }}
+				</blockquote>
+				
+				<a class="btn btn-default" role="button" title="">
+					{{ discovering.btn.fr }}
+				</a>
+			</article>
+			
+			<article id="month-product" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<header>
+					<h3>{{ monthProduct.category.title.fr|raw }}</h3>
+				</header>
+				
+				<figure>
+					<img src="{{ monthProduct.product.image.src }}" alt="{{ monthProduct.product.image.alt }}" height="200" class="img-responsive">
+					<figcaption>
+						{{ monthProduct.product.product.getTitleFr()|raw }}
+					</figcaption>
+					
+				</figure>
+				
+				<a class="btn btn-outline-default" role="button" title="{{ monthProduct.product.product.getTitleFr() }}">
+					{{ monthProduct.category.btn.fr|raw }}
+				</a>			
+			</article>
+		</div>
+	{% endblock %}
 {%  endblock %}
+
+{% block footer %}
+
+{% endblock %}
 
