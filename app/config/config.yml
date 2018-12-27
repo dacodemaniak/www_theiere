@@ -40,6 +40,8 @@ framework:
 
 # Twig Configuration
 twig:
+    cache: false
+    paths: ['%kernel.project_dir%/vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views']
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
 
@@ -83,6 +85,13 @@ nelmio_cors:
         max_age: 3600
         hosts: []
         origin_regex: false
+
+#KnpMenu
+knp_menu: 
+    twig: 
+        template: menu.html.twig
+    templating: false
+    default_renderer: twig
 
 #FOSRest Configuration
 fos_rest:

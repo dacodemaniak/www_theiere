@@ -2,6 +2,82 @@
 
 {%  block title %}Thés Naturels{%  endblock %}
 
+{% block slider %}
+	Hello Slider
+{% endblock %}
+
 {%  block body %}
-	Default Home
+	{% block edito %}
+		<div class="row">
+			<article class="col with-padding" id="editorial">
+				<header>
+					<figure>
+					
+					</figure>
+					
+					<h1>{{ editorial.title }}</h1>
+					<h2>{{ editorial.subtitle }}</h2>
+				</header>
+				
+				<blockquote>
+					{{ editorial.content|raw }}
+				</blockquote>
+			</article>
+		</div>
+	{% endblock %}
+	
+	{% block promotions %}
+		{% if promotions %}
+			<div class="row">
+    			{%  for promotion in promotions %}
+    				<figure class="card col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+    					<img src="{{ promotion.image.src }}" alt="{{ promotion.image.alt }}" height="200" class="img-responsive">
+    					<figcaption>
+    						{{ promotion.product.getTitleFr() }}
+    					</figcaption>
+    				</figure>
+    			{% endfor %}
+    		</div>
+		{% endif %}
+	{% endblock %}
+	
+	{% block box %}
+		<div class="row">
+			<article id="box-discovering" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<header>
+					<h3>{{ discovering.title.fr|raw }}</h3>
+				</header>
+				<blockquote>
+					{{ discovering.content.fr|raw }}
+				</blockquote>
+				
+				<a class="btn btn-default" role="button" title="">
+					{{ discovering.btn.fr }}
+				</a>
+			</article>
+			
+			<article id="month-product" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<header>
+					<h3>{{ monthProduct.category.title.fr|raw }}</h3>
+				</header>
+				
+				<figure>
+					<img src="{{ monthProduct.product.image.src }}" alt="{{ monthProduct.product.image.alt }}" height="200" class="img-responsive">
+					<figcaption>
+						{{ monthProduct.product.product.getTitleFr()|raw }}
+					</figcaption>
+					
+				</figure>
+				
+				<a class="btn btn-outline-default" role="button" title="{{ monthProduct.product.product.getTitleFr() }}">
+					{{ monthProduct.category.btn.fr|raw }}
+				</a>			
+			</article>
+		</div>
+	{% endblock %}
 {%  endblock %}
+
+{% block footer %}
+
+{% endblock %}
+

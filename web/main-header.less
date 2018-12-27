@@ -1,6 +1,30 @@
 // main: ./main.less
 #main-header {
     height: 10em;
-    line-height: 10em;
-    vertical-align: middle;
+
+    #user-menu {
+        .vertical-alignement;
+    }
+
+    #search {
+        .vertical-alignement;
+    }
+
+    #logo-soeurs-theiere {
+        .vertical-alignement;
+    }
+
+    #user-contact {
+        .vertical-alignement;
+    }
+
+}
+
+/**
+* MIXIN : Alignement vertical
+**/
+.vertical-alignement() {
+    position: relative;
+    top: 50%;
+    transform: translate(-50%);
 }
