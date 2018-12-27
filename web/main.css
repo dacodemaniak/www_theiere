@@ -4,9 +4,30 @@
 @import "style.css";
 #main-header {
   height: 10em;
-  line-height: 10em;
-  vertical-align: middle;
 }
+#main-header #user-menu {
+  position: relative;
+  top: 50%;
+  transform: translate(-50%);
+}
+#main-header #search {
+  position: relative;
+  top: 50%;
+  transform: translate(-50%);
+}
+#main-header #logo-soeurs-theiere {
+  position: relative;
+  top: 50%;
+  transform: translate(-50%);
+}
+#main-header #user-contact {
+  position: relative;
+  top: 50%;
+  transform: translate(-50%);
+}
+/**
+* MIXIN : Alignement vertical
+**/
 #user-menu a {
   color: #000000;
   text-decoration: none;
@@ -17,6 +38,15 @@
 }
 #user-menu a:hover {
   background-color: #ffcbbb;
+}
+#main-nav.navbar-light.bg-light {
+  background-color: #ff5722;
+}
+#main-nav ul li.nav-item {
+  width: 20em;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: bold;
 }
 /**
 * Styles globaux

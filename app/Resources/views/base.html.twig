@@ -33,7 +33,7 @@
     					</form>
     				</div>
     				
-    				<div class="logo col">
+    				<div id="logo-soeurs-theiere" class="logo col">
     					<img src="{{ asset('images/logo_blanc_soeurs_theieres.png') }}" title="Les Soeurs Théière" class="img-responsive">
     				</div>
     				
@@ -46,9 +46,21 @@
     			{% endblock %}
     		</header>
     		
-    		<nav id="main-nav">
-    			{% block menu %}{% endblock %}
+    		<nav id="main-nav" class="navbar navbar-expand-lg navbar-light bg-light">
+    			{% block menu %}
+    			  	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Ouvrir / Fermer">
+    					<span class="navbar-toggler-icon"></span>
+  					</button>
+  					
+  					<div class="collapse navbar-collapse" id="main-navbar">
+    				    {{ knp_menu_render("ContentBundle:MenuBuilder:categoriesMenu") }}
+    				</div>
+    			{% endblock %}
     		</nav>
+    		
+    		{%  block slider %}
+    			Hello block slider
+    		{% endblock %}
     		
     		<main id="main-container" eshop-app>
         		{% block body %}
@@ -62,6 +74,8 @@
         </div>
         {% block javascripts %}
         	<script src="./build/bundle.js"></script>
+        	<script src="{{ asset("node_modules/jquery/dist/jquery.min.js") }}"></script>
+        	<script src="{{ asset("node_modules/bootstrap/dist/js/bootstrap.min.js") }}"></script>
         {% endblock %}
     </body>
     
