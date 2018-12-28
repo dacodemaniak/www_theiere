@@ -1,6 +1,7 @@
 // main: ./main.less
 #main-header {
     height: 10em;
+    position: relative;
 
     #user-menu {
         .vertical-alignement;
@@ -10,10 +11,11 @@
         .vertical-alignement;
     }
 
-    #logo-soeurs-theiere {
+    #logo-soeurs-theiere {}
+
+    #user-basket {
         .vertical-alignement;
     }
-
     #user-contact {
         .vertical-alignement;
     }
@@ -24,7 +26,7 @@
 * MIXIN : Alignement vertical
 **/
 .vertical-alignement() {
-    position: relative;
+    position: absolute;
     top: 50%;
-    transform: translate(-50%);
+    transform: translateY(-50%);
 }

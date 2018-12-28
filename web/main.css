@@ -5,26 +5,27 @@
 @import url("https://fonts.googleapis.com/css?family=Great+Vibes");
 #main-header {
   height: 10em;
+  position: relative;
 }
 #main-header #user-menu {
-  position: relative;
+  position: absolute;
   top: 50%;
-  transform: translate(-50%);
+  transform: translateY(-50%);
 }
 #main-header #search {
-  position: relative;
+  position: absolute;
   top: 50%;
-  transform: translate(-50%);
+  transform: translateY(-50%);
 }
-#main-header #logo-soeurs-theiere {
-  position: relative;
+#main-header #user-basket {
+  position: absolute;
   top: 50%;
-  transform: translate(-50%);
+  transform: translateY(-50%);
 }
 #main-header #user-contact {
-  position: relative;
+  position: absolute;
   top: 50%;
-  transform: translate(-50%);
+  transform: translateY(-50%);
 }
 /**
 * MIXIN : Alignement vertical
@@ -40,14 +41,17 @@
 #user-menu a:hover {
   background-color: #ffcbbb;
 }
-#main-nav.navbar-light.bg-light {
-  background-color: #ff5722;
+#main-nav.navbar.navbar-light.bg-light {
+  background-color: #ff5722 !important;
 }
-#main-nav ul li.nav-item {
-  width: 20em;
+#main-nav.navbar.navbar-light.bg-light ul li.nav-item {
+  width: 15em;
   text-transform: uppercase;
   color: #ffffff;
   font-weight: bold;
+}
+#main-nav.navbar.navbar-light.bg-light ul li.nav-item a.nav-link {
+  color: inherit;
 }
 article#editorialwith-padding {
   padding: 10em;
