@@ -75,6 +75,42 @@
 			</article>
 		</div>
 	{% endblock %}
+	
+	{% block heart %}
+		<div id="heart-home" class="row">
+			<article id="heart-product" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<header>
+					<h3>{{ heartProduct.category.title.fr|raw }}</h3>
+				</header>
+				
+				<figure>
+					<img src="{{ heartProduct.product.image.src }}" alt="{{ heartProduct.product.image.alt }}" height="200" class="img-responsive">
+					<figcaption>
+						{{ heartProduct.product.product.getTitleFr()|raw }}
+					</figcaption>
+					
+				</figure>
+				
+				<a class="btn btn-outline-default" role="button" title="{{ heartProduct.product.product.getTitleFr() }}">
+					{{ heartProduct.category.btn.fr|raw }}
+				</a>			
+			</article>
+			
+			<article id="home-meeting" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<header>
+					<h3>{{ homeMeeting.content.title.fr|raw }}</h3>
+				</header>
+				
+				<blockquote>
+					{{ homeMeeting.content.content.fr|raw }}
+				</blockquote>
+				
+				<a class="btn btn-outline-default" role="button" title="{{ homeMeeting.content.title.fr }}">
+					{{ homeMeeting.content.btn.fr|raw }}
+				</a>
+			</article>
+		</div>
+	{% endblock %}
 {%  endblock %}
 
 {% block footer %}
