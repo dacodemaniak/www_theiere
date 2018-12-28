@@ -17,10 +17,24 @@ class CategorieRepository extends \Doctrine\ORM\EntityRepository {
         $categories = $this->createQueryBuilder("c")
             ->join("c.articles", "a")
             ->addSelect("a")
-            ->where("c.route = '/Category'");
+            ->where("c.route = '/category'");
         
         $articles = $categories->getQuery()->getResult();
         
         return $articles;
+    }
+    
+    /**
+     * Retourne les catégories de produit de niveau 1
+     * @return array
+     */
+    public function getSliderImages(): array {
+        $categoriesQuery = $this->createQueryBuilder("c")
+            ->where("c.route = '/category'")
+            ->andWhere("c.parent IS NULL");
+        
+        $categories = $categoriesQuery->getQuery()->getResult();
+        
+        return $categories;
     }
 }

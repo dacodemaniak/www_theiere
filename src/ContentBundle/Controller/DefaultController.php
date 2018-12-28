@@ -3,14 +3,13 @@
 namespace ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/content")
+     * Récupère le slider d'images pour la page d'accueil
      */
-    public function indexAction()
+    public function homeSliderAction()
     {
         return $this->render('ContentBundle:Default:index.html.twig');
     }

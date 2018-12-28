@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use ContentBundle\ContentBundle;
+use Symfony\Component\Asset\Packages;
 
 class DefaultController extends Controller
 {
@@ -14,7 +15,7 @@ class DefaultController extends Controller
 	/**
 	 * @Route("/", defaults={"_format"="html"})
 	 */
-	public function indexAction(Request $request) {
+	public function indexAction(Request $request, Packages $assetPackage) {
 	    $request->setRequestFormat("html");
 	    
 	    $editorial = $this->getEditorial();
@@ -72,8 +73,12 @@ class DefaultController extends Controller
 	        $homeMeeting["content"] = $homeMeetingCategory->getContent();
 	    }
 	    
+	    // Images de slider
+	    $sliderImages = $this->getSliderImages($assetPackage);
+	    
 		return $this->render("@App/Default/index.html.twig",
 		  [
+		      "sliderImages" => $sliderImages,
 		      "editorial" => $editorial,
 		      "discovering" => $discovering,
 		      "promotions" => $products,
@@ -134,6 +139,37 @@ class DefaultController extends Controller
 	    ->findOneBy(["slug" => $slug]);
 	    
 	    return $category;
+	}
+	
+	/**
+	 * Récupère les images pour le slider de la page d'accueil
+	 * @return array
+	 */
+	private function getSliderImages(Packages $assetPackage): array {
+	    $sliderImages = [];
+	    
+	    $categories = $this->getDoctrine()
+	       ->getRepository(\MenuBundle\Entity\Categorie::class)
+	       ->getSliderImages();
+	    
+	       if ($categories) {
+	           $indice = 0;
+	           foreach ($categories as $category) {
+	               $content = $category->getContent();
+	               
+	               if (property_exists($content, "slide")) {
+	                   $sliderImages[] = [
+	                       "image" => $assetPackage->getUrl("images/" . $content->slide),
+	                       "alt" => $content->title->fr,
+	                       "active" => $indice === 0 ? true : false,
+	                       "order" => $indice
+	                   ];
+	                   $indice++;
+	               }
+	           }
+	       }
+	       
+	       return $sliderImages;
 	}
     
 }
