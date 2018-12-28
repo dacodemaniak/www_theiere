@@ -28,6 +28,8 @@ framework:
     #serializer: { enable_annotations: true }
     default_locale: '%locale%'
     trusted_hosts: ~
+    templating: 
+        engines: ['twig']
     session:
         # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id: session.handler.native_file
@@ -41,8 +43,9 @@ framework:
 # Twig Configuration
 twig:
     cache: false
-    paths: ['%kernel.project_dir%/vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views']
     debug: '%kernel.debug%'
+    paths: 
+        '%kernel.project_dir%/src/MenuBundle/Resources/views/menus': FooterMenu
     strict_variables: '%kernel.debug%'
 
 # Doctrine Configuration

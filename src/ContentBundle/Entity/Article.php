@@ -224,9 +224,16 @@ class Article
         }
         $image = array_shift($images)[0];
         
+
+        if (property_exists($image, "src")) {
+            return [
+                "src" => $imagePath . $image->src,
+                "alt" => $image->alt->fr
+            ];
+        }
         return [
-            "src" => $imagePath . $image->src,
-            "alt" => $image->alt->fr
+            "src" => "",
+            "alt" => ""
         ];
     }
     

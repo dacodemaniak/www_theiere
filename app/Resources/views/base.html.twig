@@ -18,11 +18,11 @@
     	<div class="container-fluid">
     		<header class="header row" id="main-header">
     			{% block header %}
-    				<div id="user-menu" class="col">
+    				<div id="user-menu" class="col-xl-2 col-lg-2 col-md-2 hidden-sm hidden-xs">
     					<div class="wrapper"></div>
     				</div>
     				
-    				<div id="search" class="col">
+    				<div id="search" class="col-xl-3 col-lg-3 col-md-3 hidden-sm hidden-xs">
     					<form id="search-form" class="form form-stacked">
     						<div class="input-group">
   								<input type="search" class="form-control" placeholder="Chercher..." aria-label="Chercher" aria-describedby="basic-addon2">
@@ -33,15 +33,16 @@
     					</form>
     				</div>
     				
-    				<div id="logo-soeurs-theiere" class="logo col">
+    				<div id="logo-soeurs-theiere" class="logo col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
     					<img src="{{ asset('images/logo_blanc_soeurs_theieres.png') }}" title="Les Soeurs Théière" class="img-responsive">
     				</div>
     				
-    				<div class="col" id="user-basket">
+    				<div class="col-xl-2 col-lg-2 col-md-2 hidden-sm hidden-xs" id="user-basket">
     					<div class="wrapper"></div>
     				</div>
     				
-    				<div class="col" id="user-contact">
+    				<div class="col-xl-2 col-lg-2 col-md-2 hidden-sm hidden-xs" id="user-contact">
+    					Contact
     				</div>
     			{% endblock %}
     		</header>
@@ -66,8 +67,25 @@
         		{% endblock %}
         	</main>
         	
-        	<footer id="main-footer">
-        		{% block footer %}{% endblock %}
+        	<footer id="main-footer" class="row">
+        		{% block footerleft %}
+        			{{ render(controller(
+        			        "MenuBundle:Default:leftFooterMenu"
+        			    )) }}
+        		{% endblock %}
+
+        		{% block footercenter %}
+        			{{ render(controller(
+        			        "MenuBundle:Default:centerFooterMenu"
+        			    )) }}
+        		{% endblock %}
+
+        		{% block footerright %}
+        			{{ render(controller(
+        			        "MenuBundle:Default:rightFooterMenu"
+        			    )) }}
+        		{% endblock %}        		
+        		
         	</footer>
         
         </div>
