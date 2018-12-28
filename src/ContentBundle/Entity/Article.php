@@ -224,7 +224,7 @@ class Article
         }
         $image = array_shift($images)[0];
         
-        var_dump($image);
+
         if (property_exists($image, "src")) {
             return [
                 "src" => $imagePath . $image->src,
