@@ -41,7 +41,7 @@ class DefaultController extends Controller
 	    if ($monthProductCategory) {
 	        $categoryContent = $monthProductCategory->getContent();
 	        $monthProduct["category"] = $categoryContent;
-	        $catToArticles = $promotion->getArticles();
+	        $catToArticles = $monthProductCategory->getArticles();
 	        $catToArticle = $catToArticles[0];
 	        $product = [
 	           "product" => $catToArticle->getArticle(),
@@ -50,12 +50,36 @@ class DefaultController extends Controller
 	        $monthProduct["product"] = $product;
 	    }
 	    
+	    // Produit Coup de coeur
+	    $heartProductCategory = $this->getBySlug("heart");
+	    $heartProduct = [];
+	    if ($heartProductCategory) {
+	        $heartProduct["category"] = $heartProductCategory->getContent();
+	        $catToArticles = $heartProductCategory->getArticles();
+	        $catToArticle = $catToArticles[0];
+	        $product = [
+	            "product" => $catToArticle->getArticle(),
+	            "image" => $catToArticle->getArticle()->getMainImage()
+	        ];
+	        $heartProduct["product"] = $product;
+	    }
+	    
+	    // Réunions à domicile
+	    $homeMeetingCategory = $this->getBySlug("home-meeting");
+	    $homeMeeting = [];
+	    if ($homeMeetingCategory) {
+	        $homeMeeting["category"] = $homeMeetingCategory;
+	        $homeMeeting["content"] = $homeMeetingCategory->getContent();
+	    }
+	    
 		return $this->render("@App/Default/index.html.twig",
 		  [
 		      "editorial" => $editorial,
 		      "discovering" => $discovering,
 		      "promotions" => $products,
-		      "monthProduct" => $monthProduct
+		      "monthProduct" => $monthProduct,
+		      "heartProduct" => $heartProduct,
+		      "homeMeeting" => $homeMeeting
 		  ]
 		);
 	}
