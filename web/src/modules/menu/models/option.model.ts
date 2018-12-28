@@ -23,9 +23,9 @@ export class OptionModel {
 
     public getTitleFr(): string {
         if (this.content.hasOwnProperty('icon')) {
-            return '<i class="' + this.content.icon + '"></i>' + this.content.title[0].fr;
+            return '<i class="' + this.content.icon + '"></i>' + this.content.title.fr;
         }
-        return this.content.title[0].fr;
+        return this.content.title.fr;
     }
 
     public getMenu(): JQuery {

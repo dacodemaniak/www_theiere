@@ -38,13 +38,13 @@
 	{% block edito %}
 		<div class="row">
 			<article class="col with-padding" id="editorial">
-				<header>
-					<figure>
-					
+				<header class="row">
+					<figure class="col-xl-2">
+						<img src="{{ asset("images/illustration.png") }}" alt="Les Soeurs Théière">
 					</figure>
 					
-					<h1>{{ editorial.title }}</h1>
-					<h2>{{ editorial.subtitle }}</h2>
+					<h1 class="col-xl-10">{{ editorial.title }}</h1>
+					<h2 class="col-xl-12">{{ editorial.subtitle }}</h2>
 				</header>
 				
 				<blockquote>
