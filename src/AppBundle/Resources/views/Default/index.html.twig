@@ -3,7 +3,35 @@
 {%  block title %}Thés Naturels{%  endblock %}
 
 {% block slider %}
-	Hello Slider
+	<div class="carousel slide" data-ride="carousel" id="categories-slider">
+		<!-- Indicateurs -->
+		<ol class="carousel-indicators">
+			{% for slide in sliderImages %}
+				<li data-target="#categories-slider" data-slide-to="{{ slide.order }}" {% if slide.active %} class="active"{% endif %}>
+			{% endfor %}
+		</ol>
+		
+		<div class="carousel-inner">
+    		{% for slide in sliderImages %}
+    			
+    				<div class="carousel-item{% if slide.active %} active{% endif %}">
+    					<img class="d-block w-100" src="{{ slide.image }}" alt="{{ slide.alt }}">
+    				</div>
+    
+    		{% endfor %}
+		</div>
+		
+		<!--  Contrôles -->
+		<a class="carousel-control-prev" href="#categories-slider" role="button" data-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="sr-only">Précédent</span>
+		</a>
+		
+		<a class="carousel-control-next" href="#categories-slider" role="button" data-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="sr-only">Suivant</span>
+		</a>
+	</div>
 {% endblock %}
 
 {%  block body %}
