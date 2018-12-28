@@ -29,6 +29,7 @@ export class UserModule {
         } else {
             this.userService.getAnonymouseUser().then((response) => {
                 const menus: Array<any> = response.menus;
+                
                 const accountMenu = menus.filter(
                     (element) => { return element.region === '_top-left'}
                 );
