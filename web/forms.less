@@ -1,0 +1,88 @@
+// main: ./main.less
+
+form {
+    &.material-like {
+        div {
+            &.alert {
+                &.hidden {
+                    display: none;
+                }
+            }
+        }
+        .input {
+            position: relative;
+            margin: auto;
+            width: 100%;
+            max-width: 280px;
+
+            .label {
+                position: absolute;
+                top: 1em;
+                left: 0;
+                font-size: 1em;
+                color: @default_form_label_color;
+                font-weight: normal;
+                transform-origin: 0 0;
+                transition: all .2s ease;
+
+                &.required {
+                    &::after {
+                        content: "(*)"
+                    }
+                }
+            }
+
+            .border {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                height: 2px;
+                width: 100%;
+                background: @default_form_border_color;
+                transform: scaleX(0);
+                transform-origin: 0 0;
+                transition: all .15s ease;
+            }
+
+            input {
+                -webkit-appearance: none;
+                width: 100%;
+                border: 0;
+                font-family: inherit;
+                padding: 12px 0;
+                height: 48px;
+                font-size: 1em;
+                font-weight: normal;
+                border-bottom: solid 2px @default_form_input_border_color;
+                background: none;
+                border-radius: 0;
+                color: @default_form_input_color;
+                transition: all .15s ease;
+
+                &:hover {
+                    background: rgba(255, 255, 255, .03);
+                }
+
+                &:not(:placeholder-shown) {
+                    span {
+                        color: #5a667f;
+                        transform: translateY(-26px) scale(.75);
+                    }
+                }
+
+                &:focus {
+                    background: none;
+                    outline: none;
+                    span {
+                        color: @default_form_border_color;
+                        transform: translateY(-26px) scale(.75);
+
+                        .border {
+                            transform: scaleX(1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

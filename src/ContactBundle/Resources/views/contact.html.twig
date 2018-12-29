@@ -1,0 +1,54 @@
+{%  extends "base.html.twig" %}
+
+{%  block title %}Les Soeurs Théière - Contactez-nous{%  endblock %}
+
+{% block body %}
+	<div class="row">
+		<div class="container">
+			<form id="contact-form" class="form form-stacked material-like">
+				
+				<fieldset>
+					<legend>
+						Contactez les Soeurs Théière
+					</legend>
+					
+					<div class="form-group">
+						<label for="message-content">Votre message</label>
+						<textarea name="message" id="message-content" class="form-control" autocomplete="off"></textarea>
+					</div>
+					
+					<div class="form-group">
+						<label for="name-content" class="input">
+							<input type="text" name="name" autocomplete="off" id="name-content" placeholder="&nbsp;" class="form-control">
+							<span class="label required">Votre nom</span>
+							<span class="border"></span>
+						</label>
+						<div class="alert alert-danger hidden" data-rel="name-content">
+							Votre nom est obligatoire pour envoyer un message à l'attention des Soeurs Théière
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label for="email-content" class="input">
+							<input type="email" name="email" id="email-content" placeholder="&nbsp;" class="form-control" autocomplete="off">
+							<span class="label required">Votre e-mail</span>
+							<span class="border"></span>
+						</label>
+						<div class="alert alert-danger hidden" data-rel="email-content">
+							Votre email est obligatoire pour envoyer un message à l'attention des Soeurs Théière
+						</div>
+					</div>
+				</fieldset>
+				
+				<fieldset>
+					<button type="submit" disabled class="btn btn-outline-primary" id="send">Envoyer</button>
+				</fieldset>
+			</form>
+			
+			<iframe 
+			    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11683.202285292435!2d1.847366!3d42.940331!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x2d6f8ca6755e8b28!2sCap+Mirabeau!5e0!3m2!1sfr!2sfr!4v1541704038664"
+      			width="100%" height="450" frameborder="0" style="border:0" allowfullscreen>
+    		</iframe>
+		</div>
+	</div>
+{% endblock %}

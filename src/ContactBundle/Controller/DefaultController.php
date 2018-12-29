@@ -12,6 +12,16 @@ use FOS\RestBundle\View\View;
 
 class DefaultController extends FOSRestController
 {
+    
+    /**
+     * @Route("/contact", methods={"GET","HEAD"})
+     */
+    public function showAction(Request $request) {
+        $request->setRequestFormat("html");
+        
+        return $this->render("@Contact/contact.html.twig");
+    }
+    
     /**
      * @Rest\Put("/contact")
      */
