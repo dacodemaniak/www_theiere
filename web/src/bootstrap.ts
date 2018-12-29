@@ -1,3 +1,4 @@
+import { RouterModule } from './modules/router/router.module';
 import { BasketModule } from './modules/basket/basket.module';
 import { UserModule } from "./modules/user/user.module";
 import { UserService } from "./services/user.service";
@@ -23,6 +24,8 @@ export class Bootstrap {
 
         const basketModule: BasketModule = new BasketModule(this.userService);
 
+        const routerModule: RouterModule = new RouterModule();
+        
         console.log('Bootstrap application done');
     }
 }

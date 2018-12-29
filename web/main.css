@@ -1,6 +1,9 @@
 /**
 * @name variables.less
 **/
+/**
+* Bootstrap like colors
+**/
 @import "style.css";
 @import url("https://fonts.googleapis.com/css?family=Great+Vibes");
 #main-header {
@@ -56,6 +59,72 @@ figure.card figcaption {
   height: 3em;
   text-align: center;
 }
+form.material-like div.alert.hidden {
+  display: none;
+}
+form.material-like .input {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  max-width: 280px;
+}
+form.material-like .input .label {
+  position: absolute;
+  top: 1em;
+  left: 0;
+  font-size: 1em;
+  color: #9098a9;
+  font-weight: normal;
+  transform-origin: 0 0;
+  transition: all .2s ease;
+}
+form.material-like .input .label.required::after {
+  content: "(*)";
+}
+form.material-like .input .border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: #0077ff;
+  transform: scaleX(0);
+  transform-origin: 0 0;
+  transition: all .15s ease;
+}
+form.material-like .input input {
+  -webkit-appearance: none;
+  width: 100%;
+  border: 0;
+  font-family: inherit;
+  padding: 12px 0;
+  height: 48px;
+  font-size: 1em;
+  font-weight: normal;
+  border-bottom: solid 2px #c8ccd4;
+  background: none;
+  border-radius: 0;
+  color: #223254;
+  transition: all .15s ease;
+}
+form.material-like .input input:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+form.material-like .input input:not(:placeholder-shown) span {
+  color: #5a667f;
+  transform: translateY(-26px) scale(0.75);
+}
+form.material-like .input input:focus {
+  background: none;
+  outline: none;
+}
+form.material-like .input input:focus span {
+  color: #0077ff;
+  transform: translateY(-26px) scale(0.75);
+}
+form.material-like .input input:focus span .border {
+  transform: scaleX(1);
+}
 /**
 * Importation des polices
 **/
@@ -66,4 +135,83 @@ i[class^="icon-"],
 i [class*=" icon-"] {
   display: inline-block;
   margin-right: .5em;
+}
+.toast {
+  border: solid 1px;
+  padding: 1em;
+  position: relative;
+  border-radius: 3px;
+  box-shadow: #000 3px 3px 3px;
+}
+.toast.top {
+  top: 0;
+  left: 0;
+}
+.toast.top-center {
+  top: 0;
+  left: 50%;
+}
+.toast.top-left {
+  top: 0;
+  left: 0;
+}
+.toast.top-right {
+  top: 0;
+  right: 80%;
+}
+.toast.middle {
+  top: 50%;
+  left: 0;
+}
+.toast.middle-center {
+  top: 50%;
+  left: 50%;
+}
+.toast.middle-left {
+  top: 50%;
+  left: 0;
+}
+.toast.middle-right {
+  top: 50%;
+  right: 80%;
+}
+.toast.bottom {
+  top: 90%;
+  left: 0;
+}
+.toast.bottom-center {
+  top: 90%;
+  left: 50%;
+}
+.toast.bottom-left {
+  top: 90%;
+  left: 0;
+}
+.toast.bottom-right {
+  top: 90%;
+  right: 80%;
+}
+.toast.primary {
+  color: #ffffff;
+  background-color: #007bff;
+}
+.toast.success {
+  color: #ffffff;
+  background-color: #28a745;
+}
+.toast.info {
+  color: #ffffff;
+  background-color: #17a2b8;
+}
+.toast.warning {
+  color: #ffffff;
+  background-color: #ffc107;
+}
+.toast.danger {
+  color: #ffffff;
+  background-color: #dc3f45;
+}
+.toast.secondary {
+  color: #ffffff;
+  background-color: #868e96;
 }

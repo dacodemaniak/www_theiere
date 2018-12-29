@@ -46,6 +46,7 @@ twig:
     debug: '%kernel.debug%'
     paths: 
         '%kernel.project_dir%/src/MenuBundle/Resources/views/menus': FooterMenu
+        '%kernel.project_dir%/src/ContactBundle/Resources/views': Contact
     strict_variables: '%kernel.debug%'
 
 # Doctrine Configuration
