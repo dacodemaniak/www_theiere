@@ -336,9 +336,54 @@ class Categorie
      * @return array
      */
     public function getAncestorsAsArray(): array {
-        
         return $this->hydrateAncestors($this, []);
+    }
+    
+    /**
+     * Retourne le fil d'ariane complet (tous les ancêtres de la catégorie courante)
+     * @return array
+     */
+    public function getBreadcrumb(): array {
+        $breadcrumb = $this->hydrateBreadcrumb($this, []);
         
+        return array_reverse($breadcrumb);
+    }
+    
+    /**
+     * Méthode magique pour récupérer les valeurs du contenu JSON
+     * @param string $methodName
+     * @param array $args
+     * @return mixed
+     */
+    public function __call(string $methodName, array $args) {
+        if (($content = $this->getContent()) !== null) {
+            preg_match_all('/((?:^|[A-Z])[a-z]+)/', $methodName, $methodComposition);
+            
+            $composition = $methodComposition[0];
+            
+            $isGetter = ($composition[0] === "get") ? true : false;
+            $hasLang = (count($composition) === 3) ? true : false;
+            
+            $property = strtolower($composition[1]);
+            
+            if ($isGetter) {
+                if (property_exists($content, $property)) {
+                    if ($hasLang) {
+                        if (is_array($content->{$property})) {
+                            $object = $content->{$property}[0];
+                        } else {
+                            $object = $content->{$property};
+                        }
+                        
+                        if (property_exists($object, strtolower($composition[2]))) {
+                            return $object->{strtolower($composition[2])};
+                        }
+                    } else {
+                        return $content->{$property};
+                    }
+                }
+            }
+        }
     }
     
     /**
@@ -369,12 +414,23 @@ class Categorie
                 "parent" => [
                     "id" => $currentCategorie->getParent()->getId(),
                     "slug" => $currentCategorie->getParent()->getSlug(),
-                    "content" => $currentCategorie->getParent()->getRawContent()
-                ],
-                "ancestors" => $this->hydrateAncestors($currentCategorie->getParent(), $ancestors)
+                    "content" => $currentCategorie->getParent()->getRawContent(),
+                    "ancestors" => $this->hydrateAncestors($currentCategorie->getParent(), $ancestors)
+                ]  
             ];
         }
         return $ancestors;
+    }
+    
+    private function hydrateBreadcrumb(self $currentCategorie, array $breadcrumb) {
+        $hasParent = $currentCategorie->hasParent();
+        
+        if ($hasParent) {
+            $breadcrumb[] = $currentCategorie->getParent();
+            $this->hydrateBreadcrumb($currentCategorie->getParent(), $breadcrumb);
+        }
+        
+        return $breadcrumb;
     }
 }
 

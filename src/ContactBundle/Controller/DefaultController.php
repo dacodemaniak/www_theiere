@@ -14,7 +14,7 @@ class DefaultController extends FOSRestController
 {
     
     /**
-     * @Route("/contact", methods={"GET","HEAD"})
+     * @Route("/contact", methods={"GET","HEAD"}, name="contact")
      */
     public function showAction(Request $request) {
         $request->setRequestFormat("html");

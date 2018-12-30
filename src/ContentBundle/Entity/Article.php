@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Asset\Package;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 
 /**
  * Article
@@ -63,8 +65,10 @@ class Article
      */
     private $categorieToArticles;
     
+
     
     public function __construct() {
+        
     	$this->decors = new ArrayCollection();
     	$this->categorieToArticles = new ArrayCollection();
     }
@@ -207,6 +211,98 @@ class Article
     }
     
     /**
+     * Extrait le prix le plus bas du produit courant
+     * @return number
+     */
+    public function getSmallestPrice(): array {
+        $smallestPrice = [];
+        
+        if (($content = $this->getContent()) !== null) {
+            
+            if ((float) $content->vat = 0.05) {
+                $content->vat = 0.055;
+            }
+            
+            $pricing = $content->pricing;
+            
+            if (is_array($pricing) && count($pricing) > 1) {
+                usort(
+                    $pricing,
+                    function ($price1, $price2) {
+                        return $price1->ht <=> $price2->ht;
+                    }
+                );
+                $price = array_shift($pricing);
+
+
+                $smallestPrice["ttc"] = $price->ht * (1 + $content->vat);
+                $smallestPrice["multi"] = true;
+            } else {
+                $price = $pricing[0];
+                $smallestPrice["ttc"] = $price->ht * (1 + $content->vat);
+                $smallestPrice["multi"] = false;
+            }
+        }
+        
+        return $smallestPrice;
+    }
+    
+    /**
+     * Retourne la quantité maximum par commande pour ce produit
+     * @return int
+     */
+    public function getMaxPerOrder(): int {
+        $maxPerOrder = 0;
+        
+        if (($content = $this->getContent()) !== null) {
+            $pricing = $content->pricing;
+            
+            usort(
+                $pricing,
+                function ($price1, $price2) {
+                    return $price1->ht <=> $price2->ht;
+                }
+            );
+            
+            if (count($pricing) > 1) {
+                $minPrice = array_shift($pricing);
+            } else {
+                $minPrice = $pricing[0];
+            }
+            
+            if (($minPrice->stock - $minPrice->thresold) < $minPrice->maxPerOrder) {
+                $maxPerOrder = $minPrice->stock - $minPrice->thresold;
+            } else {
+                $maxPerOrder = $minPrice->thresold;
+            }
+        }
+        
+        return $maxPerOrder;
+    }
+    
+    
+    /**
+     * Retourne la liste des prix des produits dans l'ordre croissant
+     * @return array
+     */
+    public function getPrices(): array {
+        if (($content = $this->getContent()) !== null) {
+            $pricing = $content->pricing;
+            
+            usort(
+                $pricing,
+                function ($price1, $price2) {
+                    return $price1->ht <=> $price2->ht;
+                }
+            );
+            
+            return $pricing;
+        }
+        
+        return [];
+    }
+    
+    /**
      * Retourne l'image principale du produit
      * @return array
      */
@@ -222,18 +318,24 @@ class Article
                 $images[] = $values;
             }
         }
+        
         $image = array_shift($images)[0];
         
 
-        if (property_exists($image, "src")) {
-            return [
-                "src" => $imagePath . $image->src,
-                "alt" => $image->alt->fr
-            ];
+        if ($image) {
+            if (property_exists($image, "src")) {
+                return [
+                    "src" => $imagePath . $image->src,
+                    "alt" => $image->alt->fr
+                ];
+            }
         }
+        
+        $package = new Package(new EmptyVersionStrategy());
+        
         return [
-            "src" => "",
-            "alt" => ""
+            "src" => $package->getUrl("/images/no-image-icon.png"), // $assetPackage->getUrl("images/" . $content->slide),
+            "alt" => $this->getTitleFr() . " pas encore d'image"
         ];
     }
     

@@ -35,7 +35,9 @@
     				</div>
     				
     				<div id="logo-soeurs-theiere" class="logo col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-    					<img src="{{ asset('images/logo_blanc_soeurs_theieres.png') }}" title="Les Soeurs Théière" class=" img-responsive">
+    					<a href="{{ path("home") }}" title="Les Soeurs Théière">
+    						<img src="{{ asset('images/logo_blanc_soeurs_theieres.png') }}" title="Les Soeurs Théière" class=" img-responsive">
+    					</a>
     				</div>
     				
     				<div class="col-xl-2 col-lg-2 col-md-2 hidden-sm hidden-xs" id="user-basket">
@@ -43,7 +45,11 @@
     				</div>
     				
     				<div class="col-xl-2 col-lg-2 col-md-2 hidden-sm hidden-xs" id="user-contact">
-    					<div class="wrapper">Contact</div>
+    					<div class="wrapper">
+    						<a href="{{ path("contact") }}" title="Contactez les Soeurs Théière">
+    							Contact
+    						</a>
+    					</div>
     				</div>
     			{% endblock %}
     		</header>
@@ -91,7 +97,7 @@
         
         </div>
         {% block javascripts %}
-        	<script src="./build/bundle.js"></script>
+        	<script src="{{ asset("build/bundle.js") }}"></script>
         	<script src="{{ asset("node_modules/jquery/dist/jquery.min.js") }}"></script>
         	<script src="{{ asset("node_modules/bootstrap/dist/js/bootstrap.min.js") }}"></script>
         {% endblock %}
