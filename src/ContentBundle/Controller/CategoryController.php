@@ -61,6 +61,53 @@ class CategoryController extends FOSRestController {
 	public function __construct() {}
 	
 	/**
+	 * @Route("/products/category/{slug}", methods={"GET","HEAD"}, name="products_category")
+	 * 
+	 * @param Request $request
+	 * 
+	 * Retourne les produits et éventuellement les sous-catégories à partir d'un identifiant de catégorie
+	 */
+	public function productFromCategory(Request $request) {
+	    $request->setRequestFormat("html");
+	    
+	    $routeComponent = $request->get("slug");
+
+	    if (filter_var($routeComponent, FILTER_VALIDATE_INT)) {
+	        $id = (int) $routeComponent;
+	        $slug = "";
+	    } else {
+	        $slug = $routeComponent;
+	        $id = 0;
+	    }
+	    
+	    // Récupère la catégorie
+	    if ($id !== 0) {
+	        // Récupère la catégorie par son id
+	        $this->category = $this->getById($id);
+	    } else {
+	        // Récupère la catégorie par son slug
+	        $this->category = $this->getBySlug($slug);
+	    }
+	    
+	    // Récupère le fil d'ariane de la catégorie courante
+	    if ($this->category->hasParent()) {
+	        $ancestors = $this->category->getBreadcrumb();
+	    }
+	    $ancestors[] = $this->category; // Catégorie courante dans le fil d'ariane
+	    
+	    
+	    return $this->render(
+	        "@Content/category/products.html.twig",
+	        [
+	            "currentCategory" => $this->category,
+	            "ancestors" => $ancestors,
+	            "products" => $this->getCategoryProductsCollection(),
+	            "childrenProducts" => $this->getChildrenProductsCollection()
+	        ]
+	    );
+	}
+	
+	/**
 	 * @Rest\Get("/category/{slug}")
 	 */
 	public function byCategoryAction(Request $request) {
@@ -214,6 +261,26 @@ class CategoryController extends FOSRestController {
 	}
 	
 	/**
+	 * Récupère la liste des produits de la catégorie courante
+	 * @return array
+	 */
+	private function getCategoryProductsCollection(\MenuBundle\Entity\Categorie $category = null): array {
+	   $products = [];
+	   
+	   if ($category === null) {
+	       $category = $this->category;
+	   }
+	   
+	   $catToArticles = $category->getArticles();
+	    
+	    foreach ($catToArticles as $catToArticle) {
+	        $products[] = $catToArticle->getArticle();
+	    }
+	    
+	    return $products;
+	}
+	
+	/**
 	 * Retourne les produits des catégories filles de la catégorie courante
 	 * @return array
 	 */
@@ -236,6 +303,29 @@ class CategoryController extends FOSRestController {
 	                ],
 	                //"category" => $child->getRawContent(),
 	                "products" => $child->getRawArticles(),
+	                "childrenCategory" => $this->getChildrenProducts($child)
+	            ];
+	            $this->getChildrenProducts($child, $childrenProducts);
+	        }
+	    }
+	    
+	    return $childrenProducts;
+	}
+	
+	private function getChildrenProductsCollection(\MenuBundle\Entity\Categorie $category = null, array $childrenProducts = null): array {
+	    if ($childrenProducts === null) {
+	        $childrenProducts = [];
+	    }
+	    
+	    if ($category === null) {
+	        $category = $this->category;
+	    }
+	    
+	    if ($category->hasChildren()) {
+	        foreach($category->getChildren() as $child) {
+	            $childrenProducts[] = [
+	                "category" => $child,
+	                "products" => $this->getCategoryProductsCollection($child),
 	                "childrenCategory" => $this->getChildrenProducts($child)
 	            ];
 	            $this->getChildrenProducts($child, $childrenProducts);

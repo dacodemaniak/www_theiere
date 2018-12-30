@@ -1,3 +1,4 @@
+import { CartModule } from './../basket/cart.module';
 import { ContactModule } from './../contact/contact.module';
 /**
  * @name RouterModule
@@ -9,10 +10,25 @@ import { ContactModule } from './../contact/contact.module';
 
  export class RouterModule {
      public constructor() {
-         const url: string = location.pathname.slice(1) || '/';
+         let url: string = location.pathname.slice(1) || '/';
+
+         
+        
+         console.info(url.indexOf('.php'));
+
+         if (url.indexOf('.php')) {
+            console.info('Mode développement');
+            url = url.slice(12);
+         } else {
+             console.info('Mode production');
+         }
 
          console.log('Current url : ' + url);
-        
+
+         if (url.indexOf('product/')) {
+            url = 'product';
+         }
+
          let module: any = {};
 
          switch (url) {
@@ -20,6 +36,9 @@ import { ContactModule } from './../contact/contact.module';
                 module = new ContactModule();
              break;
 
+             case 'product':
+                module = new CartModule();
+             break;
          }
 
      }

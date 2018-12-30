@@ -125,6 +125,17 @@ form.material-like .input input:focus span {
 form.material-like .input input:focus span .border {
   transform: scaleX(1);
 }
+.ariane {
+  font-size: 0.7em;
+  font-weight: normal;
+  color: #ffffff;
+}
+.ariane ol.breadcrumb-item a {
+  color: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  text-decoration: none;
+}
 /**
 * Importation des polices
 **/

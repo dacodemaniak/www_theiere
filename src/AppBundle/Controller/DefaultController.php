@@ -13,7 +13,7 @@ class DefaultController extends Controller
 {
     
 	/**
-	 * @Route("/", defaults={"_format"="html"})
+	 * @Route("/", defaults={"_format"="html"}, name="home")
 	 */
 	public function indexAction(Request $request, Packages $assetPackage) {
 	    $request->setRequestFormat("html");

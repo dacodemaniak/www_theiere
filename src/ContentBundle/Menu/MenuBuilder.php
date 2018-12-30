@@ -55,11 +55,16 @@ class MenuBuilder implements ContainerAwareInterface {
             ->setAttribute("dropdown", true);
             
             if (array_key_exists("nodes", $option)) {
-                foreach ($option["nodes"] as $node) {
+                foreach ($option["nodes"] as $node) {                  
                     $this->menu[$option["content"]["title"]["fr"]]->addChild(
-                        $node["content"]["title"][0]["fr"]
+                        array_key_exists("fr", $node["content"]["title"]) ? $node["content"]["title"]["fr"] : $node["content"]["title"][0]["fr"],
+                        [
+                            "route" => "products_category",
+                            "routeParameters" => ["slug" => $node["id"]]
+                        ]
                     )
                     ->setLinkAttribute("class", "nav-link");
+                    
                 }
             }
         }
