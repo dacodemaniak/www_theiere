@@ -1,3 +1,4 @@
+import { BasketListModule } from './../basket/basket-list.module';
 import { CartModule } from './../basket/cart.module';
 import { ContactModule } from './../contact/contact.module';
 /**
@@ -14,7 +15,7 @@ import { ContactModule } from './../contact/contact.module';
 
          console.info(url.indexOf('.php'));
 
-         if (url.indexOf('.php')) {
+         if (url.indexOf('.php') !== -1) {
             console.info('Mode développement');
             url = url.slice(12);
          } else {
@@ -38,6 +39,10 @@ import { ContactModule } from './../contact/contact.module';
 
              case 'product':
                 module = new CartModule();
+             break;
+
+             case 'basket':
+                module = new BasketListModule();
              break;
          }
 

@@ -43,7 +43,7 @@ export class OptionModel {
         this.id = datas.id;
         this.content = datas.content;
         this.ordre = datas.ordre;
-        this.route = '#' + datas.route;
+        this.route = datas.route;
         this.slug = datas.slug;
         this.nodes = datas.nodes;
     }
