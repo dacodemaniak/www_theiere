@@ -1,0 +1,32 @@
+{%  extends "base.html.twig" %}
+
+{% block title %}
+	Votre panier - Les Soeurs Théière
+{% endblock %}
+
+{% block body %}
+	<table id="basket-list" class="table table-condensed table-responsive hidden">
+		<thead>
+			<tr>
+				<th>Produit</th>
+				<th>Par</th>
+				<th>Quantité</th>
+				<th>Prix</th>
+				<th>Total</th>
+				<th>&nbsp;</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+		</tbody>
+		
+		<tfoot>
+			<tr>
+				<td colspan="4">
+					Total commande
+				</td>
+				<td class="gran-total" colspan="2"></td>
+			</tr>
+		</tfoot>
+	</table>
+{% endblock %}
