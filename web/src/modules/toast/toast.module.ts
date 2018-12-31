@@ -46,10 +46,11 @@ export class ToastModule {
             .addClass('animated')
             .addClass(this.options.appear)
             .addClass(this.options.position)
+            .addClass(this.options.type)
             .attr('width', this.options.width)
             .attr('height', this.options.height)
             .html('<h5>' + this.options.title + '</h5>')
-            .html('<pre>' + this.options.message + '</pre>')
+            .html('<blockquote>' + this.options.message + '</blockquote>')
         
         toast.appendTo($('body'));
         
@@ -67,6 +68,7 @@ export class ToastModule {
             },
             this.options.duration * 1000
         );
+        
     }
 
 

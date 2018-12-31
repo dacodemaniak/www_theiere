@@ -8,13 +8,59 @@ section {
                     &.card-header {
                         background-color: @default_hover_color;
                         height: 5em;
-                        h2 {
+                        h2, h3 {
                             &.card-title {
                                 color: @default_menu_color;
-                                .vertical-alignement;
-                                font-size: 1.1em;
+                                height: 2em;
+                                font-size: .9em;
                             }
                         }
+                        span {
+                            &.badge {
+                                display: inline-block;
+                                padding: 0.3em;
+                                margin-left: 60%;
+                            }
+                        }
+                    }
+                }
+                div {
+                    &.card-body {
+                        height: 25em;
+                    }
+                }
+            }
+        }
+    }
+    &.product-container {
+        aside {
+            &#decor-produit {
+                margin-top: .5em;
+                padding: 1em;
+                font-size: .7em;
+                font-weight: bold;
+                background-color: lighten(@default_hover_color, 30%);
+            }
+        }
+        #product-slider {
+            ol {
+                &.carousel-indicators {
+                    li {
+                        background-color: @muted;
+                        &.active {
+                            background-color: @dark;
+                        }
+                    }
+                }
+            }
+            a {
+                span {
+                    &.carousel-control-prev-icon {
+                        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+                    }
+                    
+                    &.carousel-control-next-icon {
+                        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
                     }
                 }
             }

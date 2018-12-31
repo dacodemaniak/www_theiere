@@ -9,6 +9,42 @@
 #main-header {
   height: 10em;
 }
+#main-header #user-menu .wrapper {
+  height: inherit;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+#main-header #user-menu .wrapper a {
+  text-decoration: none;
+  color: #000000;
+}
+#main-header #user-basket .wrapper {
+  height: inherit;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+#main-header #user-basket .wrapper a {
+  text-decoration: none;
+  color: #000000;
+}
+#main-header #user-basket .wrapper span.badge {
+  padding: 0.5em;
+}
+#main-header #user-basket .wrapper span.badge.exposant {
+  vertical-align: super;
+}
+#main-header #user-contact .wrapper {
+  height: inherit;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+#main-header #user-contact .wrapper a {
+  text-decoration: none;
+  color: #000000;
+}
 /**
 * MIXIN : Alignement vertical
 **/
@@ -45,6 +81,9 @@ article#editorial.with-padding blockquote {
   font-size: 1em;
   padding: 3em;
   text-align: justify;
+}
+article#editorial header {
+  padding-left: 60%;
 }
 article#editorial header h1 {
   font-family: "Great Vibes";
@@ -136,6 +175,43 @@ form.material-like .input input:focus span .border {
   font-size: inherit;
   text-decoration: none;
 }
+section.category-products article.card header.card-header {
+  background-color: #ff5722;
+  height: 5em;
+}
+section.category-products article.card header.card-header h2.card-title,
+section.category-products article.card header.card-header h3.card-title {
+  color: #ffffff;
+  height: 2em;
+  font-size: .9em;
+}
+section.category-products article.card header.card-header span.badge {
+  display: inline-block;
+  padding: 0.3em;
+  margin-left: 60%;
+}
+section.category-products article.card div.card-body {
+  height: 25em;
+}
+section.product-container aside#decor-produit {
+  margin-top: .5em;
+  padding: 1em;
+  font-size: .7em;
+  font-weight: bold;
+  background-color: #ffcbbb;
+}
+section.product-container #product-slider ol.carousel-indicators li {
+  background-color: #868e96;
+}
+section.product-container #product-slider ol.carousel-indicators li.active {
+  background-color: #343a40;
+}
+section.product-container #product-slider a span.carousel-control-prev-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+}
+section.product-container #product-slider a span.carousel-control-next-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23000' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+}
 /**
 * Importation des polices
 **/
@@ -150,7 +226,7 @@ i [class*=" icon-"] {
 .toast {
   border: solid 1px;
   padding: 1em;
-  position: relative;
+  position: absolute;
   border-radius: 3px;
   box-shadow: #000 3px 3px 3px;
 }

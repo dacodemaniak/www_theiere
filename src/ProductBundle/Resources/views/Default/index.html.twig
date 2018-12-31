@@ -64,7 +64,7 @@
     		{% endif %}
     		
     		<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-xs-12">
-    			<form class="form material-like">
+    			<form class="form material-like" id="formCart-{{ product.getId() }}">
     				<fieldset>
     					<legend>
     						<h1>{{ product.getTitleFr()|upper }}</h1>
@@ -127,22 +127,19 @@
                     	</div>
                     	
                     	<!-- Bouton d'ajout au panier -->
-                    	<button type="button" class="btn btn-warning mx-auto add-to-cart">
+                    	<button type="button" class="btn btn-warning mx-auto add-to-cart" data-id="{{ product.getId() }}>
     						Ajouter au panier
     					</button> 
     				</fieldset>
     			</form>
             	{% if decorators|length %}
-                	<aside id="decor-produit" class="col-md-12">
+                	<aside id="decor-produit" class="row">
                 		{% for decor in decorators if decor.isIconic %}
-                			<div class="iconic-decor">
-                				<div class="iconic">
-                					<i class="icon-{{ decor.icon }}"></i>
+                			<div class="iconic-decor col-md-4">
+                				<div class="iconic col-md-9">
+                					<i class="iconic-content-title icon-{{ decor.icon }}"></i> {{ decor.title }}
                 				</div>
-                				<div class="iconic-content">
-                					<p class="iconic-content-title">
-                						{{ decor.title }}
-                					</p>
+                				<div class="iconic-content col-md-3">
                 					<p class="iconic-content-value">
                 						{{ decor.content }}
                 					</p>

@@ -38,12 +38,15 @@
 		<div class="row">
 			<article class="col with-padding" id="editorial">
 				<header class="row">
-					<figure class="col-xl-2">
-						<img src="{{ asset("images/illustration.png") }}" alt="Les Soeurs Théière">
-					</figure>
-					
-					<h1 class="col-xl-10">{{ editorial.title }}</h1>
-					<h2 class="col-xl-12">{{ editorial.subtitle }}</h2>
+    					<figure class="col-xl-2">
+    						<img src="{{ asset("images/illustration.png") }}" alt="Les Soeurs Théière">
+    					</figure>
+    					
+    					<div class="col-xl-10">
+    						<h1 class="pl-5">{{ editorial.title }}</h1>
+    						<h2 class="pl-5 col-xl-12">{{ editorial.subtitle }}</h2>    					
+    					</div>
+
 				</header>
 				
 				<blockquote>
@@ -55,14 +58,18 @@
 	
 	{% block promotions %}
 		{% if promotions %}
-			<div class="row">
+			<div class="row mx-auto">
     			{%  for promotion in promotions %}
-    				<figure class="card col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
-    					<img src="{{ promotion.image.src }}" alt="{{ promotion.image.alt }}" height="200" class="img-responsive">
-    					<figcaption>
-    						{{ promotion.product.getTitleFr() }}
-    					</figcaption>
-    				</figure>
+    				<div class=" col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+        				<figure class="card">
+        					<a href="{{ path("product", {'slug': promotion.product.getId(), 'category': promotion.category.getId()}) }}" title="Voir {{ promotion.product.getTitleFr() }}">
+        						<img src="{{ promotion.image.src }}" alt="{{ promotion.image.alt }}" class="d-block w-100 img-responsive">
+        					</a>
+        					<figcaption>
+        						{{ promotion.product.getTitleFr() }}
+        					</figcaption>
+        				</figure>
+        			</div>
     			{% endfor %}
     		</div>
 		{% endif %}
@@ -78,26 +85,27 @@
 					{{ discovering.content.fr|raw }}
 				</blockquote>
 				
-				<a class="btn btn-default" role="button" title="">
+				<a href="#" class="btn btn-default" role="button" title="">
 					{{ discovering.btn.fr }}
 				</a>
 			</article>
 			
 			<article id="month-product" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
 				<header>
-					<h3>{{ monthProduct.category.title.fr|raw }}</h3>
+					<h3>{{ monthProduct.category.getTitleFr()|raw }}</h3>
 				</header>
 				
 				<figure>
-					<img src="{{ monthProduct.product.image.src }}" alt="{{ monthProduct.product.image.alt }}" height="200" class="img-responsive">
+					<a href="{{ path("product", {'slug': monthProduct.product.product.getId(), 'category': monthProduct.category.getId()}) }}" title="Découvrez {{ monthProduct.category.getTitleFr() }}">
+						<img src="{{ monthProduct.product.image.src }}" alt="{{ monthProduct.product.image.alt }}" class="d-block w-50 img-responsive">
+					</a>
 					<figcaption>
 						{{ monthProduct.product.product.getTitleFr()|raw }}
 					</figcaption>
-					
 				</figure>
 				
-				<a class="btn btn-outline-default" role="button" title="{{ monthProduct.product.product.getTitleFr() }}">
-					{{ monthProduct.category.btn.fr|raw }}
+				<a href="{{ path("product", {'slug': monthProduct.product.product.getId(), 'category': monthProduct.category.getId()}) }}" class="btn btn-outline-default" role="button" title="{{ monthProduct.product.product.getTitleFr() }}">
+					{{ monthProduct.category.getBtnFr()|raw }}
 				</a>			
 			</article>
 		</div>
@@ -107,19 +115,21 @@
 		<div id="heart-home" class="row">
 			<article id="heart-product" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
 				<header>
-					<h3>{{ heartProduct.category.title.fr|raw }}</h3>
+					<h3>{{ heartProduct.category.getTitleFr()|raw }}</h3>
 				</header>
 				
 				<figure>
-					<img src="{{ heartProduct.product.image.src }}" alt="{{ heartProduct.product.image.alt }}" height="200" class="img-responsive">
+					<a href="{{ path("product", {'slug': heartProduct.product.product.getId(), 'category': heartProduct.category.getId()}) }}" alt="Vous allez aimer {{ heartProduct.product.product.getTitleFr() }}">
+						<img src="{{ heartProduct.product.image.src }}" alt="{{ heartProduct.product.image.alt }}" class="d-block w-50 img-responsive" class="img-responsive">
+					</a>
 					<figcaption>
 						{{ heartProduct.product.product.getTitleFr()|raw }}
 					</figcaption>
 					
 				</figure>
 				
-				<a class="btn btn-outline-default" role="button" title="{{ heartProduct.product.product.getTitleFr() }}">
-					{{ heartProduct.category.btn.fr|raw }}
+				<a href="{{ path("product", {'slug': heartProduct.product.product.getId(), 'category': heartProduct.category.getId()}) }}" class="btn btn-outline-default" role="button" title="{{ heartProduct.product.product.getTitleFr() }}">
+					{{ heartProduct.category.getBtnFr()|raw }}
 				</a>			
 			</article>
 			

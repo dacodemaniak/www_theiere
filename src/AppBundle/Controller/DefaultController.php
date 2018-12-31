@@ -30,6 +30,7 @@ class DefaultController extends Controller
 	        $catToArticles = $promotion->getArticles();
 	        foreach($catToArticles as $catToArticle) {
 	            $products[] = [
+	                "category" => $catToArticle->getCategorie(),
 	                "product" => $catToArticle->getArticle(),
 	                "image" => $catToArticle->getArticle()->getMainImage()
 	            ];
@@ -41,7 +42,7 @@ class DefaultController extends Controller
 	    $monthProduct = [];
 	    if ($monthProductCategory) {
 	        $categoryContent = $monthProductCategory->getContent();
-	        $monthProduct["category"] = $categoryContent;
+	        $monthProduct["category"] = $monthProductCategory;
 	        $catToArticles = $monthProductCategory->getArticles();
 	        $catToArticle = $catToArticles[0];
 	        $product = [
@@ -51,11 +52,12 @@ class DefaultController extends Controller
 	        $monthProduct["product"] = $product;
 	    }
 	    
+	    
 	    // Produit Coup de coeur
 	    $heartProductCategory = $this->getBySlug("heart");
 	    $heartProduct = [];
 	    if ($heartProductCategory) {
-	        $heartProduct["category"] = $heartProductCategory->getContent();
+	        $heartProduct["category"] = $heartProductCategory;
 	        $catToArticles = $heartProductCategory->getArticles();
 	        $catToArticle = $catToArticles[0];
 	        $product = [

@@ -21,7 +21,9 @@ import { ContactModule } from './../contact/contact.module';
              console.info('Mode production');
          }
 
-         if (url.indexOf('product/')) {
+         console.log('Before slicing : ' + url);
+
+         if (url.indexOf('product/') !== -1 || url.indexOf('products/') !== -1) {
             url = 'product';
          }
 

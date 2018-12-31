@@ -4,7 +4,15 @@
     //position: relative;
 
     #user-menu {
-        //.vertical-alignement;
+        .wrapper {
+            height: inherit;
+            .vertical-alignement;
+
+            a {
+                text-decoration: none;
+                color: @default_font_color;
+            }
+        }
     }
 
     #search {
@@ -14,10 +22,34 @@
     #logo-soeurs-theiere {}
 
     #user-basket {
-        //.vertical-alignement;
+        .wrapper {
+            height: inherit;
+            .vertical-alignement;
+
+            a {
+                text-decoration: none;
+                color: @default_font_color;
+            }
+            span {
+                &.badge {
+                    padding: 0.5em;
+                    &.exposant {
+                        vertical-align: super;
+                    }
+                }
+            }
+        }
     }
     #user-contact {
-        //.vertical-alignement;
+        .wrapper {
+            height: inherit;
+            .vertical-alignement;
+
+            a {
+                text-decoration: none;
+                color: @default_font_color;
+            }
+        }
     }
 
 }
