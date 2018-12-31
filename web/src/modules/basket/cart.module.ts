@@ -1,3 +1,6 @@
+import { ToastModule } from './../toast/toast.module';
+import { BasketModel } from './models/basket.model';
+import { BasketService } from './../../services/basket.service';
 /**
  * @name CartModule
  * @desc Gestion du formulaire d'ajout au panier
@@ -5,7 +8,10 @@
  * @package modules/basket
  * @version 1.0.0
  */
-export class CartModule {
+
+import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
+
+ export class CartModule {
     /**
      * Formulaire sur lequel gérer les listeners
      */
@@ -39,7 +45,12 @@ export class CartModule {
         $('.decrease').on(
             'click',
             (event: any): any => this.decrease(event)
-        )
+        );
+
+        $('.add-to-cart').on(
+            'click',
+            (event: any): void => this._addToCart(event)
+        );
     }
 
     /**
@@ -82,7 +93,7 @@ export class CartModule {
 
         const button: JQuery = $(event.target);
         const form: JQuery = button.parents('form');
-        const input: JQuery = $('input[data-rel="' + form.attr('id') + ']"');
+        const input: JQuery = $('input[data-rel="' + form.attr('id') + '"]');
 
         console.log('Incrémente la quantité pour le formulaire : ' + form.attr('id'));
         
@@ -102,13 +113,55 @@ export class CartModule {
 
         const button: JQuery = $(event.target);
         const form: JQuery = button.parents('form');
-        const input: JQuery = $('input[data-rel="' + form.attr('id') + ']"');
+        const input: JQuery = $('input[data-rel="' + form.attr('id') + '"]');
 
         const min: number = parseInt(input.attr("min"));
         const currentVal: number = parseInt(input.val().toString());
 
-        if (currentVal - 1 > min) {
+        if (currentVal - 1 >= min) {
             input.val(currentVal - 1);
         }
+    }
+
+
+    /**
+     * Ajoute un produit dans le panier local
+     */
+    private _addToCart(event: any): void {
+        const button: JQuery = $(event.target);
+        const form: JQuery = button.parents('form');
+        const input: JQuery = $('input[data-rel="' + form.attr('id') + '"]');
+        const price: number = StringToNumberHelper.toNumber(form.find('.price').eq(0).html());
+        const quantity: number = parseInt(input.val().toString());
+        let servingSize: string = null;
+
+        // Gérer la quantité servie
+        const quantitySelector: JQuery = form.find('.quantity-selector');
+        if (quantitySelector.is('select')) {
+            // Récupère la quantité servie dans la liste
+            const selectedLine = quantitySelector.find('option:selected');
+            servingSize = selectedLine.text().trim();
+        }
+        console.log('Ajouter un produit dans le panier : \n' + button.data('id') + '\nPrix : ' + price + '\nQuantité : ' + quantity + '\nService : ' + servingSize);
+
+        const basketModel: BasketModel = new BasketModel();
+        basketModel.id = button.data('id');
+        basketModel.priceHT = price;
+        basketModel.quantity = quantity;
+        basketModel.servingSize = servingSize;
+
+        const basketService: BasketService = new BasketService();
+        basketService.addProduct(basketModel).then((panier) => {
+            const userBasketQuantity: JQuery = $('#user-basket').find('span').eq(0);
+            userBasketQuantity.html(panier.length.toString());
+
+            // Plus le toast pour indiquer que ça s'est bien passé
+            const toast: ToastModule = new ToastModule({
+                title: 'Produit ajouté',
+                message: 'Le produit a bien été ajouté au panier.',
+                position: 'middle-center'
+            });
+            toast.show();
+        });
     }
 }

@@ -39,9 +39,9 @@
                 			<header class="card-header">
                 				<h2 class="card-title">{{ product.getTitleFr() }}</h2>
                 				{% if product.getSmallestPrice()["multi"] %}
-                					<span class="badge badge-info">A partir de {{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
+                					<span class="badge badge-secondary">A partir de {{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
                 				{% else %}
-                					<span class="badge badge-info">{{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
+                					<span class="badge badge-secondary">{{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
                 				{% endif %}
                 			</header>
                 			<figure>
@@ -80,9 +80,9 @@
                         			<header class="card-header">
                         				<h3 class="card-title">{{ product.getTitleFr() }}</h3>
                         				{% if product.getSmallestPrice()["multi"] %}
-                        					<span class="badge badge-info">A partir de {{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
+                        					<span class="badge badge-secondary">A partir de {{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
                         				{% else %}
-                        					<span class="badge badge-info">{{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
+                        					<span class="badge badge-secondary">{{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
                         				{% endif %}
                         			</header>
                         			<figure>

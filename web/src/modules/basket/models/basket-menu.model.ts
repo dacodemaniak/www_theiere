@@ -1,3 +1,4 @@
+import { BasketService } from './../../../services/basket.service';
 import { MenuModel } from "../../menu/models/menu.model";
 import { OptionModel } from "../../menu/models/option.model";
 
@@ -19,7 +20,21 @@ export class BasketMenuModel extends MenuModel {
 
         const mainOption: OptionModel = this.getOption();
 
-        mainOption.getMenu().appendTo(userBasket);
+        // Ajouter le nombre de produits dans le panier : 0 par défaut
+        const basketService: BasketService = new BasketService();
+        basketService.localBasket().then((basket) => {
+            const option = mainOption.getMenu();
+            const quantity: JQuery = $('<span>');
+            quantity
+                .addClass('badge')
+                .addClass('badge-warning')
+                .addClass('exposant')
+                .html(basket.length.toString());
+            // Raccroche l'ensemble au wrapper
+            option.appendTo(userBasket);
+            quantity.appendTo(userBasket);
+        });
+        
     }
 
     private getOption(): OptionModel {
