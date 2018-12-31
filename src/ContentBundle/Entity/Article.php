@@ -340,6 +340,80 @@ class Article
     }
     
     /**
+     * Récupère les images du produit
+     * @return array
+     */
+    public function getImages(): array {
+        $images = [];
+        $imagePath = "";
+        
+        $sliderImages = [];
+        
+        foreach ($this->decors as $toDecors) {
+            if ($toDecors->getDecor()->getSlug() === "images-produits") {
+                $content = $toDecors->getDecor()->getContent();
+                $imagePath = $content->root;
+                $values = $toDecors->getContent();
+                $images[] = $values;
+            }
+        }
+        
+        if (count($images)) {
+            $indice = 0;
+            foreach ($images as $image) {
+                foreach ($image as $object) {
+                    if (property_exists($object, "src")) {
+                        $sliderImages[] = [
+                            "image" => $imagePath . $object->src,
+                            "alt" => $object->alt->fr,
+                            "order" => $indice,
+                            "active" => $indice === 0 ? true : false
+                        ];
+                        $indice++;
+                    }
+                }
+            }
+            if (count($sliderImages)) {
+                return $sliderImages;
+            }
+            
+        }
+        
+        $package = new Package(new EmptyVersionStrategy());
+            
+        return [
+            
+            [
+                "image" => $package->getUrl("/images/no-image-icon.png"),
+                "alt" => $this->getTitleFr() . " pas encore d'image",
+                "order" => 0,
+                "active" => true
+            ]
+        ];
+        
+    }
+    
+    /**
+     * Retourne l'ensemble des décorateurs du produit courant
+     * @return array
+     */
+    public function getProductDecorators(): array {
+        $decors = [];
+        
+        foreach ($this->decors as $toDecors) {
+            if ($toDecors->getDecor()->getSlug() !== "images-produits" && $toDecors->getDecor()->getSlug() !== "images") {
+                $decors[] = [
+                    "title" => $toDecors->getDecor()->getTitleFr(),
+                    "icon" => $toDecors->getDecor()->getIcon(),
+                    "content" => $toDecors->getFr(),
+                    "isIconic" => $toDecors->getDecor()->getIconic()
+                ];
+            }
+        }
+        return $decors;
+    }
+    
+    /**
      * Ajoute un élément de décoration à l'article courant
      * @param Decor $decor
      */
@@ -365,7 +439,7 @@ class Article
     		$property = strtolower($composition[1]);
     		
     		if ($isGetter) {
-	    		if (property_exists($content, $property)) {
+    		    if (property_exists($content, $property) && $content->{$property} !== null) {
 	    			if ($hasLang) {
 	    				if (property_exists($content->{$property}, strtolower($composition[2]))) {
 	    					return $content->{$property}->{strtolower($composition[2])};
@@ -376,6 +450,7 @@ class Article
 	    		}
     		}
     	}
+    	return "";
     }
 }
 

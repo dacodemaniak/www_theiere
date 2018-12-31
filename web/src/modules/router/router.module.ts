@@ -12,8 +12,6 @@ import { ContactModule } from './../contact/contact.module';
      public constructor() {
          let url: string = location.pathname.slice(1) || '/';
 
-         
-        
          console.info(url.indexOf('.php'));
 
          if (url.indexOf('.php')) {
@@ -23,11 +21,11 @@ import { ContactModule } from './../contact/contact.module';
              console.info('Mode production');
          }
 
-         console.log('Current url : ' + url);
-
          if (url.indexOf('product/')) {
             url = 'product';
          }
+
+         console.log('Current url and module to load : ' + url);
 
          let module: any = {};
 
