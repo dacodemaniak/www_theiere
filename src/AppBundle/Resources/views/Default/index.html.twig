@@ -13,7 +13,6 @@
 		
 		<div class="carousel-inner">
     		{% for slide in sliderImages %}
-    			
     				<div class="carousel-item{% if slide.active %} active{% endif %}">
     					<img class="d-block w-100" src="{{ slide.image }}" alt="{{ slide.alt }}">
     				</div>

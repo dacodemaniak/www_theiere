@@ -12,6 +12,7 @@ export class CartModule {
     private cartForm: JQuery;
 
     public constructor() {
+        console.log('Instanciation de CartModule');
         this.cartForm = $('.formCart');
 
         // Gère les listeners
@@ -78,12 +79,13 @@ export class CartModule {
      * Incrémente la quantité de produit
      */
     private increase(event: any): void {
-        console.log('Incrémente la quantité');
 
         const button: JQuery = $(event.target);
         const form: JQuery = button.parents('form');
         const input: JQuery = $('input[data-rel="' + form.attr('id') + ']"');
 
+        console.log('Incrémente la quantité pour le formulaire : ' + form.attr('id'));
+        
         const max: number = parseInt(input.attr("max"));
         const currentVal: number = parseInt(input.val().toString());
 

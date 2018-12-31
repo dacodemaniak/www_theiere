@@ -56,7 +56,7 @@
                 			</div>
                 			
                 			<footer class="card-footer">
-                				<a href="#" class="btn btn-primary" role="button" title="Voir {{ product.getTitleFr() }}">
+                				<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="btn btn-primary" role="button" title="Voir {{ product.getTitleFr() }}">
                 					Détail
                 				</a>
                 			</footer>
@@ -97,7 +97,7 @@
                         			</div>
                         			
                         			<footer class="card-footer">
-                        				<a href="#" class="btn btn-primary" role="button" title="Voir {{ product.getTitleFr() }}">
+                        				<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="btn btn-primary" role="button" title="Voir {{ product.getTitleFr() }}">
                         					Détail
                         				</a>
                         			</footer>

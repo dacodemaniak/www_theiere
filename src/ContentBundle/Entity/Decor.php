@@ -108,5 +108,37 @@ class Decor
         
         return [];
     }
+    
+    /**
+     * Méthode magique pour la récupération d'un contenu spécifique
+     * dans le contenu JSON d'un document
+     * @param string $methodName
+     * @param array $args
+     */
+    public function __call(string $methodName, array $args) {
+        if (($content = $this->getContent()) !== null) {
+            preg_match_all('/((?:^|[A-Z])[a-z]+)/', $methodName, $methodComposition);
+            
+            $composition = $methodComposition[0];
+            
+            $isGetter = ($composition[0] === "get") ? true : false;
+            $hasLang = (count($composition) === 3) ? true : false;
+            
+            $property = strtolower($composition[1]);
+            
+            if ($isGetter) {
+                if (property_exists($content, $property) && $content->{$property} !== null) {
+                    if ($hasLang) {
+                        if (property_exists($content->{$property}, strtolower($composition[2]))) {
+                            return $content->{$property}->{strtolower($composition[2])};
+                        }
+                    } else {
+                        return $content->{$property};
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }
 
