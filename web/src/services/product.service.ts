@@ -1,3 +1,5 @@
+import { Constants } from './../shared/constants';
+import * as $ from 'jquery';
 /**
  * @name ProductService
  * @desc Service de gestion des produits du back-end
@@ -6,18 +8,14 @@
  * @version 1.0.0
  */
 
-import * as $ from 'jquery';
-
 export class ProductService {
-    private apiRoot: string = 'http://api.lessoeurstheiere.wrk/';
-
     /**
      * Retourne une promesse de produit
      */
     public getProduct(id: number): Promise<any> {
         return new Promise((resolve) => {
             $.ajax({
-                url: this.apiRoot + 'product/' + id,
+                url: Constants.apiRoot + 'product/' + id,
                 method: 'get',
                 dataType: 'json',
                 success: (datas) => {

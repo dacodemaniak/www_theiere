@@ -1,5 +1,7 @@
+import { Constants } from './../../shared/constants';
 import { EmailHelper } from './../../helpers/email.helper';
 import { ToastModule } from '../toast/toast.module';
+
 /**
  * @name ContactModule
  * @desc Gestionnaire du formulaire de contact
@@ -8,7 +10,7 @@ import { ToastModule } from '../toast/toast.module';
  * @version 1.0.0
  */
 export class ContactModule {
-    private apiRoot: string = 'http://api.lessoeurstheiere.wrk/app_dev.php/';
+    private apiRoot: string;
 
     private messageField: JQuery = $('#message-content');
     private nameField: JQuery = $('#name-content');
@@ -17,6 +19,7 @@ export class ContactModule {
     private buttonField: JQuery = $('#send');
 
     public constructor() {
+        this.apiRoot = Constants.apiRoot;
         this._setListeners();
     }
 

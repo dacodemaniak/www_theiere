@@ -98,71 +98,75 @@ figure.card figcaption {
   height: 3em;
   text-align: center;
 }
+form.material-like ::after,
+form.material-like ::before {
+  box-sizing: border-box;
+}
 form.material-like div.alert.hidden {
   display: none;
 }
-form.material-like .input {
+form.material-like textarea {
+  resize: none;
+}
+form.material-like .form-group {
   position: relative;
-  margin: auto;
-  width: 100%;
-  max-width: 280px;
+  margin: 2.8125em;
 }
-form.material-like .input .label {
-  position: absolute;
-  top: 1em;
-  left: 0;
-  font-size: 1em;
-  color: #9098a9;
-  font-weight: normal;
-  transform-origin: 0 0;
-  transition: all .2s ease;
-}
-form.material-like .input .label.required::after {
-  content: "(*)";
-}
-form.material-like .input .border {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  width: 100%;
-  background: #0077ff;
-  transform: scaleX(0);
-  transform-origin: 0 0;
-  transition: all .15s ease;
-}
-form.material-like .input input {
-  -webkit-appearance: none;
-  width: 100%;
-  border: 0;
-  font-family: inherit;
-  padding: 12px 0;
-  height: 48px;
-  font-size: 1em;
-  font-weight: normal;
-  border-bottom: solid 2px #c8ccd4;
+form.material-like .form-group input,
+form.material-like .form-group textarea {
   background: none;
+  color: #868e96;
+  font-size: 1em;
+  padding: .625em .625em .625em .3125em;
+  display: block;
+  width: inherit;
+  border: none;
   border-radius: 0;
-  color: #223254;
-  transition: all .15s ease;
+  border-bottom: 1px solid #868e96;
 }
-form.material-like .input input:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-form.material-like .input input:not(:placeholder-shown) span {
-  color: #5a667f;
-  transform: translateY(-26px) scale(0.75);
-}
-form.material-like .input input:focus {
-  background: none;
+form.material-like .form-group input:focus,
+form.material-like .form-group textarea:focus {
   outline: none;
 }
-form.material-like .input input:focus span {
-  color: #0077ff;
-  transform: translateY(-26px) scale(0.75);
+form.material-like .form-group input:focus ~ label,
+form.material-like .form-group textarea:focus ~ label,
+form.material-like .form-group input:valid ~ label,
+form.material-like .form-group textarea:valid ~ label {
+  top: -0.875em;
+  font-size: 0.7em;
+  color: #000000;
 }
-form.material-like .input input:focus span .border {
-  transform: scaleX(1);
+form.material-like .form-group input:focus ~ .bar::before,
+form.material-like .form-group textarea:focus ~ .bar::before {
+  width: inherit;
+}
+form.material-like .form-group input label,
+form.material-like .form-group textarea label {
+  color: #868e96;
+  font-size: 1em;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: .3125em;
+  top: .625em;
+  transition: 300ms ease all;
+}
+form.material-like .form-group input .bar,
+form.material-like .form-group textarea .bar {
+  position: relative;
+  display: block;
+  width: inherit;
+}
+form.material-like .form-group input .bar::before,
+form.material-like .form-group textarea .bar::before {
+  content: '';
+  height: 0.125em;
+  width: 0;
+  bottom: 0;
+  position: absolute;
+  background: #000000;
+  transition: 300ms ease all;
+  left: 0;
 }
 .ariane {
   font-size: 0.7em;

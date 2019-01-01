@@ -1,3 +1,4 @@
+
 /**
  * @name UserService
  * @desc Service de gestion des utilisateurs (frontend - backend)
@@ -5,9 +6,11 @@
  * @version 1.0.0
  */
 import * as $ from 'jquery';
+import { Constants } from './../shared/constants';
 
 export class UserService {
-    private apiRoot: string = 'http://api.lessoeurstheiere.wrk/';
+    //private apiRoot: string = 'http://api.lessoeurstheiere.wrk/';
+    private apiRoot: string = 'https://api.lessoeurstheiere.com/';
 
     public constructor() {}
 
@@ -23,7 +26,7 @@ export class UserService {
     public getAnonymouseUser(): Promise<any> {
         return new Promise((resolve: any) => {
             $.ajax({
-                url: this.apiRoot + 'nouser',
+                url: Constants.apiRoot + 'nouser',
                 dataType: 'json',
                 method: 'get',
                 success: (datas) => {
