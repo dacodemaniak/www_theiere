@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use ContentBundle\Entity\Article;
+
 
 class BasketController extends Controller {
     /**
@@ -20,7 +20,7 @@ class BasketController extends Controller {
      *
      * @param Request $request
      *
-     * Retourne les produits et éventuellement les sous-catégories à partir d'un identifiant de catégorie
+     * Affiche le panier courant de l'utilisateur
      */
     public function showBasketAction(Request $request) {
         $request->setRequestFormat("html");
