@@ -32,10 +32,11 @@
 article {
     &#editorial {
         &.with-padding {
-            padding: 10em;
-            text-align: justify;
-            color: @default_menu_color;
-
+            @media screen and (min-width: 768px) {
+                padding: 10em;
+                text-align: justify;           
+            }
+            color: @default_menu_color; 
             blockquote {
                 background-color: @default_hover_color;
                 font-size: 1em;
@@ -44,7 +45,10 @@ article {
             }
         }
         header {
-            padding-left: 60%;
+            @media screen and (min-width: 768px) {
+                padding-left: 60%;
+            }
+            
             h1 {
                 font-family: "Great Vibes";
                 font-size: 3.5em;
@@ -162,7 +166,7 @@ div {
                 background-repeat: no-repeat;
                 .wrapper {
                     height: 50%;
-                    .vertical-alignement;
+                    padding-top: 5em;
 
                     header {
                         h3 {

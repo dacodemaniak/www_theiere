@@ -120,9 +120,13 @@
   color: #ed912f;
 }
 article#editorial.with-padding {
-  padding: 10em;
-  text-align: justify;
   color: #ffffff;
+}
+@media screen and (min-width: 768px) {
+  article#editorial.with-padding {
+    padding: 10em;
+    text-align: justify;
+  }
 }
 article#editorial.with-padding blockquote {
   background-color: #ed912f;
@@ -130,8 +134,10 @@ article#editorial.with-padding blockquote {
   padding: 3em;
   text-align: justify;
 }
-article#editorial header {
-  padding-left: 60%;
+@media screen and (min-width: 768px) {
+  article#editorial header {
+    padding-left: 60%;
+  }
 }
 article#editorial header h1 {
   font-family: "Great Vibes";
@@ -215,9 +221,7 @@ div#heart-home article#home-meeting {
 }
 div#heart-home article#home-meeting .wrapper {
   height: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  padding-top: 5em;
 }
 div#heart-home article#home-meeting .wrapper header h3 {
   text-transform: uppercase;
