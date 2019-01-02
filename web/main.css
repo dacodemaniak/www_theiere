@@ -6,6 +6,7 @@
 **/
 @import "style.css";
 @import url("https://fonts.googleapis.com/css?family=Great+Vibes");
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 #main-header {
   height: 10em;
 }
@@ -48,6 +49,31 @@
 /**
 * MIXIN : Alignement vertical
 **/
+#main-footer {
+  background: #343a40;
+  font-size: 0.7em;
+  padding-top: 0.8em;
+}
+#main-footer nav h3 {
+  color: #ffffff;
+  font-size: 1em;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+#main-footer nav ul.list-unstyled li {
+  color: #ffffff;
+  font-weight: normal;
+}
+#main-footer nav ul.list-unstyled li a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: inherit;
+}
+#main-footer nav ul.list-unstyled li a:hover,
+#main-footer nav ul.list-unstyled li a:active,
+#main-footer nav ul.list-unstyled li a:visited {
+  color: inherit;
+}
 #user-menu a {
   color: #000000;
   text-decoration: none;
@@ -57,10 +83,10 @@
   text-align: center;
 }
 #user-menu a:hover {
-  background-color: #ffcbbb;
+  background-color: #f9dbbc;
 }
 #main-nav.navbar.navbar-light.bg-light {
-  background-color: #ff5722 !important;
+  background-color: #ed912f !important;
 }
 #main-nav.navbar.navbar-light.bg-light ul li.nav-item {
   width: 15em;
@@ -71,13 +97,35 @@
 #main-nav.navbar.navbar-light.bg-light ul li.nav-item a.nav-link {
   color: inherit;
 }
+#promotions .promotion {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+#promotions .promotion figure {
+  padding: 0.3em;
+  background-color: #d8dbdd;
+}
+#promotions .promotion figure.card {
+  border-radius: 0;
+}
+#promotions .promotion figure figcaption {
+  color: #343a40;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  font-size: .8em;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+#promotions .promotion figure:hover figcaption {
+  color: #ed912f;
+}
 article#editorial.with-padding {
   padding: 10em;
   text-align: justify;
   color: #ffffff;
 }
 article#editorial.with-padding blockquote {
-  background-color: #ff5722;
+  background-color: #ed912f;
   font-size: 1em;
   padding: 3em;
   text-align: justify;
@@ -88,10 +136,96 @@ article#editorial header {
 article#editorial header h1 {
   font-family: "Great Vibes";
   font-size: 3.5em;
-  color: #ff5722;
+  color: #ed912f;
 }
 article#editorial header h2 {
   color: #000000;
+}
+article#box-discovering {
+  background-color: #ed912f;
+  padding: 3em;
+}
+article#box-discovering header h3 {
+  color: #ffffff;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 1em;
+  line-height: 1.8em;
+  font-weight: bold;
+  font-size: 2.1em;
+}
+article#box-discovering blockquote {
+  color: #ffffff;
+  text-align: justify;
+}
+article#box-discovering a.btn.btn-light {
+  text-align: center;
+  border-radius: 0;
+  font-weight: bold;
+  padding-left: 2em;
+  padding-right: 2em;
+}
+article#month-product {
+  padding: 3em;
+}
+article#month-product header h3 {
+  color: #ed912f;
+  font-size: 2.1em;
+  text-align: center;
+  text-transform: none;
+  margin-bottom: 1em;
+  line-height: 1.8em;
+  font-weight: bold;
+}
+article#month-product header h3 span {
+  color: #000000;
+}
+article#month-product figure figcaption {
+  display: none;
+}
+article#month-product a.btn.btn-outline-light {
+  text-align: center;
+  color: #343a40;
+  border-color: #343a40;
+  border-radius: 0;
+  font-weight: bold;
+  padding-left: 2em;
+  padding-right: 2em;
+}
+article#heart-product {
+  padding: 3em;
+}
+article#heart-product header h3 {
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+}
+article#heart-product figure figcaption {
+  display: none;
+}
+article#heart-product a.btn {
+  display: none;
+}
+div#heart-home {
+  margin-top: 5em;
+}
+div#heart-home article#home-meeting {
+  background: url("images/img_ventes_privees.png");
+  background-repeat: no-repeat;
+}
+div#heart-home article#home-meeting .wrapper {
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+div#heart-home article#home-meeting .wrapper header h3 {
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: left;
+}
+div#heart-home article#home-meeting .wrapper blockquote {
+  text-align: justify;
 }
 figure.card figcaption {
   width: 100%;
@@ -193,7 +327,7 @@ form.material-like .form-group .bar::before {
   text-decoration: none;
 }
 section.category-products article.card header.card-header {
-  background-color: #ff5722;
+  background-color: #ed912f;
   height: 5em;
 }
 section.category-products article.card header.card-header h2.card-title,
@@ -215,7 +349,7 @@ section.product-container aside#decor-produit {
   padding: 1em;
   font-size: .7em;
   font-weight: bold;
-  background-color: #ffcbbb;
+  background-color: #f9dbbc;
 }
 section.product-container #product-slider ol.carousel-indicators li {
   background-color: #868e96;
@@ -238,6 +372,11 @@ section.product-container #product-slider a span.carousel-control-next-icon {
 /**
 * Styles globaux
 **/
+body {
+  font-family: "Open Sans";
+  font-weight: normal;
+  font-size: 1rem;
+}
 i[class^="icon-"],
 i [class*=" icon-"] {
   display: inline-block;

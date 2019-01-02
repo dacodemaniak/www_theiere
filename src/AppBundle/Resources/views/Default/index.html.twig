@@ -3,7 +3,7 @@
 {%  block title %}Thés Naturels{%  endblock %}
 
 {% block slider %}
-	<div class="carousel slide" data-ride="carousel" id="categories-slider">
+	<div class="carousel slide hidden-sm hidden-xs" data-ride="carousel" id="categories-slider">
 		<!-- Indicateurs -->
 		<ol class="carousel-indicators">
 			{% for slide in sliderImages %}
@@ -58,20 +58,20 @@
 	
 	{% block promotions %}
 		{% if promotions %}
-			<div class="row mx-auto">
-    			{%  for promotion in promotions %}
-    				<div class=" col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
-        				<figure class="card">
-        					<a href="{{ path("product", {'slug': promotion.product.getId(), 'category': promotion.category.getId()}) }}" title="Voir {{ promotion.product.getTitleFr() }}">
-        						<img src="{{ promotion.image.src }}" alt="{{ promotion.image.alt }}" class="d-block w-100 img-responsive">
-        					</a>
-        					<figcaption>
-        						{{ promotion.product.getTitleFr() }}
-        					</figcaption>
-        				</figure>
-        			</div>
-    			{% endfor %}
-    		</div>
+    			<div class="row" id="promotions">
+            		{%  for promotion in promotions %}
+            			<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-xs-12 promotion">
+                			<figure class="card">
+                				<a href="{{ path("product", {'slug': promotion.product.getId(), 'category': promotion.category.getId()}) }}" title="Voir {{ promotion.product.getTitleFr() }}">
+                					<img src="{{ promotion.image.src }}" alt="{{ promotion.image.alt }}" class="d-block w-100 img-responsive">
+                				</a>
+                				<figcaption>
+                					{{ promotion.product.getTitleFr() }}
+                				</figcaption>
+                			</figure>
+                		</div>
+            		{% endfor %}
+        		</div>
 		{% endif %}
 	{% endblock %}
 	
@@ -84,10 +84,12 @@
 				<blockquote>
 					{{ discovering.content.fr|raw }}
 				</blockquote>
+				<div class="text-center">
+    				<a href="#" class="btn btn-light" role="button" title="">
+    					{{ discovering.btn.fr }}
+    				</a>
+				</div>
 				
-				<a href="#" class="btn btn-default" role="button" title="">
-					{{ discovering.btn.fr }}
-				</a>
 			</article>
 			
 			<article id="month-product" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -95,18 +97,20 @@
 					<h3>{{ monthProduct.category.getTitleFr()|raw }}</h3>
 				</header>
 				
-				<figure>
+				<figure class="mx-auto">
 					<a href="{{ path("product", {'slug': monthProduct.product.product.getId(), 'category': monthProduct.category.getId()}) }}" title="Découvrez {{ monthProduct.category.getTitleFr() }}">
-						<img src="{{ monthProduct.product.image.src }}" alt="{{ monthProduct.product.image.alt }}" class="d-block w-50 img-responsive">
+						<img src="{{ monthProduct.product.image.src }}" alt="{{ monthProduct.product.image.alt }}" class="mx-auto d-block w-50 img-responsive">
 					</a>
-					<figcaption>
+					<figcaption aria-hidden="true">
 						{{ monthProduct.product.product.getTitleFr()|raw }}
 					</figcaption>
 				</figure>
 				
-				<a href="{{ path("product", {'slug': monthProduct.product.product.getId(), 'category': monthProduct.category.getId()}) }}" class="btn btn-outline-default" role="button" title="{{ monthProduct.product.product.getTitleFr() }}">
-					{{ monthProduct.category.getBtnFr()|raw }}
-				</a>			
+				<div class="text-center">
+					<a href="{{ path("product", {'slug': monthProduct.product.product.getId(), 'category': monthProduct.category.getId()}) }}" class="btn btn-outline-light" role="button" title="{{ monthProduct.product.product.getTitleFr() }}">
+					    {{ monthProduct.category.getBtnFr()|raw }}
+					</a>
+				</div>			
 			</article>
 		</div>
 	{% endblock %}
@@ -118,33 +122,35 @@
 					<h3>{{ heartProduct.category.getTitleFr()|raw }}</h3>
 				</header>
 				
-				<figure>
+				<figure class="text-center">
 					<a href="{{ path("product", {'slug': heartProduct.product.product.getId(), 'category': heartProduct.category.getId()}) }}" alt="Vous allez aimer {{ heartProduct.product.product.getTitleFr() }}">
-						<img src="{{ heartProduct.product.image.src }}" alt="{{ heartProduct.product.image.alt }}" class="d-block w-50 img-responsive" class="img-responsive">
+						<img src="{{ heartProduct.product.image.src }}" alt="{{ heartProduct.product.image.alt }}" class="mx-auto d-block w-50 img-responsive" class="img-responsive">
 					</a>
-					<figcaption>
+					<figcaption aria-hidden="true">
 						{{ heartProduct.product.product.getTitleFr()|raw }}
 					</figcaption>
 					
 				</figure>
 				
-				<a href="{{ path("product", {'slug': heartProduct.product.product.getId(), 'category': heartProduct.category.getId()}) }}" class="btn btn-outline-default" role="button" title="{{ heartProduct.product.product.getTitleFr() }}">
+				<a aria-hidden="true" href="{{ path("product", {'slug': heartProduct.product.product.getId(), 'category': heartProduct.category.getId()}) }}" class="btn btn-light" role="button" title="{{ heartProduct.product.product.getTitleFr() }}">
 					{{ heartProduct.category.getBtnFr()|raw }}
 				</a>			
 			</article>
 			
 			<article id="home-meeting" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-				<header>
-					<h3>{{ homeMeeting.content.title.fr|raw }}</h3>
-				</header>
-				
-				<blockquote>
-					{{ homeMeeting.content.content.fr|raw }}
-				</blockquote>
-				
-				<a class="btn btn-outline-default" role="button" title="{{ homeMeeting.content.title.fr }}">
-					{{ homeMeeting.content.btn.fr|raw }}
-				</a>
+				<div class="wrapper">
+    				<header>
+    					<h3>{{ homeMeeting.content.title.fr|raw }}</h3>
+    				</header>
+    				
+    				<blockquote>
+    					{{ homeMeeting.content.content.fr|raw }}
+    				</blockquote>
+    				
+    				<a class="btn btn-light" role="button" href="{{ path("contact") }}" title="{{ homeMeeting.content.title.fr }}">
+    					{{ homeMeeting.content.btn.fr|raw }}
+    				</a>
+    			</div>
 			</article>
 		</div>
 	{% endblock %}
