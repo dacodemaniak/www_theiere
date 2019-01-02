@@ -2,6 +2,24 @@
 
 form {
     &.material-like {
+
+        textarea:hover, 
+        input:hover, 
+        textarea:active, 
+        input:active, 
+        textarea:focus, 
+        input:focus,
+        button:focus,
+        button:active,
+        button:hover,
+        label:focus,
+        .btn:active,
+        .btn.active
+        {
+            outline:0px !important;
+            -webkit-appearance:none;
+        }
+
         div {
             &.alert {
                 &.hidden {
@@ -9,78 +27,73 @@ form {
                 }
             }
         }
-        .input {
+
+        .form-group {
             position: relative;
-            margin: auto;
-            width: 100%;
-            max-width: 280px;
+            margin-bottom: 2.8125em;
 
-            .label {
-                position: absolute;
-                top: 1em;
-                left: 0;
-                font-size: 1em;
-                color: @default_form_label_color;
-                font-weight: normal;
-                transform-origin: 0 0;
-                transition: all .2s ease;
-
-                &.required {
-                    &::after {
-                        content: "(*)"
-                    }
+            .form-control {
+                &:focus {
+                    border-color: #cccccc;
+                    -webkit-box-shadow: none;
+                    box-shadow: none;
                 }
             }
-
-            .border {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                height: 2px;
-                width: 100%;
-                background: @default_form_border_color;
-                transform: scaleX(0);
-                transform-origin: 0 0;
-                transition: all .15s ease;
-            }
-
-            input {
-                -webkit-appearance: none;
-                width: 100%;
-                border: 0;
-                font-family: inherit;
-                padding: 12px 0;
-                height: 48px;
-                font-size: 1em;
-                font-weight: normal;
-                border-bottom: solid 2px @default_form_input_border_color;
+            input,
+            textarea {
                 background: none;
+                color: @muted;
+                font-size: 1em;
+                padding: .625em .625em .625em .3125em;
+                display: block;
+                width: inherit;
+                border: none;
                 border-radius: 0;
-                color: @default_form_input_color;
-                transition: all .15s ease;
-
-                &:hover {
-                    background: rgba(255, 255, 255, .03);
-                }
-
-                &:not(:placeholder-shown) {
-                    span {
-                        color: #5a667f;
-                        transform: translateY(-26px) scale(.75);
-                    }
-                }
+                border-bottom: 1px solid @muted;
 
                 &:focus {
-                    background: none;
                     outline: none;
-                    span {
-                        color: @default_form_border_color;
-                        transform: translateY(-26px) scale(.75);
+                }
 
-                        .border {
-                            transform: scaleX(1);
-                        }
-                    }
+                &:focus ~ .bar::before {
+                    width: inherit;
+                }
+            }
+            
+            label {  
+                color: @muted;
+                font-size: 1em;
+                font-weight: normal;
+                position: absolute;
+                pointer-events: none;
+                left: .3125em;
+                top: .625em;
+                transition: 300ms ease all;
+            }
+
+            input:focus ~ label,
+            input:valid ~ label,
+            textarea:focus ~ label,
+            textarea:valid ~ label {
+                top: -0.875em;
+                font-size: 0.7em;
+                color: @default_font_color;
+            }
+
+            .bar {
+                position: relative;
+                display: block;
+                width: 20em;
+
+                &::before {
+                    content: '';
+                    height: 0.125em;
+                    width: 0;
+                    bottom: 0;
+                    position: absolute;
+                    background: @default_font_color;
+                    transition: 300ms ease all;
+                    left: 0;
                 }
             }
         }
