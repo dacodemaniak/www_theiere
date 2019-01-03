@@ -16,11 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BasketController extends Controller {
     /**
-     * @Route("/basket", defaults={"_format"="html"}, methods={"GET","HEAD"}, name="viewbasket")
-     *
-     * @param Request $request
-     *
-     * Affiche le panier courant de l'utilisateur
+     * @Route("/basket", defaults={"_format"="html"}, methods={"GET","HEAD"}, name="view-basket")
      */
     public function showBasketAction(Request $request) {
         $request->setRequestFormat("html");
