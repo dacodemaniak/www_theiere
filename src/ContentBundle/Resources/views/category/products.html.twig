@@ -33,7 +33,7 @@
     	<!--  Boucle sur les produits de la catégorie courante -->
         {% if products|length %}
         	<div class="row">
-            	{% for product in products %}
+            	{% for product in products if product.getIsEnabled() %}
             		<div class=" col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 		<article class="card" id="{{ product.getSlug() }}" data-id="{{ product.getId() }}">
                 			<header class="card-header">
@@ -74,7 +74,7 @@
         			
         			<!-- Boucle sur les n premiers produits de la sous-categorie courante -->
         			<div class="row">
-                    	{% for product in childrenProduct.products|slice(0, 3) %}
+                    	{% for product in childrenProduct.products|slice(0, 3) if product.getIsEnabled() %}
                     		<div class=" col-xl-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
                         		<article class="card" id="{{ product.getSlug() }}" data-id="{{ product.getId() }}">
                         			<header class="card-header">
