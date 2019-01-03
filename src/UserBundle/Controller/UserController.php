@@ -31,7 +31,7 @@ class UserController extends FOSRestController {
 	
 	/**
 	 * Instance d'un utilisateur complet
-	 * @var unknown
+	 * @var \UserBundle\Entity\User
 	 */
 	private $_wholeUser;
 	

@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BasketController extends Controller {
     /**
-     * @Route("/basket", methods={"GET","HEAD"}, name="basket")
+     * @Route("/basket", defaults={"_format"="html"}, methods={"GET","HEAD"}, name="viewbasket")
      *
      * @param Request $request
      *

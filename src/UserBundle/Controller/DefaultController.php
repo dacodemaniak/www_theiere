@@ -9,21 +9,21 @@ namespace UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-	/**
-	 * Instance d'un utilisateur complet
-	 * @var unknown
-	 */
-	private $_wholeUser;
 	
 	/**
-	 * @Route("/user")
+	 * @Route("/signin", defaults={"_format"="html"}, methods={"GET","HEAD"}, name="signin-form")
 	 */
-    public function indexAction()
-    {
-
-    }
+	public function showFormAction(Request $request) {
+	    $request->setRequestFormat("html");
+	    
+	    return $this->render(
+	        "@User/Default/index.html.twig"
+	    );
+	}
     
 }
