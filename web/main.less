@@ -1,5 +1,6 @@
 @import "./variables.less";
 @import "./main-header.less";
+@import "./footer.less";
 @import "./menu.less";
 @import "./index.less";
 @import "./forms.less";
@@ -12,9 +13,18 @@
 * Importation des polices
 **/
 @import url("https://fonts.googleapis.com/css?family=Great+Vibes");
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
 /**
 * Styles globaux
 **/
+
+body {
+    font-family: "Open Sans";
+    font-weight: normal;
+    font-size: 1rem;
+}
+
 i {
     &[class^="icon-"], [class*=" icon-"] {
         display: inline-block;

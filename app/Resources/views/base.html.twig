@@ -19,11 +19,11 @@
     	<div class="container-fluid">
     		<header class="header row" id="main-header">
     			{% block header %}
-    				<div id="user-menu" class="col-xl-2 col-lg-2 col-md-2 hidden-sm hidden-xs">
+    				<div id="user-menu" class="col-xl-2 col-lg-2 col-md-2  d-none d-sm-block d-md-block">
     					<div class="wrapper"></div>
     				</div>
     				
-    				<div id="search" class="col-xl-3 col-lg-3 col-md-3 hidden-sm hidden-xs">
+    				<div id="search" class="col-xl-3 col-lg-3 col-md-3  d-none d-sm-block d-md-block">
     					<form id="search-form" class="form form-stacked">
     						<div class="input-group">
   								<input type="search" class="form-control" placeholder="Chercher..." aria-label="Chercher" aria-describedby="basic-addon2">
@@ -40,11 +40,11 @@
     					</a>
     				</div>
     				
-    				<div class="col-xl-2 col-lg-2 col-md-2 hidden-sm hidden-xs" id="user-basket">
+    				<div class="col-xl-2 col-lg-2 col-md-2  d-none d-sm-block d-md-block" id="user-basket">
     					<div class="wrapper"></div>
     				</div>
     				
-    				<div class="col-xl-2 col-lg-2 col-md-2 hidden-sm hidden-xs" id="user-contact">
+    				<div class="col-xl-2 col-lg-2 col-md-2  d-none d-sm-block d-md-block" id="user-contact">
     					<div class="wrapper">
     						<a href="{{ path("contact") }}" title="Contactez les Soeurs Théière">
     							<i class="icon-mail2"></i> Contactez-nous

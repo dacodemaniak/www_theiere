@@ -1,16 +1,16 @@
-<form class="formCart material-like form" id="formCart-{{ product.getId() }}">
+<form class="form-cart form" id="formCart-{{ product.getId() }}">
 	{% if (product.getPrices()|length > 1) %}
 		<div class="form-group mb-3">
     		<label for="quantity-selector-{{ product.getId() }}">
     			Par : 
-    			<select id="quantity-selector-{{ product.getId() }}" size="1" class="form-control quantity-selector">
-    				{% for price in product.getPrices() %}
-    					<option value="{{ loop.index0 }}"{% if loop.first %} selected{% endif %} data-price="{{ price.ht }}" data-stock="{{ price.stock }}" data-maxperorder="{{ price.maxPerOrder }}" data-thresold="{{ price.thresold }}" data-vat={{ product.getVat() }}>
-    						{{ price.quantity }}
-    					</option>
-    				{% endfor %}
-    			</select>
     		</label>
+    		<select id="quantity-selector-{{ product.getId() }}" size="1" class="form-control quantity-selector">
+    			{% for price in product.getPrices() %}
+    				<option value="{{ loop.index0 }}"{% if loop.first %} selected{% endif %} data-price="{{ price.ht }}" data-stock="{{ price.stock }}" data-maxperorder="{{ price.maxPerOrder }}" data-thresold="{{ price.thresold }}" data-vat={{ product.getVat() }}>
+    					{{ price.quantity }}
+    				</option>
+    			{% endfor %}
+    		</select>
 		</div>
 	{% else %}
 		<input 
@@ -25,7 +25,7 @@
 		>
 	{% endif %}
 	<div class="form-group">
-		Prix unitaire : <span class="badge badge-secondary price" data-rel="quantity-selector-{{ product.getId() }}">{{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
+		Prix T.T.C : <span class="badge badge-secondary price" data-rel="quantity-selector-{{ product.getId() }}">{{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
 	</div>
 	
     <div class="input-group mb-3">
@@ -40,8 +40,8 @@
       </div>
     </div>
     
-    <div class="">
-    	<button type="button" class="btn btn-outline-primary mx-auto add-to-cart" data-id="{{ product.getId() }}">
+    <div class="mx-auto text-center">
+    	<button type="button" class="btn btn-success mx-auto add-to-cart" data-id="{{ product.getId() }}">
     		Ajouter au panier
     	</button> 
     </div>
