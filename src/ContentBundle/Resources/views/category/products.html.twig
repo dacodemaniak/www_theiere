@@ -7,7 +7,7 @@
 {% block body %}
 	<div class="container">
     	{% if ancestors|length %}
-        	<nav aria-label="breadcrumb" class="ariane col">
+        	<nav aria-label="breadcrumb" class="ariane row">
         		<ol class="breadcrumb">
         			{% for category in ancestors %}
         				<li class="breadcrumb-item{% if loop.index == loop.length %} active{% endif %}"{% if loop.index == loop.length %} aria-current="page"{% endif %}>
@@ -38,28 +38,29 @@
                 		<article class="card" id="{{ product.getSlug() }}" data-id="{{ product.getId() }}">
                 			<header class="card-header">
                 				<h2 class="card-title">{{ product.getTitleFr() }}</h2>
-                				{% if product.getSmallestPrice()["multi"] %}
-                					<span class="badge badge-secondary">A partir de {{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
-                				{% else %}
-                					<span class="badge badge-secondary">{{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
-                				{% endif %}
                 			</header>
+                			
+                        	<div class="min-price ml-auto">
+                         		{% if product.getSmallestPrice()["multi"] %}
+                        			<p class="badge badge-secondary">A partir de {{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</p>
+                        		{% else %}
+                        			<p class="badge badge-secondary">{{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</p>
+                        		{% endif %}                       			
+                        	</div>
+                        	
                 			<figure>
                 				<img class="card-img-top" src="{{ product.getMainImage()["src"] }}" alt="{{ product.getMainImage()["alt"] }}">
                 			</figure>
                 			
                 			<div class="card-body">
                 				<p class="card-text">
-                					{{ product.getDescriptionFr() }}
+                					{{ product.getDescriptionFr()|length > 218 ?  product.getDescriptionFr()|slice(0, 218) : product.getDescriptionFr()}}
                 				</p>
+                				<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="btn btn-outline-primary" role="button" title="Voir {{ product.getTitleFr() }}">
+                					Plus d'information
+                				</a>
 								{{ include("@Content/product/form.html.twig", {"product": product}) }}
                 			</div>
-                			
-                			<footer class="card-footer">
-                				<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="btn btn-primary" role="button" title="Voir {{ product.getTitleFr() }}">
-                					Détail
-                				</a>
-                			</footer>
                 		</article>
                 	</div>
             	{% endfor %}
@@ -67,9 +68,9 @@
         {% else %}
         	<!-- Boucle sur une sélection de produits des sous-catégories -->
         	{% for childrenProduct in childrenProducts %}
-        		<section class="row category-products">
-        			<header class="header">
-        				<h2>{{ childrenProduct.category.getTitleFr()|upper }}</h2>
+        		<section class="category-products">
+        			<header class="header child">
+        				<h2 class="mr-auto">{{ childrenProduct.category.getTitleFr()|upper }}</h2>
         			</header>
         			
         			<!-- Boucle sur les n premiers produits de la sous-categorie courante -->
@@ -79,28 +80,29 @@
                         		<article class="card" id="{{ product.getSlug() }}" data-id="{{ product.getId() }}">
                         			<header class="card-header">
                         				<h3 class="card-title">{{ product.getTitleFr() }}</h3>
-                        				{% if product.getSmallestPrice()["multi"] %}
-                        					<span class="badge badge-secondary">A partir de {{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
-                        				{% else %}
-                        					<span class="badge badge-secondary">{{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</span>
-                        				{% endif %}
                         			</header>
+                        			
+                        			<div class="min-price ml-auto">
+                         				{% if product.getSmallestPrice()["multi"] %}
+                        					<p class="badge badge-secondary">A partir de {{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</p>
+                        				{% else %}
+                        					<p class="badge badge-secondary">{{ product.getSmallestPrice()["ttc"]|number_format(2, ',') }} &euro;</p>
+                        				{% endif %}                       			
+                        			</div>
+                        			
                         			<figure>
                         				<img class="card-img-top" src="{{ product.getMainImage()["src"] }}" alt="{{ product.getMainImage()["alt"] }}">
                         			</figure>
                         			
                         			<div class="card-body">
                         				<p class="card-text">
-                        					{{ product.getDescriptionFr() }}
+                                            {{ product.getDescriptionFr()|length > 218 ?  product.getDescriptionFr()|slice(0, 218) : product.getDescriptionFr()}}
                         				</p>
+                						<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="btn btn-outline-primary" role="button" title="Voir {{ product.getTitleFr() }}">
+                							Plus d'information
+                						</a>
                                         {{ include("@Content/product/form.html.twig", {"product": product}) }}
                         			</div>
-                        			
-                        			<footer class="card-footer">
-                        				<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="btn btn-primary" role="button" title="Voir {{ product.getTitleFr() }}">
-                        					Détail
-                        				</a>
-                        			</footer>
                         		</article>
                         	</div>
                     	{% endfor %}        			

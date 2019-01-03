@@ -2,6 +2,29 @@
 
 section {
     &.category-products {
+        header {
+            background-color: @default_hover_color;
+            h1 {
+                padding-left: 1em;
+                padding-top: 1em;
+                padding-bottom: 1em;
+                font-size: 1em;
+                color: @default_menu_color;
+                letter-spacing: .1em;
+            }
+            &.child {
+                background-color: transparent;
+                h2 {
+                    padding-left: 1.5em;
+                    padding-top: 1em;
+                    padding-bottom: 1em;
+                    font-size: 1em;
+                    color: @default_hover_color;
+                    letter-spacing: .1em;
+                }                    
+            }
+
+        }
         article {
             &.card {
                 header {
@@ -15,19 +38,38 @@ section {
                                 font-size: .9em;
                             }
                         }
-                        span {
-                            &.badge {
-                                display: inline-block;
-                                padding: 0.3em;
-                                margin-left: 60%;
-                            }
-                        }
                     }
                 }
                 div {
                     &.card-body {
                         height: 25em;
+                        min-height: 25em;
+                        height: auto;
+                        p {
+                            &.card-text {
+                                height: 10em;
+                                min-height: 10em;
+                                height: auto;
+                                font-size: .9em;
+                                text-align: justify;
+                            }
+                        }
                     }
+                    &.min-price {
+                        padding-right: 5%;
+                        p {
+                            &.badge {
+                                padding: 0.3em;
+                            }
+                        }
+                    }
+                }
+            }
+            form {
+                &.form-cart {
+                    background-color: lighten(@default_hover_color, 30%);
+                    padding: 0.5em;
+                    margin-top: 1em;
                 }
             }
         }

@@ -322,13 +322,45 @@ form.material-like .form-group .bar::before {
 .ariane {
   font-size: 0.7em;
   font-weight: normal;
-  color: #ffffff;
+  color: #000000;
+  background-color: transparent;
+  margin-top: 2em;
 }
-.ariane ol.breadcrumb-item a {
+.ariane ol {
+  background-color: inherit;
+}
+.ariane ol li.breadcrumb-item a {
   color: inherit;
   font-weight: inherit;
   font-size: inherit;
   text-decoration: none;
+  transition: all .5s ease;
+}
+.ariane ol li.breadcrumb-item a:hover {
+  font-weight: bold;
+  text-decoration: underline;
+}
+section.category-products header {
+  background-color: #ed912f;
+}
+section.category-products header h1 {
+  padding-left: 1em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  font-size: 1em;
+  color: #ffffff;
+  letter-spacing: .1em;
+}
+section.category-products header.child {
+  background-color: transparent;
+}
+section.category-products header.child h2 {
+  padding-left: 1.5em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  font-size: 1em;
+  color: #ed912f;
+  letter-spacing: .1em;
 }
 section.category-products article.card header.card-header {
   background-color: #ed912f;
@@ -340,13 +372,28 @@ section.category-products article.card header.card-header h3.card-title {
   height: 2em;
   font-size: .9em;
 }
-section.category-products article.card header.card-header span.badge {
-  display: inline-block;
-  padding: 0.3em;
-  margin-left: 60%;
-}
 section.category-products article.card div.card-body {
   height: 25em;
+  min-height: 25em;
+  height: auto;
+}
+section.category-products article.card div.card-body p.card-text {
+  height: 10em;
+  min-height: 10em;
+  height: auto;
+  font-size: .9em;
+  text-align: justify;
+}
+section.category-products article.card div.min-price {
+  padding-right: 5%;
+}
+section.category-products article.card div.min-price p.badge {
+  padding: 0.3em;
+}
+section.category-products article form.form-cart {
+  background-color: #f9dbbc;
+  padding: 0.5em;
+  margin-top: 1em;
 }
 section.product-container aside#decor-produit {
   margin-top: .5em;
