@@ -50,6 +50,11 @@ export class SigninModule {
             'keyup',
             (event: any): void => this._manageUserEntries(event)
         );
+
+        this.form.on(
+            'submit',
+            (event: any): void => this._authenticate(event)
+        );
     }
 
     /**
@@ -66,6 +71,10 @@ export class SigninModule {
         }
 
         this.button.removeAttr('disabled');
+    }
+
+    private _authenticate(event: any): void {
+        event.preventDefault();
     }
 
 }

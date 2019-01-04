@@ -1,6 +1,7 @@
 import { Constants } from './../../shared/constants';
 
 import * as $ from 'jquery';
+import { ToastModule } from '../toast/toast.module';
 
 /**
  * @name SignupModule
@@ -48,6 +49,11 @@ export class SignupModule {
             'keyup',
             (event: any): void => this._manageUserEntries(event)
         );
+
+        this.form.on(
+            'submit',
+            (event: any): void => this._authenticate(event)
+        );
     }
 
     /**
@@ -60,8 +66,47 @@ export class SignupModule {
         } else {
             this.button.attr('disabled', 'disabled');
         }
+    }
 
-        
+    /**
+     * Authentifie l'utilisateur et affiche un toast avant redirection
+     * vers la page d'accueil
+     */
+    private _authenticate(event: any): void {
+        event.preventDefault();
+
+        this.formContent = {
+            login: this.login.val(),
+            password: this.password.val()
+        };
+
+        $.ajax({
+            url: Constants.apiRoot + 'signin',
+            method: 'post',
+            dataType: 'json',
+            data: this.formContent,
+            success: (datas) => {
+                console.log('Authentication success');
+            },
+            error: (xhr, error) => {
+                const httpError: number = xhr.status;
+                const response: string = xhr.responseJSON;
+
+                const toast: ToastModule = new ToastModule(
+                    {
+                        title: 'Erreur d\'identification',
+                        message: response,
+                        type: 'danger'
+                    }
+                );
+                toast.show();
+
+                // Reset le formulaire
+                this.login.val('');
+                this.password.val('');
+                this.button.attr('disabled', 'disabled');
+            }
+        })
     }
 
 }
