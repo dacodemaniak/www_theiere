@@ -1,5 +1,115 @@
-<<<<<<< HEAD
-Hello World is running !
-=======
-User Works !
->>>>>>> refs/heads/master
+{%  extends "base.html.twig" %}
+
+{%  block title %}Les Soeurs Théière - Créer un compte ou identifiez-vous{%  endblock %}
+
+{% block body %}
+	<section class="row" id="user-forms">
+		<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+			<form id="signup" class="form material-like">
+				<div class="form-group">
+					<input type="email" class="form-control" required name="login" id="login-content" autocomplete="nope">
+					<span class="hightlight"></span>
+					<span class="bar"></span>
+					<label for="login-content">Votre email</label>
+				</div>
+				
+				<div class="form-group">
+					<input type="password" class="form-control" required name="password" id="password-content" autocomplete="nope">
+					<span class="hightlight"></span>
+					<span class="bar"></span>
+					<label for="password-content">Votre mot de passe</label>
+				</div>
+				
+				<div class="form-group">
+					<button type="submit" disabled id="login-btn" class="btn btn-outline-success">
+						Identifiez-vous
+					</button>
+				</div>
+				
+				<div class="mx-auto">
+					<a href="#" title="Mot de passe oublié">
+						Mot de passe oublié ?
+					</a>
+				</div>
+			</form>
+		</div>
+		
+		<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+			<form id="signin" class="form material-like">
+				<fieldset>
+					<legend>Qui êtes-vous ?</legend>
+
+					<div class="form-group">
+						<label for="civility-content">Civilité</label>
+						<select class="form-control" name="civility" id="civility-content" size="1" required>
+							<option value="Madame" selected>Madame</option>
+							<option value="Mademoiselle">Mademoiselle</option>
+							<option value="Monsieur">Monsieur</option>
+						</select>
+						
+					</div>
+					
+					<div class="form-group">
+						<input type="text" class="form-control" required name="name" id="name-content" autocomplete="nope">
+						<span class="hightlight"></span>
+						<span class="bar"></span>
+						<label for="name-content">Votre nom</label>
+					</div>
+
+					<div class="form-group">
+						<input type="text" class="form-control" required name="forname" id="forname-content" autocomplete="nope">
+						<span class="hightlight"></span>
+						<span class="bar"></span>
+						<label for="forname-content">Votre prénom</label>
+					</div>
+
+					<div class="form-group">
+						<input type="text" class="form-control" required name="company" id="company-content" autocomplete="nope">
+						<span class="hightlight"></span>
+						<span class="bar"></span>
+						<label for="company-content">Société</label>
+					</div>
+
+					<div class="form-group">
+						<input type="text" class="form-control" required name="phone" id="phone-content" autocomplete="nope">
+						<span class="hightlight"></span>
+						<span class="bar"></span>
+						<label for="phone-content">Votre téléphone</label>
+					</div>												
+				</fieldset>
+				
+				<fieldset>
+					<legend>Choisissez votre identifiant</legend>
+    				
+    				<div class="form-group">
+    					<input type="email" class="form-control" required name="email" id="email-content" autocomplete="nope">
+    					<span class="hightlight"></span>
+    					<span class="bar"></span>
+    					<label for="email-content">Votre email</label>
+    				</div>
+    				
+    				<div class="form-group">
+    					<input type="password" class="form-control" required name="original-password" id="original-password-content" autocomplete="nope">
+    					<span class="hightlight"></span>
+    					<span class="bar"></span>
+    					<label for="original-password-content">Votre mot de passe</label>
+    				</div>
+    				
+    				<div class="form-group">
+    					<input type="password" class="form-control" required name="confirm-password" id="confirm-password-content" autocomplete="nope">
+    					<span class="hightlight"></span>
+    					<span class="bar"></span>
+    					<label for="confirm-password-content">Confirmation</label>
+    				</div>
+    			</fieldset>
+    			
+    			<div class="form-group">
+					<button type="submit" disabled class="btn btn-outline-success">
+						Créez un compte
+					</button>
+				</div>	
+			</form>
+		</div>
+		
+	</section>
+{% endblock %}

@@ -1,3 +1,4 @@
+import { AuthenticationModule } from './../user/authentication-module';
 import { BasketListModule } from './../basket/basket-list.module';
 import { CartModule } from './../basket/cart.module';
 import { ContactModule } from './../contact/contact.module';
@@ -39,6 +40,10 @@ import { ContactModule } from './../contact/contact.module';
 
              case 'product':
                 module = new CartModule();
+             break;
+
+             case 'signin':
+                module = new AuthenticationModule();
              break;
 
              case 'basket':
