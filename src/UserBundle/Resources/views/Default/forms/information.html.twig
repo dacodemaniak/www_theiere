@@ -1,0 +1,65 @@
+		<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+			<form id="account-form" class="form material-like">
+				<fieldset>
+					<div class="form-group">
+						<label for="civility-content" aria-hidden="true" aria-labelled-by="civility-content">Civilité</label>
+						<select class="form-control" name="civility" id="civility-content" data-rel="civility" data-content="true" size="1" required>
+							<option value="" disabled selected>Civilité...</option>
+							<option value="Madame">Madame</option>
+							<option value="Mademoiselle">Mademoiselle</option>
+							<option value="Monsieur">Monsieur</option>
+						</select>
+						
+					</div>
+					
+					<div class="form-group">
+						<input type="text" class="form-control" required name="name" id="name-content" data-rel="lastName" data-content="true" autocomplete="nope">
+						<span class="hightlight"></span>
+						<span class="bar"></span>
+						<label for="name-content">Votre nom</label>
+						
+						<div class="alert alert-danger hidden" data-rel="name-content">
+							Votre nom est obligatoire créer votre compte sur le site des Soeurs Théière
+						</div>
+					</div>
+
+					<div class="form-group">
+						<input type="text" class="form-control" required name="forname" id="forname-content" data-rel="firstName" data-content="true" autocomplete="nope">
+						<span class="hightlight"></span>
+						<span class="bar"></span>
+						<label for="forname-content">Votre prénom</label>
+						
+						<div class="alert alert-danger hidden" data-rel="forname-content">
+							Veuillez indiquer votre prénom pour créer votre compte sur le site des Soeurs Théière
+						</div>
+					</div>
+
+					<div class="form-group">
+						<input type="text" class="form-control" value="Particulier" required name="company" data-rel="company" data-content="true" id="company-content" autocomplete="nope">
+						<span class="hightlight"></span>
+						<span class="bar"></span>
+						<label for="company-content">Société</label>
+						
+						<div class="alert alert-danger hidden" data-rel="company-content">
+							Indiquez une société ou Particulier pour créer votre compte sur le site des Soeurs Théière
+						</div>
+					</div>
+
+					<div class="form-group">
+						<input type="text" class="form-control" required name="phone" id="phone-content" data-rel="phone" data-content="true" autocomplete="nope">
+						<span class="hightlight"></span>
+						<span class="bar"></span>
+						<label for="phone-content">Votre téléphone</label>
+						
+						<div class="alert alert-danger hidden" data-rel="phone-content">
+							Indiquez un téléphone pour créer votre compte sur le site des Soeurs Théière
+						</div>
+					</div>												
+				</fieldset>
+				<div class="form-group">
+					<button type="submit" class="btn btn-outline-success">
+						Mettre à jour
+					</button>
+				</div>
+			</form>
+		</div>

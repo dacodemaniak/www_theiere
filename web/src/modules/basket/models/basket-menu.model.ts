@@ -1,3 +1,4 @@
+import { UserModel } from './../../user/models/user.model';
 import { BasketService } from './../../../services/basket.service';
 import { MenuModel } from "../../menu/models/menu.model";
 import { OptionModel } from "../../menu/models/option.model";
@@ -15,7 +16,7 @@ import * as $ from 'jquery';
 export class BasketMenuModel extends MenuModel {
     private isAnonymous: boolean = true;
 
-    public render() {
+    public render(user: UserModel = null) {
         const userBasket: JQuery = $('#user-basket').children('.wrapper').eq(0);
 
         const mainOption: OptionModel = this.getOption();

@@ -35,7 +35,7 @@ export class OptionModel {
         let href: string = this.route;
 
         if (this.slug === 'account') {
-            href += '/' + user.getId();
+            href += '/' + user.getToken();
         }
         mainOption
             .attr('data-rel', this.id)

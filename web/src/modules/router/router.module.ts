@@ -2,6 +2,7 @@ import { AuthenticationModule } from './../user/authentication-module';
 import { BasketListModule } from './../basket/basket-list.module';
 import { CartModule } from './../basket/cart.module';
 import { ContactModule } from './../contact/contact.module';
+import { AccountModule } from '../user/account-module';
 /**
  * @name RouterModule
  * @desc Listener sur les changements de routes pour activer les modules spécifiques
@@ -29,6 +30,10 @@ import { ContactModule } from './../contact/contact.module';
             url = 'product';
          }
 
+         if (url.indexOf('myaccount/') !== -1) {
+            url = 'account';
+         }
+
          console.log('Current url and module to load : ' + url);
 
          let module: any = {};
@@ -48,6 +53,10 @@ import { ContactModule } from './../contact/contact.module';
 
              case 'basket':
                 module = new BasketListModule();
+             break;
+
+             case 'account':
+               module = new AccountModule();
              break;
          }
 

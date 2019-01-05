@@ -12,6 +12,8 @@ export class UserModel {
     private login: string;
     private name: string;
     private token: string;
+    private addresses?: Map<string, any>;
+    private orders?: Map<Date, any>;
     private isValid?: boolean;
     private createdAt?: any;
     private lastLogin?: any;
@@ -31,7 +33,14 @@ export class UserModel {
     public getName(): string {
         return this.name;
     }
-    
+    public getToken(): string {
+        return this.token;
+    }
+
+    public getContent(): any {
+        return this.content;
+    }
+
     public deserialize(datas: any) {
         Object.assign(this, datas);
         this.content = datas.userDetails;

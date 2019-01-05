@@ -51,6 +51,55 @@ class UserController extends FOSRestController {
 	}
 	
 	/**
+	 * @Route("/myaccount/{token}", methods={"GET","HEAD"}, name="my-account")
+	 */
+	public function myAccountAction(Request $request) {
+	    $request->setRequestFormat("html");
+	    if ($this->authToken($request)) {
+	        return $this->render(
+	            "@User/Default/account.html.twig"
+	        );
+	    }
+	    
+	    // Redirige vers la page de login
+	}
+	
+	/**
+	 * @Rest\Post("/account/{id}")
+	 * 
+	 * @param Request $request
+	 */
+	public function updateInfoAction(Request $request) {
+	    $user = $this->getDoctrine()
+	       ->getManager()
+	       ->getRepository("UserBundle:User")
+	       ->find($request->get("id"));
+	    
+	       if ($user) {
+	           // Génère le contenu à partir des données se terminant par _
+	           $content = [];
+	           
+	           $datas = $request->request->all();
+	           
+	           foreach ($datas as $param => $value) {
+	               if (substr($param, -1) === "_") {
+	                   $param = substr($param, 0, strlen($param) - 1);
+	                   $content[$param] = $value;
+	               }
+	           }
+	           $user->setContent(json_encode($content));
+	           
+	           $entityManager = $this->getDoctrine()->getManager();
+	           $entityManager->persist($user);
+	           $entityManager->flush();
+	           
+	           return new View("Vos informations ont bien été mises à jour", Response::HTTP_OK);
+	       }
+	       
+	       return new View("Cet utilisateur n'est pas connu dans notre système", Response::HTTP_FORBIDDEN);
+	}
+	
+	/**
 	 * @Rest\Put("/register")
 	 */
 	public function registerAction(Request $request) {
@@ -208,6 +257,25 @@ class UserController extends FOSRestController {
 	    }
 	    
 	    return new View("Token non valide ou expiré", $authGuard["code"]);
+	}
+	
+	/**
+	 * Retourne l'utilisateur courant à partir du token JWT
+	 * @param Request $request
+	 * @return bool
+	 */
+	private function authToken(Request $request): bool {
+	    $authGuard = $this->tokenService->tokenAuthentication($request);
+	    
+	    if ($authGuard["code"] === Response::HTTP_OK) {
+	        $this->_wholeUser = $this->getDoctrine()
+	        ->getManager()
+	        ->getRepository("UserBundle:User")
+	        ->find($authGuard["user"]);
+	        return true;
+	    }
+	    
+	    return false;
 	}
 	
 	/**

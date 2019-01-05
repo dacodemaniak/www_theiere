@@ -22,6 +22,35 @@ export class BasketModule {
      * Initialisation du module Basket
      */
     private init() {
+        this.userService.hasUser().then((datas) => {
+            if (datas) {
+                console.log('Un utilisateur dans localStorage');
+                const user: UserModel = this.userService.getUser();
+                const menus: Array<any> = user.getMenus();
+
+                
+
+                const accountMenu = menus.filter(
+                    (element) => { return element.region === '_top'}
+                );
+                const userMenu = new BasketMenuModel();
+                userMenu.deserialize(accountMenu[0]);
+
+                userMenu.render(user);
+            } else {
+                this.userService.getAnonymouseUser().then((response) => {
+                    const menus: Array<any> = response.menus;
+                    const basketMenu = menus.filter(
+                        (element) => { return element.region === '_top'}
+                    );
+                    const menu = new BasketMenuModel();
+                    menu.deserialize(basketMenu[0]);
+                    
+                    menu.render();
+                });
+            }
+        });
+
         if (this.userService.hasUser()) {
             console.log('Un utilisateur dans localStorage');
         } else {
