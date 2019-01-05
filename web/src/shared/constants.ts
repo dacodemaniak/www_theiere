@@ -6,7 +6,7 @@
  * @version 1.0.0
  */
 export class Constants {
-    private static hostname: string = window.location.hostname;
+    public static hostname: string = window.location.hostname;
 
     public static get apiRoot() {
         if (Constants.hostname === 'api.lessoeurstheiere.com' || Constants.hostname === 'lessoeurstheiere.com' || Constants.hostname === 'www.lessoeurstheiere.com') {

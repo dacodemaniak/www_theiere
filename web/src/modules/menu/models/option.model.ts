@@ -1,3 +1,4 @@
+import { UserModel } from './../../user/models/user.model';
 /**
  * @name OptionModel
  * @desc Définition des options des menus
@@ -28,13 +29,18 @@ export class OptionModel {
         return this.content.title.fr;
     }
 
-    public getMenu(): JQuery {
+    public getMenu(user: UserModel = null): JQuery {
         const mainOption: JQuery = $('<a>');
-    
+        
+        let href: string = this.route;
+
+        if (this.slug === 'account') {
+            href += '/' + user.getId();
+        }
         mainOption
             .attr('data-rel', this.id)
             .attr('data-slug', this.slug)
-            .attr('href', this.route)
+            .attr('href', href)
             .html(this.getTitleFr());
         return mainOption;
     }

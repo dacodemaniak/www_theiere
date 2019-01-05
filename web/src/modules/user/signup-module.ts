@@ -1,3 +1,5 @@
+import { RouterModule } from './../router/router.module';
+import { UserService } from './../../services/user.service';
 import { Constants } from './../../shared/constants';
 
 import * as $ from 'jquery';
@@ -87,6 +89,29 @@ export class SignupModule {
             data: this.formContent,
             success: (datas) => {
                 console.log('Authentication success');
+                const toast: ToastModule = new ToastModule({
+                    title: 'Bonjour ' + datas.name,
+                    message: datas.name + ' bienvenue sur la boutique des Soeurs Théière',
+                    type: 'success',
+                    position: 'top-center'
+                });
+                toast.show();
+
+                // Reset le formulaire
+                this.login.val('');
+                this.password.val('');
+                this.button.attr('disabled', 'disabled');
+
+                // Met à jour le menu Utilisateur
+                
+                // Ajoute le token dans le localStorage
+                const userService: UserService = new UserService();
+                userService.setToken(datas.token);
+
+                // Redirige vers la page d'accueil
+                const router: RouterModule = new RouterModule();
+                router.changeLocation('/');
+
             },
             error: (xhr, error) => {
                 const httpError: number = xhr.status;

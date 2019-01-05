@@ -1,3 +1,5 @@
+import { UserModel } from './../modules/user/models/user.model';
+import { RouterModule } from './../modules/router/router.module';
 
 /**
  * @name UserService
@@ -7,20 +9,56 @@
  */
 import * as $ from 'jquery';
 import { Constants } from './../shared/constants';
+import { Jwt } from './../../node_modules/@coolgk/jwt/jwt';
 
 export class UserService {
     //private apiRoot: string = 'http://api.lessoeurstheiere.wrk/';
     private apiRoot: string = 'https://api.lessoeurstheiere.com/';
 
-    public constructor() {}
+    /**
+     * Système de gestion des tokens
+     */
+    private jwt: Jwt;
+
+    /**
+     * Utilisateur identifié
+     */
+    private user: UserModel;
+
+    public constructor() {
+        this.jwt = new Jwt({
+            secret: 'K1K@2018!'
+        });
+    }
+
+    /**
+     * Retourne l'utilisateur identifié
+     */
+    public getUser(): UserModel {
+        return this.user;
+    }
 
     /**
      * Retourne l'existence d'un utilisateur dans localStorage
      */
-    public hasUser(): boolean {
-        const localUser = localStorage.getItem('eshopUser');
+    public hasUser(): Promise<boolean> {
+        return new Promise((resolve) => {
+            const localUser = localStorage.getItem('eshopUser');
 
-        return localUser ? true : false;
+            if (localUser) {
+                resolve(this._check(localUser));
+            }
+            resolve(false);
+        });
+
+    }
+
+    public setToken(token: string): void {
+        localStorage.setItem('eshopUser', token);
+    }
+
+    public getToken(): string {
+        return localStorage.getItem('eshopUser');
     }
 
     public getAnonymouseUser(): Promise<any> {
@@ -37,5 +75,30 @@ export class UserService {
                 }
             });
         })
+    }
+
+    private _check(token: string): Promise<boolean> {
+        console.log('Contrôle : ' + token);
+        return new Promise((resolve) => {
+            $.ajax({
+                url: Constants.apiRoot + 'token/' + token,
+                method: 'get',
+                dataType: 'json',
+                success: (datas) => {
+                    console.log('Authentification du token réussie');
+                    // Définit l'utilisateur courant
+                    this.user = new UserModel();
+                    this.user.deserialize(datas);
+                    resolve(true);
+                },
+                error: (xhr, error) => {
+                    console.log('Token invalide ou expiré');
+                    localStorage.removeItem('eshopUser');
+                    const router: RouterModule = new RouterModule();
+                    router.changeLocation('/signin');
+                    resolve(false);
+                }
+            })
+        });
     }
 }

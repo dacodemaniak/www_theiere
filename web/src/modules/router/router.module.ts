@@ -53,6 +53,10 @@ import { ContactModule } from './../contact/contact.module';
 
      }
 
+     public changeLocation(location: string): void {
+      document.location.replace(location);
+     }
+
      private _setListeners() {
          $(window).on(
              'hashchange',

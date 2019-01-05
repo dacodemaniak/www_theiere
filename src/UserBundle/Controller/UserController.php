@@ -192,6 +192,23 @@ class UserController extends FOSRestController {
 		return new View($this->_format($this->_wholeUser), Response::HTTP_OK);
 	}
 	
+	/**
+	 * @Rest\Get("/token/{token}")
+	 * @param Request $request
+	 */
+	public function getUserFromToken(Request $request) {
+	    $authGuard = $this->tokenService->tokenAuthentication($request);
+	    
+	    if ($authGuard["code"] === Response::HTTP_OK) {
+	        $this->_wholeUser = $this->getDoctrine()
+	           ->getManager()
+	           ->getRepository("UserBundle:User")
+	           ->find($authGuard["user"]);
+	        return new View($this->_format($this->_wholeUser, $request->get("token")));
+	    }
+	    
+	    return new View("Token non valide ou expiré", $authGuard["code"]);
+	}
 	
 	/**
 	 * Détermine si le login saisi n'existe pas déjà
@@ -322,6 +339,8 @@ class UserController extends FOSRestController {
 		$datas["id"] = $userEntity->getId();
 		
 		$datas["login"] = $userEntity->getLogin();
+		
+		$datas["token"] = $this->tokenService->generate($this->_wholeUser);
 		
 		// Traite le contenu, pour récupérer les données cohérentes
 		$jsonContent = $userEntity->getContent();

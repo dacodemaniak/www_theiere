@@ -24,20 +24,36 @@ export class UserModule {
      * Initialisation du module Utilisateur
      */
     private init() {
-        if (this.userService.hasUser()) {
-            console.log('Un utilisateur dans localStorage');
-        } else {
-            this.userService.getAnonymouseUser().then((response) => {
-                const menus: Array<any> = response.menus;
+        this.userService.hasUser().then((datas) => {
+            if (datas) {
+                console.log('Un utilisateur dans localStorage');
+                const user: UserModel = this.userService.getUser();
+                const menus: Array<any> = user.getMenus();
+
                 
+
                 const accountMenu = menus.filter(
                     (element) => { return element.region === '_top-left'}
                 );
                 const userMenu = new UserMenuModel();
                 userMenu.deserialize(accountMenu[0]);
-                
-                userMenu.render();
-            })
-        }
+
+                userMenu.render(user);
+
+            } else {
+                console.log('Pas d\'utilisateur dans localStorage, identification anonyme');
+                this.userService.getAnonymouseUser().then((response) => {
+                    const menus: Array<any> = response.menus;
+                    
+                    const accountMenu = menus.filter(
+                        (element) => { return element.region === '_top-left'}
+                    );
+                    const userMenu = new UserMenuModel();
+                    userMenu.deserialize(accountMenu[0]);
+                    
+                    userMenu.render();
+                })
+            }
+        });
     }
 }

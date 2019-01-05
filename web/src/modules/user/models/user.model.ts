@@ -10,13 +10,33 @@ export class UserModel {
     private id: number;
     private groupeId: number;
     private login: string;
-    private salt: string;
-    private isValid: boolean;
-    private createdAt: any;
-    private lastLogin: any;
+    private name: string;
+    private token: string;
+    private isValid?: boolean;
+    private createdAt?: any;
+    private lastLogin?: any;
     private content: any;
+    private menus: any;
 
     public constructor() {}
+
+    public getMenus(): any {
+        return this.menus;
+    }
+
+    public getId(): number {
+        return this.id;
+    }
+
+    public getName(): string {
+        return this.name;
+    }
+    
+    public deserialize(datas: any) {
+        Object.assign(this, datas);
+        this.content = datas.userDetails;
+
+    }
 
     
 }
