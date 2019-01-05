@@ -37,6 +37,11 @@ export class ContactModule {
             'blur',
             (event: any): void => this.isDirty(this.nameField)
         );
+
+        this.emailField.on(
+            'blur',
+            (event: any): void => this.isDirty(this.emailField)
+        );
     }
 
     /**

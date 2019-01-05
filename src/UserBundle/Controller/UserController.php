@@ -19,6 +19,7 @@ use UserBundle\Entity\User;
 use UserBundle\Entity\Groupe;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Common\Util\ClassUtils;
+use UserBundle\Service\TokenService;
 
 
 class UserController extends FOSRestController {
@@ -37,49 +38,66 @@ class UserController extends FOSRestController {
 	
 
 	/**
+	 * Instance du gestionnaire de token JWT
+	 * @var TokenService
+	 */
+	private $tokenService;
+	
+	/**
 	 * Constructeur du contrôleur User
 	 */
-	public function __construct() {}
+	public function __construct(TokenService $tokenService) {
+	    $this->tokenService = $tokenService;
+	}
 	
 	/**
 	 * @Rest\Put("/register")
 	 */
 	public function registerAction(Request $request) {
 		
-		if (!$this->_alreadyExists($request->get("email"))) {
-			$this->_wholeUser = new User();
-			
-			// Génère le sel de renforcement du mot de passe
-			$salt = $this->_makeSalt();
-			
-			$content = [];
-			
-			$content["lastName"] = $request->get("lastName");
-			$content["firstName"] = $request->get("firstName");
-			$content["civility"] = $request->get("civility");
-			$content["company"] = $request->get("company");
-			$content["subscribeToNewsletter"] = $request->get("newsletter");
-			
-			$this->_wholeUser
-				->setLogin($request->get("email"))
-				->setSecurityPass($this->_createPassword($request->get("password"), $salt))
-				->setSalt($salt)
-				->setIsValid(true)
-				->setCreatedAt(new \DateTime())
-				->setLastLogin(new \DateTime())
-				->setValidatedAt(new \DateTime())
-				->setContent(json_encode($content))
-				->setGroup($this->_getCustomerGroup());
-			
-			// Fait persister la donnée
-			$entityManager = $this->getDoctrine()->getManager();
-			$entityManager->persist($this->_wholeUser);
-			$entityManager->flush();
-			
-			return new View($this->_format($this->_wholeUser), Response::HTTP_CREATED);
-		}
-		
-		return new View("Un compte avec cet email existe déjà sur ce site", Response::HTTP_CONFLICT);
+	    if (!$request->get("suckrobot")) {
+    		if (!$this->_alreadyExists($request->get("email"))) {
+    			$this->_wholeUser = new User();
+    			
+    			// Génère le sel de renforcement du mot de passe
+    			$salt = $this->_makeSalt();
+    			
+    			// Génère le contenu à partir des données se terminant par _
+    			$content = [];
+    			
+    			$datas = $request->request->all();
+    			
+    			foreach ($datas as $param => $value) {
+    			    if (substr($param, -1) === "_") {
+    			        $param = substr($param, 0, strlen($param) - 1);
+    			        $content[$param] = $value;
+    			    }
+    			}
+    
+    			
+    			$this->_wholeUser
+    				->setLogin($request->get("email"))
+    				->setSecurityPass($this->_createPassword($request->get("password"), $salt))
+    				->setSalt($salt)
+    				->setIsValid(false)
+    				->setCreatedAt(new \DateTime())
+    				->setLastLogin(new \DateTime())
+    				->setValidatedAt(new \DateTime())
+    				->setContent(json_encode($content))
+    				->setGroup($this->_getCustomerGroup());
+    			
+    			// Fait persister la donnée
+    			$entityManager = $this->getDoctrine()->getManager();
+    			$entityManager->persist($this->_wholeUser);
+    			$entityManager->flush();
+    			
+    			return new View($this->_format($this->_wholeUser), Response::HTTP_CREATED);
+    		}
+    		
+    		return new View("Un compte avec cet email existe déjà sur ce site", Response::HTTP_CONFLICT);
+	    } else {
+	        return new View("L'accès à cette boutique n'est pas autorisée aux robots", Response::HTTP_FORBIDDEN);
+	    }
 	}
 	
 	/**
