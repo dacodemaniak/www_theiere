@@ -1,3 +1,4 @@
+import { BannerComponent } from './shared/banner-component';
 import { RouterModule } from './modules/router/router.module';
 import { BasketModule } from './modules/basket/basket.module';
 import { UserModule } from "./modules/user/user.module";
@@ -27,5 +28,8 @@ export class Bootstrap {
         const routerModule: RouterModule = new RouterModule();
         
         console.log('Bootstrap application done');
+
+        // Affichage de la bannière Cookies et RGPD
+        const banner: BannerComponent = new BannerComponent();
     }
 }

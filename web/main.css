@@ -451,6 +451,13 @@ section.product-container #product-slider a span.carousel-control-next-icon {
 #basket-list.hidden {
   display: none;
 }
+#banner-rgpd {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background-color: #f5c38d;
+  color: #ffffff;
+}
 /**
 * Importation des polices
 **/
