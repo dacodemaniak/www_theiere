@@ -100,6 +100,26 @@ class UserController extends FOSRestController {
 	}
 	
 	/**
+	 * @Rest\Post("/account/password/update")
+	 *
+	 * @param Request $request
+	 */
+	public function updatePasswordAction(Request $request) {
+	    if ($this->authToken($request)) {
+	        // Regénère le mot de passe
+	        $this->_wholeUser->setSecurityPass($this->_createPassword($request->get("password"), $this->_wholeUser->getSalt()));
+	        
+	        $entityManager = $this->getDoctrine()->getManager();
+	        $entityManager->persist($this->_wholeUser);
+	        $entityManager->flush();
+	        
+	        return new View("Vos informations ont bien été mises à jour", Response::HTTP_OK);
+	    }
+	    
+	    return new View("Une erreur est survenue lors de la mise à jour de votre mot de passe", Response::HTTP_FORBIDDEN);
+	}
+	
+	/**
 	 * @Rest\Put("/register")
 	 */
 	public function registerAction(Request $request) {
@@ -269,9 +289,9 @@ class UserController extends FOSRestController {
 	    
 	    if ($authGuard["code"] === Response::HTTP_OK) {
 	        $this->_wholeUser = $this->getDoctrine()
-	        ->getManager()
-	        ->getRepository("UserBundle:User")
-	        ->find($authGuard["user"]);
+	           ->getManager()
+	           ->getRepository("UserBundle:User")
+	           ->find($authGuard["user"]);
 	        return true;
 	    }
 	    

@@ -53,7 +53,8 @@ class TokenService {
      * @return array
      */
     public function tokenAuthentication(Request $request): array {
-        $authTokenHeader = $request->get("token");
+        $authTokenHeader = $request->get("token", $request->headers->get('X-Auth-Token'));
+        
         
         $isValid = Token::validate($authTokenHeader, $this->secret);
         

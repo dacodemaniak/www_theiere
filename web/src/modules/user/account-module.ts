@@ -1,3 +1,5 @@
+import { DisconnectComponent } from './disconnect-component';
+import { PasswordComponent } from './password-component';
 import { InfoComponent } from './info-component';
 import { UserService } from './../../services/user.service';
 import { UserModel } from './models/user.model';
@@ -24,7 +26,10 @@ export class AccountModule {
     }
 
     private _init(): void {
-        
+
         const info: InfoComponent = new InfoComponent(this.user);
+        const password: PasswordComponent = new PasswordComponent(this.user);
+
+        const disconnect: DisconnectComponent = new DisconnectComponent(new UserService());
     }
 }
