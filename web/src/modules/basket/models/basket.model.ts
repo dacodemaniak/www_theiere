@@ -42,6 +42,11 @@ export class BasketModel {
      */
     public servingSize?: string;
 
+    /**
+     * Instance du produit issu du service distant
+     */
+    public product: any;
+
     private productService: ProductService;
 
     public constructor() {
@@ -55,40 +60,38 @@ export class BasketModel {
             const _productTD: JQuery = $('<td>');
             _productTD.attr('data-rel', this.id);
     
-            this.productService.getProduct(this.id).then((product) => {
-                this.vat = product.product.vat;
-                if (this.vat === 0.05) {
+            const product: any = this.product;
+
+            this.vat = product.vat;
+            if (this.vat === 0.05) {
                     this.vat = 0.055;
-                }
-                this.priceTTC = (this.priceHT * this.quantity) * (1 + this.vat);
+            }
+            this.priceTTC = (this.priceHT * this.quantity) * (1 + this.vat);
 
-                _productTD.html(product.product.title.fr);
-                _productTD.appendTo(_tr);
+            _productTD.html(product.title.fr);
+            _productTD.appendTo(_tr);
     
-                const _servingTD: JQuery = $('<td>');
-                _servingTD.html(this.servingSize);
-                _servingTD.appendTo(_tr);
+            const _servingTD: JQuery = $('<td>');
+            _servingTD.html(this.servingSize);
+            _servingTD.appendTo(_tr);
     
 
-                const _quantityTD: JQuery = this._input($('<td>'), product);
-                //_quantityTD.html(this.quantity.toString());
-                _quantityTD.appendTo(_tr);
+            const _quantityTD: JQuery = this._input($('<td>'), product);
+            _quantityTD.appendTo(_tr);
     
-                const _priceTD: JQuery = $('<td>');
-                _priceTD.html(StringToNumberHelper.toCurrency(this.priceHT.toString()));
-                _priceTD.appendTo(_tr);
+            const _priceTD: JQuery = $('<td>');
+            _priceTD.html(StringToNumberHelper.toCurrency(this.priceHT.toString()));
+            _priceTD.appendTo(_tr);
     
-                const _totalTD: JQuery = $('<td>');
-                const total: number = this.priceHT * this.quantity;
-                _totalTD.html(StringToNumberHelper.toCurrency(total.toString()));
-                _totalTD.appendTo(_tr);
+            const _totalTD: JQuery = $('<td>');
+            const total: number = this.priceHT * this.quantity;
+            _totalTD.html(StringToNumberHelper.toCurrency(total.toString()));
+            _totalTD.appendTo(_tr);
     
-                const _removeTD: JQuery = this._removeElement($('<td>'));
-                _removeTD.appendTo(_tr);
+            const _removeTD: JQuery = this._removeElement($('<td>'));
+            _removeTD.appendTo(_tr);
     
-                resolve(_tr);
-    
-            });
+            resolve(_tr);
         });
     }
 
@@ -159,7 +162,7 @@ export class BasketModel {
     }
 
     private _getMax(product: any): number {
-        const pricing: Array<any> = product.product.pricing;
+        const pricing: Array<any> = product.pricing;
 
         if (pricing.length === 1) {
             const stock: number = pricing[0].stock;
