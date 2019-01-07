@@ -1,5 +1,6 @@
 import { BasketService } from './../../services/basket.service';
 import { BasketModel } from './models/basket.model';
+import { StringToNumberHelper } from '../../helpers/string-to-number.helper';
 /**
  * @name BasketListModule
  * @desc Affichage de la liste des produits dans le panier
@@ -17,13 +18,24 @@ export class BasketListModule {
 
             // Construit le panier
             const tbody: JQuery = $('#basket-list tbody');
+            let granTotal: number = 0;
+            let fullTaxTotal: number = 0;
 
             if (this.basket.length) {
                 for (let product of this.basket) {
+                    let total: number = product.priceHT * product.quantity;
+                    granTotal += total;
+
                     product.getTableRow().then((row) => {
                         tbody.append(row);
+                        fullTaxTotal += product.priceTTC;
                     });
                 }
+                
+
+                // Ajouter le total HT au pied de tableau
+                $('.gran-total').html(StringToNumberHelper.toCurrency(granTotal.toString()));
+                $('.fulltax-total').html(StringToNumberHelper.toCurrency(fullTaxTotal.toString()));
             }
 
             $('#basket-list').removeClass('hidden');

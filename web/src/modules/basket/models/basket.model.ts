@@ -1,4 +1,5 @@
 import { ProductService } from './../../../services/product.service';
+import { StringToNumberHelper } from '../../../helpers/string-to-number.helper';
 /**
  * @name BasketModel
  * @desc Définition d'un élément du panier
@@ -26,6 +27,16 @@ export class BasketModel {
     public quantity: number;
 
     /**
+     * Taux de TVA pour le produit courant
+     */
+    public vat: number;
+
+    /**
+     * Prix TTC du produit
+     */
+    public priceTTC: number;
+
+    /**
      * Quantité unitaire
      * @var string
      */
@@ -45,6 +56,12 @@ export class BasketModel {
             _productTD.attr('data-rel', this.id);
     
             this.productService.getProduct(this.id).then((product) => {
+                this.vat = product.product.vat;
+                if (this.vat === 0.05) {
+                    this.vat = 0.055;
+                }
+                this.priceTTC = (this.priceHT * this.quantity) * (1 + this.vat);
+
                 _productTD.html(product.product.title.fr);
                 _productTD.appendTo(_tr);
     
@@ -52,31 +69,120 @@ export class BasketModel {
                 _servingTD.html(this.servingSize);
                 _servingTD.appendTo(_tr);
     
-                const _quantityTD: JQuery = $('<td>');
-                _quantityTD.html(this.quantity.toString());
+
+                const _quantityTD: JQuery = this._input($('<td>'), product);
+                //_quantityTD.html(this.quantity.toString());
                 _quantityTD.appendTo(_tr);
     
                 const _priceTD: JQuery = $('<td>');
-                _priceTD.html(this.priceHT.toString());
+                _priceTD.html(StringToNumberHelper.toCurrency(this.priceHT.toString()));
                 _priceTD.appendTo(_tr);
     
                 const _totalTD: JQuery = $('<td>');
                 const total: number = this.priceHT * this.quantity;
-                _totalTD.html(total.toString());
+                _totalTD.html(StringToNumberHelper.toCurrency(total.toString()));
                 _totalTD.appendTo(_tr);
     
-                const _removeTD: JQuery = $('<td>');
-                _removeTD.html('&nbsp;');
+                const _removeTD: JQuery = this._removeElement($('<td>'));
                 _removeTD.appendTo(_tr);
     
                 resolve(_tr);
     
             });
         });
+    }
 
+    private _removeElement(col: JQuery): JQuery {
+        const icon: JQuery = $('<i>');
+        icon
+            .addClass('icon-cross')
+            .addClass('remove-product')
+            .attr('data-rel', this.id);
+        icon.appendTo(col);
 
+        return col;
+    }
 
+    public _input(col: JQuery, product: any): JQuery {
+        const group: JQuery = $('<div>');
+        group
+            .addClass('input-group')
+            .addClass('mb-3');
         
+        const prepend: JQuery = $('<div>');
+        prepend
+            .addClass('input-group-prepend');
+        
+        const downButton: JQuery = $('<button>');
+        downButton
+            .addClass('btn')
+            .addClass('btn-outline-secondary')
+            .addClass('decrease')
+            .attr('type', 'button')
+            .html('-')
+            .attr('data-rel', 'input-quantity-' + this.id);
+        downButton.appendTo(prepend);
+
+        prepend.appendTo(group);
+
+        const input: JQuery = $('<input>');
+        input
+            .addClass('form-control')
+            .attr('id', 'input-quantity-' + this.id)
+            .attr('type', 'number')
+            .attr('min', 1)
+            .attr('max', this._getMax(product))
+            .attr('readonly', 'readonly')
+            .val(this.quantity);
+        input.appendTo(group);
+
+        const append: JQuery = $('<div>');
+        append
+            .addClass('input-group-append');
+
+        const upButton: JQuery = $('<button>');
+        upButton
+            .addClass('btn')
+            .addClass('btn-outline-secondary')
+            .addClass('increase')
+            .attr('type', 'button')
+            .html('+')
+            .attr('data-rel', 'input-quantity-' + this.id);
+        upButton.appendTo(append);
+
+        append.appendTo(group);
+
+        group.appendTo(col);
+
+        return col;
+
+    }
+
+    private _getMax(product: any): number {
+        const pricing: Array<any> = product.product.pricing;
+
+        if (pricing.length === 1) {
+            const stock: number = pricing[0].stock;
+            const thresold: number = pricing[0].thresold;
+            const maxPerOrder: number = pricing[0].maxPerOrder;
+
+            if ((stock - thresold) < maxPerOrder) {
+                return stock - thresold;
+            }
+            return maxPerOrder;
+        } else {
+            const index: number = pricing.findIndex((obj: any) => { return obj.quantity == this.servingSize});
+            const price: any = pricing[index];
+
+            const stock: number = price.stock;
+            const thresold: number = price.thresold;
+            const maxPerOrder: number = price.maxPerOrder;
+
+            if ((stock - thresold) < maxPerOrder) {
+                return stock - thresold;
+            }
+            return maxPerOrder;
+        }
     }
 
     public deserialize(basket: any): BasketModel {

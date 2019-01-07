@@ -451,6 +451,10 @@ section.product-container #product-slider a span.carousel-control-next-icon {
 #basket-list.hidden {
   display: none;
 }
+#basket-list i.icon-cross {
+  color: #dc3f45;
+  cursor: pointer;
+}
 #banner-rgpd {
   position: absolute;
   top: 0;

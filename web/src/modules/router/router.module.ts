@@ -19,7 +19,13 @@ import { AccountModule } from '../user/account-module';
 
          if (url.indexOf('.php') !== -1) {
             console.info('Mode développement');
-            url = url.slice(12);
+            let slicer: number;
+            if (url.indexOf('app.php') !== -1) {
+               slicer = 8;
+            } else {
+               slicer = 12;
+            }
+            url = url.slice(slicer);
          } else {
              console.info('Mode production');
          }

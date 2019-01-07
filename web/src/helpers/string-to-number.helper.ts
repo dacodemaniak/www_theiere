@@ -14,4 +14,11 @@ export class StringToNumberHelper {
 
         return parseFloat(value.replace(/,/g, '.'));
     }
+
+    public static toCurrency(value: string, currency: string = '&euro;'): string {
+        let round: string = parseFloat(value).toFixed(2);
+        const asString: string = round.replace('.', ',') + currency;
+        console.log('Value : ' + round);
+        return round + currency;
+    }
 }
