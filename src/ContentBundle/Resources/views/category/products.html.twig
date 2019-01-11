@@ -70,7 +70,11 @@
             	{% for childrenProduct in childrenProducts if childrenProduct.products|length %}
             		<section class="category-products">
             			<header class="header child">
-            				<h2 class="mr-auto">{{ childrenProduct.category.getTitleFr()|upper }}</h2>
+            				<h2 class="mr-auto see-all">
+            				    <a href="{{ path("products_category", {'slug': childrenProduct.category.getId()}) }}" title="Tous les produits de la catégorie {{ childrenProduct.category.getTitleFr() }}">
+            	                    Voir tous les produits dans<br>{{ childrenProduct.category.getTitleFr()|upper }}
+            	                </a>
+            				</h2>
             			</header>
             			
             			<!-- Boucle sur les n premiers produits de la sous-categorie courante -->
