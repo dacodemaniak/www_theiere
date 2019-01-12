@@ -9,8 +9,8 @@ import { SignupModule } from './signup-module';
  * @version 1.0.0
  */
 export class AuthenticationModule {
-    public constructor() {
-        const signin = new SigninModule();
-        const signup = new SignupModule();
+    public constructor(from: string) {
+        const signin = new SigninModule(from);
+        const signup = new SignupModule(from);
     }
 }

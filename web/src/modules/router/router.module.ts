@@ -40,6 +40,17 @@ import { AccountModule } from '../user/account-module';
             url = 'account';
          }
 
+         let from: string;
+         if (url.indexOf('signin/') !== -1) {
+            if (url.indexOf('checkout') !== -1) {
+               from = 'checkout';
+            } else {
+               from = 'anywhere';
+            }
+            url = 'signin';
+            
+         }
+
          console.log('Current url and module to load : ' + url);
 
          let module: any = {};
@@ -54,7 +65,7 @@ import { AccountModule } from '../user/account-module';
              break;
 
              case 'signin':
-                module = new AuthenticationModule();
+                module = new AuthenticationModule(from);
              break;
 
              case 'basket':

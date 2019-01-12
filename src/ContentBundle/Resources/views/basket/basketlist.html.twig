@@ -5,15 +5,19 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
+	<div class="container" id="checkout">
+	
+		<!-- Inclusion du progress stepper -->
+		{{ include("@Content/Default/checkoutstepper.html.twig", {"step": "basket-list"}) }}
+		
     	<table id="basket-list" class="table table-hover table-bordered table-responsive hidden">
     		<thead class="thead-light">
     			<tr>
     				<th scope="col">Produit</th>
     				<th scope="col">Par</th>
     				<th scope="col">Quantité</th>
-    				<th scope="col">Prix H.T.</th>
-    				<th scope="col">Total H.T.</th>
+    				<th scope="col">Prix T.T.C.</th>
+    				<th scope="col">Total T.T.C.</th>
     				<th scope="col">&nbsp;</th>
     			</tr>
     		</thead>
@@ -22,19 +26,22 @@
     		</tbody>
     		
     		<tfoot>
-    			<tr class="table-dark">
-    				<td colspan="4">
-    					Total H.T.
-    				</td>
-    				<td class="gran-total" colspan="2"></td>
-    			</tr>
   				<tr class="table-dark">
-    				<td colspan="4">
+    				<td colspan="4" class="text-right">
     					Total T.T.C.
     				</td>
     				<td class="fulltax-total" colspan="2"></td>
     			</tr>
+    			
+    			<tr class="table-dark" id="total-ht">
+    				<td colspan="4" class="text-right">
+    					H.T.
+    				</td>
+    				<td class="gran-total" colspan="2"></td>
+    			</tr>
     		</tfoot>
     	</table>
     </div>
+    
+	{{ include("@Content/Default/dialog.html.twig") }}
 {% endblock %}

@@ -16,6 +16,11 @@ export class BasketService {
      */
     private basket: Array<BasketModel>;
 
+    /**
+     * Produit supprimé
+     */
+    private product: BasketModel;
+
     public constructor(){
         this.basket = new Array<BasketModel>();
     }
@@ -47,7 +52,11 @@ export class BasketService {
         return new Promise((resolve) => {
             this.localBasket().then((panier) => {
                 if (panier.length) {
-                    const index: number = panier.findIndex((obj) => { return obj.id == product.id});
+                    const index: number = panier.findIndex((obj) => { 
+                            return (obj.id == product.id &&
+                            obj.servingSize == product.servingSize)
+
+                    });
                     if (index !== -1) {
                         const updateProduct: BasketModel = panier[index];
                         updateProduct.quantity += product.quantity;
@@ -63,6 +72,65 @@ export class BasketService {
                 resolve(panier);
             });
         });
+    }
 
+    public get(): BasketModel {
+        return this.product;
+    }
+
+    public removeProduct(productId: string): Promise<boolean> {
+        console.log('Suppression d\'un produit du panier');
+        const productParts: Array<string> = productId.split('_');
+        if (productParts[1] === 'null') {
+            productParts[1] = null;
+        }
+        return new Promise((resolve) => {
+            this.localBasket().then((panier) => {
+                const index: number = panier.findIndex((obj) => { 
+                    return (
+                        obj.id == parseInt(productParts[0]) &&
+                        obj.servingSize == productParts[1]
+                    )
+                });
+                console.log('Elimine la ligne : ' + index);
+                if (index !== -1) {
+                    this.product = panier[index];
+                    panier.splice(index, 1);
+                    localStorage.setItem('eshop-basket', JSON.stringify(panier));
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+    }
+
+    public updateProduct(productId: string, newQty: number): Promise<BasketModel> {
+        return new Promise((resolve) => {
+            console.log('Suppression d\'un produit du panier');
+            const productParts: Array<string> = productId.split('_');
+            if (productParts[1] === 'null') {
+                productParts[1] = null;
+            }
+            
+            this.localBasket().then((panier) => {
+                const index: number = panier.findIndex((obj) => { 
+                    return (
+                        obj.id == parseInt(productParts[0]) &&
+                        obj.servingSize == productParts[1]
+                    )
+                });
+                console.log('Met à jour la ligne : ' + index);
+                if (index !== -1) {
+                    this.product = panier[index];
+                    this.product.quantity = newQty;
+                    panier[index] = this.product;
+                    localStorage.setItem('eshop-basket', JSON.stringify(panier));
+                    resolve(this.product);
+                } else {
+                    resolve(null);
+                }
+            });
+        });
     }
 }

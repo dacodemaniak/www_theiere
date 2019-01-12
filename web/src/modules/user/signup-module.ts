@@ -39,7 +39,11 @@ export class SignupModule {
      */
     private button: JQuery = $('#login-btn');
 
-    public constructor() {
+    private fromInstance: string;
+
+    public constructor(from: string) {
+        this.fromInstance = from;
+
         this._init();
     }
 
@@ -110,7 +114,11 @@ export class SignupModule {
 
                 // Redirige vers la page d'accueil
                 const router: RouterModule = new RouterModule();
-                router.changeLocation('/');
+                if (this.fromInstance == 'checkout') {
+                    router.changeLocation('/basket');
+                } else {
+                    router.changeLocation('/');
+                }
 
             },
             error: (xhr, error) => {

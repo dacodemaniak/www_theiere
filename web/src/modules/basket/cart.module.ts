@@ -132,7 +132,7 @@ import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
         const button: JQuery = $(event.target);
         const form: JQuery = button.parents('form');
         const input: JQuery = $('input[data-rel="' + form.attr('id') + '"]');
-        const price: number = StringToNumberHelper.toNumber(form.find('.price').eq(0).html());
+        let price: number = 0;
         const quantity: number = parseInt(input.val().toString());
         let servingSize: string = null;
 
@@ -141,7 +141,10 @@ import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
         if (quantitySelector.is('select')) {
             // Récupère la quantité servie dans la liste
             const selectedLine = quantitySelector.find('option:selected');
+            price = selectedLine.data('price');
             servingSize = selectedLine.text().trim();
+        } else {
+            price = quantitySelector.data('price');
         }
         console.log('Ajouter un produit dans le panier : \n' + button.data('id') + '\nPrix : ' + price + '\nQuantité : ' + quantity + '\nService : ' + servingSize);
 

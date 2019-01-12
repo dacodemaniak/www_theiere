@@ -16,7 +16,7 @@ class DefaultController extends Controller
 {
 	
 	/**
-	 * @Route("/signin", defaults={"_format"="html"}, methods={"GET","HEAD"}, name="signin-form")
+	 * @Route("/signin/{from}", defaults={"_format"="html", "from"="anywhere"}, methods={"GET","HEAD"}, name="signin-form")
 	 */
 	public function showFormAction(Request $request) {
 	    $request->setRequestFormat("html");

@@ -3,6 +3,7 @@ import { Constants } from './../../shared/constants';
 
 import * as $ from 'jquery';
 import { EmailHelper } from '../../helpers/email.helper';
+import { RouterModule } from '../router/router.module';
 
 /**
  * @name SigninModule
@@ -30,7 +31,9 @@ export class SigninModule {
      */
     private button: JQuery = $('#signin-btn');
 
-    public constructor() {
+    private fromInstance: string;
+
+    public constructor(from: string) {
         this.fields = new Array<JQuery>();
         this.fields.push($('#civility-content'));
         this.fields.push($('#name-content'));
@@ -40,6 +43,8 @@ export class SigninModule {
         this.fields.push($('#email-content'));
         this.fields.push($('#original-password-content'));
         this.fields.push($('#confirm-password-content'));
+
+        this.fromInstance = from;
 
         this._init();
     }
@@ -131,8 +136,17 @@ export class SigninModule {
                     type: 'success'
                 });
                 toast.show();
+
                 // Reset le formulaire
                 this._resetForm();
+
+                // Redirige vers la page d'accueil
+                const router: RouterModule = new RouterModule();
+                if (this.fromInstance == 'checkout') {
+                    router.changeLocation('/basket');
+                } else {
+                    router.changeLocation('/');
+                }
             },
             error: (xhr: JQueryXHR, error) => {
                 console.log(JSON.stringify(xhr));

@@ -16,9 +16,16 @@ export class StringToNumberHelper {
     }
 
     public static toCurrency(value: string, currency: string = '&euro;'): string {
-        let round: string = parseFloat(value).toFixed(2);
+        let amount: number = parseFloat(value);
+        const power: number = Math.pow(10, amount);
+        amount = Math.round((amount * power)) / power;
+        
+
+        let round: string = amount.toFixed(3).substring(0, amount.toFixed(3).indexOf('.') + 3);
+
+        console.log('Montant arrondi : ' + round);
         const asString: string = round.replace('.', ',') + currency;
-        console.log('Value : ' + round);
-        return round + currency;
+        console.log('Value : ' + asString);
+        return asString;
     }
 }

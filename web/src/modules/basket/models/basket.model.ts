@@ -56,6 +56,7 @@ export class BasketModel {
     public getTableRow(): Promise<JQuery> {
         return new Promise((resolve) => {
             const _tr: JQuery = $('<tr>');
+            _tr.attr('id', this.id + '_' + this.servingSize);
 
             const _productTD: JQuery = $('<td>');
             _productTD.attr('data-rel', this.id);
@@ -66,7 +67,11 @@ export class BasketModel {
             if (this.vat === 0.05) {
                     this.vat = 0.055;
             }
-            this.priceTTC = (this.priceHT * this.quantity) * (1 + this.vat);
+
+            this.priceTTC = (this.priceHT * (1 + this.vat)) * this.quantity;
+            console.log('Prix TTC : ' + this.priceTTC);
+
+            let unitFullTaxPrice: number = this.priceHT * (1 + this.vat);
 
             _productTD.html(product.title.fr);
             _productTD.appendTo(_tr);
@@ -80,12 +85,12 @@ export class BasketModel {
             _quantityTD.appendTo(_tr);
     
             const _priceTD: JQuery = $('<td>');
-            _priceTD.html(StringToNumberHelper.toCurrency(this.priceHT.toString()));
+            _priceTD.html(StringToNumberHelper.toCurrency(unitFullTaxPrice.toString()));
             _priceTD.appendTo(_tr);
     
             const _totalTD: JQuery = $('<td>');
             const total: number = this.priceHT * this.quantity;
-            _totalTD.html(StringToNumberHelper.toCurrency(total.toString()));
+            _totalTD.html(StringToNumberHelper.toCurrency(this.priceTTC.toString()));
             _totalTD.appendTo(_tr);
     
             const _removeTD: JQuery = this._removeElement($('<td>'));
@@ -100,7 +105,7 @@ export class BasketModel {
         icon
             .addClass('icon-cross')
             .addClass('remove-product')
-            .attr('data-rel', this.id);
+            .attr('data-rel', this.id + '_' + this.servingSize);
         icon.appendTo(col);
 
         return col;
