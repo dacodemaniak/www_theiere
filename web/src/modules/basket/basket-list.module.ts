@@ -22,40 +22,62 @@ export class BasketListModule {
         console.log('BasketListModule works !');
         this.userService = new UserService();
 
-        this._init().then((panier) => {
-            this.basket = panier;
-
-            // Instancie le gestionnaire de progression
-            this.stepComponent = new StepComponent(this.userService, this.basket);
-            
-            // Construit le panier
-            const tbody: JQuery = $('#basket-list tbody');
-            let granTotal: number = 0;
-            let fullTaxTotal: number = 0;
-
-            if (this.basket.length) {
-                for (let product of this.basket) {
-                    let total: number = product.priceHT * product.quantity;
-                    granTotal += total;
-
-                    fullTaxTotal += this._getTTC(product, product.product);
-
-                    product.getTableRow().then((row) => {
-                        tbody.append(row);
-                        // Ajouter le total HT au pied de tableau
-                        $('.gran-total').html(StringToNumberHelper.toCurrency(granTotal.toString()));
-                        $('.fulltax-total').html(StringToNumberHelper.toCurrency(fullTaxTotal.toString()));
-                    });
-                }
-                $('#basket-list').removeClass('hidden');
+        this.userService.hasUser().then((has) => {
+            this._init().then((panier) => {
+                this.basket = panier;
+    
+                // Instancie le gestionnaire de progression
+                this.stepComponent = new StepComponent(this.userService, this.basket);
                 
-                // Initialise les listeners
-                this._listeners();
-            } else {
-                // Le panier est vide...
+                // Construit le panier
+                const tbody: JQuery = $('#basket-list tbody');
+                let granTotal: number = 0;
+                let fullTaxTotal: number = 0;
+    
+                if (this.basket.length) {
+                    for (let product of this.basket) {
+                        let total: number = product.priceHT * product.quantity;
+                        granTotal += total;
+    
+                        fullTaxTotal += this._getTTC(product, product.product);
+    
+                        product.getTableRow().then((row) => {
+                            tbody.append(row);
+                            // Ajouter le total HT au pied de tableau
+                            $('.gran-total').html(StringToNumberHelper.toCurrency(granTotal.toString()));
+                            $('.fulltax-total').html(StringToNumberHelper.toCurrency(fullTaxTotal.toString()));
+                        });
+                    }
+                    $('#basket-list').removeClass('hidden');
+                    
+                    // Initialise les listeners
+                    this._listeners();
+                } else {
+                    // Le panier est vide...
+    
+                }
+            });
 
+            // Gestion des alertes
+            const warning: JQuery = $('#basket-warns');
+            let disableButton: boolean = false;
+            if (!has) {
+                // Pas encore d'utilisateur connecté
+                const noUser: JQuery = warning.children('.no-user').eq(0);
+                noUser.removeClass('inactive');
+                disableButton = true;
+            } else {
+                if (!this.userService.getUser().hasAddresses()) {
+                    const noAddress: JQuery = warning.children('.no-address').eq(0);
+                    noAddress.removeClass('inactive');
+                    disableButton = true;
+                }
+            }
+            if (disableButton) {
+                $('#next-step').attr('disabled', 'disabled');
             }
         });
+
     }
 
     /**

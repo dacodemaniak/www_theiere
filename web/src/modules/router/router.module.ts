@@ -1,3 +1,4 @@
+import { DeliveryModule } from './../basket/delivery-module';
 import { AuthenticationModule } from './../user/authentication-module';
 import { BasketListModule } from './../basket/basket-list.module';
 import { CartModule } from './../basket/cart.module';
@@ -74,6 +75,10 @@ import { AccountModule } from '../user/account-module';
 
              case 'account':
                module = new AccountModule();
+             break;
+
+             case 'delivery':
+               module = new DeliveryModule();
              break;
          }
 

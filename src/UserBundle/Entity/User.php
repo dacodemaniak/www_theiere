@@ -291,7 +291,7 @@ class User
      */
     public function addBillingAddress(array $address) {
         $content = $this->getRawContent();
-        $content["addresses"]["billing"][] = $address;
+        $content["addresses"]["billing"] = $address;
         
         $this->content = json_encode($content);
     }

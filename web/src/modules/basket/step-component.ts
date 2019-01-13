@@ -25,8 +25,14 @@ export class StepComponent {
 
         this.signinStep = $('#signin');
         this.basketStep = $('#basket-checkin');
+        this.deliveryStep = $('#delivery-checkin');
 
         this._init();
+    }
+
+    public markAsComplete(property: string): void {
+        const point: JQuery = $('#' + property);
+        point.addClass('complete');
     }
 
     private _init(): void {
@@ -37,6 +43,9 @@ export class StepComponent {
 
         // Contrôle l'étape 2
         this._basketStep();
+
+        // Contrôle l'étape 3
+        this._deliveryStep();
     }
 
     private _userStep(): void {
@@ -45,7 +54,7 @@ export class StepComponent {
                 // Désactiver l'étape Identification
                 this.signinStep.addClass('disabled');
             }
-        })
+        });
     }
 
     private _basketStep(): void {
@@ -53,5 +62,23 @@ export class StepComponent {
             this.basketStep.addClass('disabled');
             this.basketStep.children('.bs-wizard-info').eq(0).html('Parcourez notre catalogue et ajoutez des produits dans votre panier');
         }
+    }
+
+    private _deliveryStep(): void {
+        this.userService.hasUser().then((result) => {
+            if (!result) {
+                // Désactiver l'étape Identification
+                this.deliveryStep.addClass('disabled');
+            } else {
+                const user = this.userService.getUser();
+                if (!user.hasAddresses()) {
+                    this.deliveryStep.addClass('disabled');
+                } else {
+                    this.deliveryStep
+                        .removeClass('disabled')
+                        .addClass('active');
+                }
+            }
+        });
     }
 }

@@ -1,0 +1,17 @@
+{%  extends "base.html.twig" %}
+
+{% block title %}
+	Livraison - Les Soeurs Théière
+{% endblock %}
+
+{% block body %}
+	<div class="container" id="checkout">
+	
+		<!-- Inclusion du progress stepper -->
+		{{ include("@Content/Default/checkoutstepper.html.twig", {"step": "delivery"}) }}
+	</div>
+	
+	<section class="row">
+		Checkout works !
+	</section>
+{% endblock %}

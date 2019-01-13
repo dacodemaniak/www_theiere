@@ -29,4 +29,26 @@ class BasketController extends FOSRestController {
             "@Content/basket/basketlist.html.twig"
         );
     }
+    
+    /**
+     * @Route("/delivery", defaults={"_format"="html"}, methods={"GET", "HEAD"}, name="delivery")
+     */
+    public function deliveryBasketAction(Request $request) {
+        $request->setRequestFormat("html");
+        
+        return $this->render(
+            "@Content/basket/delivery.html.twig"
+            );
+    }
+    
+    /**
+     * @Route("/checkout/{delivery_address}", defaults={"_format"="html"}, methods={"GET", "HEAD"}, name="checkout")
+     */
+    public function checkoutBasketAction(Request $request) {
+        $request->setRequestFormat("html");
+        
+        return $this->render(
+            "@Content/basket/checkout.html.twig"
+        );
+    }
 }

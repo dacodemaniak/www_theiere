@@ -12,7 +12,7 @@ export class UserModel {
     private login: string;
     private name: string;
     private token: string;
-    private addresses?: Map<string, any>;
+    private addresses?: any;
     private orders?: Map<Date, any>;
     private isValid?: boolean;
     private createdAt?: any;
@@ -41,10 +41,36 @@ export class UserModel {
         return this.content;
     }
 
+    public hasAddresses(): boolean {
+        return this.addresses ? true : false;
+    }
+
+    public getBillingAddressContent(): any {
+        if (this.addresses) {
+            const billing: any = this.addresses.billing;
+            return billing;
+        }
+        return null;
+    }
+
+    public getDeliveryAddresses(): Map<string, any> {
+        const deliveries: Array<any> = this.addresses.delivery;
+        const asMap: Map<string, any> = new Map<string, any>();
+
+        for(const delivery of deliveries) {
+            asMap.set(delivery.name, delivery);
+        }
+        return asMap;
+    }
+
+    public setAddresses(addresses: any) {
+        this.addresses = addresses;
+    }
+
     public deserialize(datas: any) {
         Object.assign(this, datas);
         this.content = datas.userDetails;
-
+        this.addresses = datas.userDetails.addresses;
     }
 
     

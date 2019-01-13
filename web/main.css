@@ -613,6 +613,12 @@ section.product-container #product-slider a span.carousel-control-next-icon {
   color: #dc3f45;
   cursor: pointer;
 }
+#basket-warns.hidden {
+  display: none;
+}
+#basket-warns p.inactive {
+  display: none;
+}
 #banner-rgpd {
   position: absolute;
   top: 0;
@@ -736,6 +742,10 @@ section.product-container #product-slider a span.carousel-control-next-icon {
 }
 .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot {
   pointer-events: none;
+}
+#delivery #address-selector {
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
 /**
 * Importation des polices

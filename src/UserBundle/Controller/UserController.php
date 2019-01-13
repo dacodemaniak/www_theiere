@@ -190,60 +190,129 @@ class UserController extends FOSRestController {
 	}
 
 	/**
-	 * @Rest\Post("/account/address/billing/{id}")
+	 * @Rest\Post("/account/address/billing")
 	 * @param Request $request Requête envoyée
 	 */
 	public function addBillingAddress(Request $request){
-	    // Définit une nouvelle adresse de facturation
-	    $billingAddress = [
-	        "address" => $request->get("address"),
-	        "zipcode" => $request->get("zipcode"),
-	        "city" => $request->get("city"),
-	        "country" => $request->get("country"),
-	    ];
-	    
-	    $account = $this->getDoctrine()
-	       ->getManager()
-	       ->getRepository("UserBundle:User")
-	       ->find($request->get("id"));
-	    
-	    $account->addBillingAddress($billingAddress);
-	    
-	    $entityManager = $this->getDoctrine()->getManager();
-	    $entityManager->persist($account);
-	    
-	    $entityManager->flush();
-	    
-	    return new View("Une nouvelle adresse de facturation vient d'être ajoutée", Response::HTTP_OK);
-	    
+	    if ($this->authToken($request)) {
+	        
+	        $account = $this->_wholeUser;
+	        
+    	    // Définit une nouvelle adresse de facturation
+    	    $billingAddress = [
+    	        "address" => $request->get("address"),
+    	        "zipcode" => $request->get("zipcode"),
+    	        "city" => $request->get("city"),
+    	        "country" => $request->get("country"),
+    	        "sameAsDelivery" => $request->get("asDelivery") ? true : false
+    	    ];
+    	    
+    	    if ($request->get("asDelivery")) {
+    	        $deliveryAddress = [
+    	            "name" => "Principale",
+    	            "address" => $request->get("address"),
+    	            "zipcode" => $request->get("zipcode"),
+    	            "city" => $request->get("city"),
+    	            "country" => $request->get("country"),
+    	        ];
+    	        $account->addDeliveryAddress($deliveryAddress);
+    	    }
+    	    
+    	    $account->addBillingAddress($billingAddress);
+    	    
+    	    
+    	    $entityManager = $this->getDoctrine()->getManager();
+    	    $entityManager->persist($account);
+    	    
+    	    $entityManager->flush();
+    	    
+    	    // Recharge la ligne utilisateur
+    	    $user = $entityManager
+    	       ->getRepository("UserBundle:User")
+    	       ->find($this->_wholeUser->getId());
+
+    	    
+    	    return new View($user->getRawContent()["addresses"], Response::HTTP_OK);
+	    }
+	    return new View("Le compte n'est plus actif, ou a été invalidé", Response::HTTP_FORBIDDEN);
+	}
+
+	/**
+	 * @Rest\Put("/account/address/billing")
+	 * @param Request $request Requête envoyée
+	 */
+	public function updBillingAddress(Request $request){
+	    if ($this->authToken($request)) {
+	        
+	        $account = $this->_wholeUser;
+	        
+	        $billingAddress = $account->getRawContent()["addresses"]["billing"];
+	        
+	        // Définit une nouvelle adresse de facturation
+	        $billingAddress["address"] = $request->get("address");
+	        $billingAddress["zipcode"] = $request->get("zipcode");
+	        $billingAddress["city"] = $request->get("city");
+	        $billingAddress["country"] = $request->get("country");
+	        
+	        $account->addBillingAddress($billingAddress);
+	        
+	        
+	        $entityManager = $this->getDoctrine()->getManager();
+	        $entityManager->persist($account);
+	        
+	        $entityManager->flush();
+	        
+	        // Recharge la ligne utilisateur
+	        $user = $entityManager
+	           ->getRepository("UserBundle:User")
+	           ->find($this->_wholeUser->getId());
+	        
+	        
+	        return new View($user->getRawContent()["addresses"], Response::HTTP_OK);
+	    }
+	    return new View("Le compte n'est plus actif, ou a été invalidé", Response::HTTP_FORBIDDEN);
 	}
 	
 	/**
-	 * @Rest\Post("/account/address/delivery/{id}")
+	 * @Rest\Post("/account/address/delivery")
 	 * @param Request $request Requête envoyée
 	 */
 	public function addDeliveryAddress(Request $request){
-	    // Définit une nouvelle adresse de facturation
-	    $billingAddress = [
-	        "address" => $request->get("address"),
-	        "zipcode" => $request->get("zipcode"),
-	        "city" => $request->get("city"),
-	        "country" => $request->get("country"),
-	    ];
+	    if ($this->authToken($request)) {
+	        
+	        $account = $this->_wholeUser;
+	        
+	        // Définit une nouvelle adresse de facturation
+	        $billingAddress = [
+	            "name" => $request->get("name"),
+	            "address" => $request->get("address"),
+	            "zipcode" => $request->get("zipcode"),
+	            "city" => $request->get("city"),
+	            "country" => $request->get("country"),
+	        ];
+	        
+
+	        
+	        $account->addDeliveryAddress($billingAddress);
+	        
+	        $entityManager = $this->getDoctrine()->getManager();
+	        $entityManager->persist($account);
+	        
+	        $entityManager->flush();
+	        
+	        $account = $this->getDoctrine()
+	           ->getManager()
+	           ->getRepository("UserBundle:User")
+	           ->find($this->_wholeUser->getId());
+	        
+            $deliveryAddresses = $account->getRawContent()["addresses"]["delivery"];
+	        $length = count($deliveryAddresses);
+	        
+	        // Retourne la dernière adresse de livraison créée
+	        return new View($deliveryAddresses[$length-1], Response::HTTP_OK);
+	    }
 	    
-	    $account = $this->getDoctrine()
-	    ->getManager()
-	    ->getRepository("UserBundle:User")
-	    ->find($request->get("id"));
-	    
-	    $account->addDeliveryAddress($billingAddress);
-	    
-	    $entityManager = $this->getDoctrine()->getManager();
-	    $entityManager->persist($account);
-	    
-	    $entityManager->flush();
-	    
-	    return new View("Une nouvelle adresse de livraison vient d'être ajoutée", Response::HTTP_OK);
+	    return new View("Le compte n'est plus actif, ou a été invalidé", Response::HTTP_FORBIDDEN);
 	    
 	}
 	

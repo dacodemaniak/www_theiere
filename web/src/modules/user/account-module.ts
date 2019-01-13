@@ -1,3 +1,4 @@
+import { AddressComponent } from './address-component';
 import { DisconnectComponent } from './disconnect-component';
 import { PasswordComponent } from './password-component';
 import { InfoComponent } from './info-component';
@@ -29,7 +30,7 @@ export class AccountModule {
 
         const info: InfoComponent = new InfoComponent(this.user);
         const password: PasswordComponent = new PasswordComponent(this.user);
-
+        const address: AddressComponent = new AddressComponent(this.user);
         const disconnect: DisconnectComponent = new DisconnectComponent(new UserService());
     }
 }
