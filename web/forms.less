@@ -2,6 +2,73 @@
 
 form {
     &.material-like {
+
+        /** CSS pur **/
+        .switch-input {
+            display: none;
+        }
+          .switch-label {
+            position: relative;
+            display: inline-block;
+            min-width: 112px;
+            cursor: pointer;
+            font-weight: 500;
+            text-align: left;
+            margin: 16px;
+            padding: 16px 0 16px 44px;
+          }
+          .switch-label:before, .switch-label:after {
+            content: "";
+            position: absolute;
+            margin: 0;
+            outline: 0;
+            top: 50%;
+            -ms-transform: translate(0, -50%);
+            -webkit-transform: translate(0, -50%);
+            transform: translate(0, -50%);
+            -webkit-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+          }
+          .switch-label:before {
+            left: 1px;
+            width: 34px;
+            height: 14px;
+            background-color: #9E9E9E;
+            border-radius: 8px;
+          }
+          .switch-label:after {
+            left: 0;
+            width: 20px;
+            height: 20px;
+            background-color: #FAFAFA;
+            border-radius: 50%;
+            box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);
+          }
+          .switch-label .toggle--on {
+            display: none;
+            font-weight: bold;
+          }
+          .switch-label .toggle--off {
+            display: inline-block;
+            font-weight: bold;
+          }
+          .switch-input:checked + .switch-label:before {
+            background-color: #A5D6A7;
+          }
+          .switch-input:checked + .switch-label:after {
+            background-color: #4CAF50;
+            -ms-transform: translate(80%, -50%);
+            -webkit-transform: translate(80%, -50%);
+            transform: translate(80%, -50%);
+          }
+          .switch-input:checked + .switch-label .toggle--on {
+            display: inline-block;
+          }
+          .switch-input:checked + .switch-label .toggle--off {
+            display: none;
+          }
+        /** End CSS pur **/
+
         input {
             &[type="checkbox"] {
                 &.hidden {
@@ -71,6 +138,83 @@ form {
                 }
             }
             
+            /** @comment for update
+            input {
+                &[type="checkbox"] {
+                    &.switch-input {
+                        display: none;
+                    }
+                }
+            }
+            label {
+                &.switch-label {
+                    position: relative;
+                    display: inline-block;
+                    min-width: 6.875em;
+                    cursor: pointer;
+                    font-weight: normal;
+                    text-align: left;
+                    margin: 1em;
+                    padding: 1em 0 1em 2.75em;
+
+                    &:before,
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        margin: 0;
+                        outline: 0;
+                        .vertical-alignement;
+                        transition: all 0.3s ease;
+                    }
+
+                    &:before {
+                        left: 0.0625em;;
+                        width: 2.125em;
+                        height: 0.875em;
+                        background-color: #9e9e9e;
+                        border-radius: 0.5em;
+                    }
+
+                    &:after {
+                        left: 0;
+                        width: 1.25em;
+                        height: 1.25em;
+                        background-color: #FAFAFA;
+                        border-radius: 50%;
+                        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);                                
+                    }
+
+                    .toggle--on {
+                        display: none;
+                    }
+
+                    .toggle--off {
+                        display: inline-block;
+                    }
+
+                    &:checked {
+                        &+ .switch-label:before {
+                            background-color: #a5d6a7;
+                        }
+
+                        &+ .switch-label:after {
+                            background-color: #4CAF50;
+                            transform: translate(80%, -50%);                                    
+                        }
+
+                        &+ .switch-label {
+                            .toggle--on {
+                                display: inline-block;
+                            }
+                            .toggle--off {
+                                display: none;
+                            }
+                        }
+                    }
+                } // Fin de la définition de classe
+            }
+            **/
+
             select {
                 appearance: none;
                 background-color: transparent;
@@ -98,6 +242,8 @@ form {
                     pointer-events: none;
                 }
             }
+
+
             label {  
                 color: @muted;
                 font-size: 1em;
@@ -115,6 +261,7 @@ form {
 
             input:focus ~ label,
             input:valid ~ label,
+            input:read-only,
             textarea:focus ~ label,
             textarea:valid ~ label {
                 top: -0.875em;

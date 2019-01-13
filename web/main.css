@@ -236,6 +236,74 @@ figure.card figcaption {
   height: 3em;
   text-align: center;
 }
+form.material-like {
+  /** CSS pur **/
+  /** End CSS pur **/
+}
+form.material-like .switch-input {
+  display: none;
+}
+form.material-like .switch-label {
+  position: relative;
+  display: inline-block;
+  min-width: 112px;
+  cursor: pointer;
+  font-weight: 500;
+  text-align: left;
+  margin: 16px;
+  padding: 16px 0 16px 44px;
+}
+form.material-like .switch-label:before,
+form.material-like .switch-label:after {
+  content: "";
+  position: absolute;
+  margin: 0;
+  outline: 0;
+  top: 50%;
+  -ms-transform: translate(0, -50%);
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+form.material-like .switch-label:before {
+  left: 1px;
+  width: 34px;
+  height: 14px;
+  background-color: #9E9E9E;
+  border-radius: 8px;
+}
+form.material-like .switch-label:after {
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background-color: #FAFAFA;
+  border-radius: 50%;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);
+}
+form.material-like .switch-label .toggle--on {
+  display: none;
+  font-weight: bold;
+}
+form.material-like .switch-label .toggle--off {
+  display: inline-block;
+  font-weight: bold;
+}
+form.material-like .switch-input:checked + .switch-label:before {
+  background-color: #A5D6A7;
+}
+form.material-like .switch-input:checked + .switch-label:after {
+  background-color: #4CAF50;
+  -ms-transform: translate(80%, -50%);
+  -webkit-transform: translate(80%, -50%);
+  transform: translate(80%, -50%);
+}
+form.material-like .switch-input:checked + .switch-label .toggle--on {
+  display: inline-block;
+}
+form.material-like .switch-input:checked + .switch-label .toggle--off {
+  display: none;
+}
 form.material-like input[type="checkbox"].hidden {
   display: none;
 }
@@ -264,6 +332,82 @@ form.material-like textarea {
 form.material-like .form-group {
   position: relative;
   margin-bottom: 2.8125em;
+  /** @comment for update
+            input {
+                &[type="checkbox"] {
+                    &.switch-input {
+                        display: none;
+                    }
+                }
+            }
+            label {
+                &.switch-label {
+                    position: relative;
+                    display: inline-block;
+                    min-width: 6.875em;
+                    cursor: pointer;
+                    font-weight: normal;
+                    text-align: left;
+                    margin: 1em;
+                    padding: 1em 0 1em 2.75em;
+
+                    &:before,
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        margin: 0;
+                        outline: 0;
+                        .vertical-alignement;
+                        transition: all 0.3s ease;
+                    }
+
+                    &:before {
+                        left: 0.0625em;;
+                        width: 2.125em;
+                        height: 0.875em;
+                        background-color: #9e9e9e;
+                        border-radius: 0.5em;
+                    }
+
+                    &:after {
+                        left: 0;
+                        width: 1.25em;
+                        height: 1.25em;
+                        background-color: #FAFAFA;
+                        border-radius: 50%;
+                        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);                                
+                    }
+
+                    .toggle--on {
+                        display: none;
+                    }
+
+                    .toggle--off {
+                        display: inline-block;
+                    }
+
+                    &:checked {
+                        &+ .switch-label:before {
+                            background-color: #a5d6a7;
+                        }
+
+                        &+ .switch-label:after {
+                            background-color: #4CAF50;
+                            transform: translate(80%, -50%);                                    
+                        }
+
+                        &+ .switch-label {
+                            .toggle--on {
+                                display: inline-block;
+                            }
+                            .toggle--off {
+                                display: none;
+                            }
+                        }
+                    }
+                } // Fin de la définition de classe
+            }
+            **/
 }
 form.material-like .form-group .form-control:focus {
   border-color: #cccccc;
@@ -332,6 +476,7 @@ form.material-like .form-group label[aria-hidden] {
 }
 form.material-like .form-group input:focus ~ label,
 form.material-like .form-group input:valid ~ label,
+form.material-like .form-group input:read-only,
 form.material-like .form-group textarea:focus ~ label,
 form.material-like .form-group textarea:valid ~ label {
   top: -0.875em;

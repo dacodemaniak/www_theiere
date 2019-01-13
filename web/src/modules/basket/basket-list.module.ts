@@ -1,3 +1,6 @@
+import { StepComponent } from './step-component';
+import { RouterModule } from './../router/router.module';
+import { UserService } from './../../services/user.service';
 import { ToastModule } from './../toast/toast.module';
 import { BasketService } from './../../services/basket.service';
 import { BasketModel } from './models/basket.model';
@@ -12,13 +15,19 @@ import { DialogModule } from './../dialog/dialog.module';
  */
 export class BasketListModule {
     private basket: Array<BasketModel>;
+    private userService: UserService;
+    private stepComponent: StepComponent;
 
     public constructor() {
         console.log('BasketListModule works !');
+        this.userService = new UserService();
 
         this._init().then((panier) => {
             this.basket = panier;
 
+            // Instancie le gestionnaire de progression
+            this.stepComponent = new StepComponent(this.userService, this.basket);
+            
             // Construit le panier
             const tbody: JQuery = $('#basket-list tbody');
             let granTotal: number = 0;
@@ -38,13 +47,14 @@ export class BasketListModule {
                         $('.fulltax-total').html(StringToNumberHelper.toCurrency(fullTaxTotal.toString()));
                     });
                 }
+                $('#basket-list').removeClass('hidden');
+                
+                // Initialise les listeners
+                this._listeners();
+            } else {
+                // Le panier est vide...
+
             }
-
-            $('#basket-list').removeClass('hidden');
-
-            // Initialise les listeners
-            this._listeners();
-
         });
     }
 
@@ -129,6 +139,22 @@ export class BasketListModule {
                         // Réaffiche les totaux
                         $('.gran-total').html(StringToNumberHelper.toCurrency(totalHT.toString()));
                         $('.fulltax-total').html(StringToNumberHelper.toCurrency(totalTTC.toString()));
+
+                        // Si plus aucune ligne dans le panier, on réactive le hidden
+                        $('#basket-list').addClass('hidden');
+
+                        // on ajoute un message...
+                        const toast: ToastModule = new ToastModule({
+                            type: 'info',
+                            title: 'Votre panier est vide',
+                            position: 'middle-center',
+                            message: 'Plus aucun produit dans votre panier.'
+                        });
+                        toast.show();
+
+                        // on redirige vers l'accueil
+                        const router: RouterModule = new RouterModule();
+                        router.changeLocation('/');
                     } else {
                         const toast: ToastModule = new ToastModule({
                             type: 'danger',
@@ -138,7 +164,7 @@ export class BasketListModule {
                         });
                         toast.show();
                     }
-                })
+                });
             }
         )
     }

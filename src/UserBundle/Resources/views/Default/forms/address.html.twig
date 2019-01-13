@@ -1,0 +1,65 @@
+<div class="row">
+	<div class="col-12">
+		
+		<form id="addresses" class="form material-like">
+			<fieldset>
+				
+				<legend>Facturation</legend>
+				
+				
+				<div class="form-group">
+					<textarea name="addresscontent" id="addresscontent-content" class="form-control" autocomplete="nope" required></textarea>
+					<span class="hightlight"></span>
+					<span class="bar"></span>
+					<label for="message-content">Adresse complète</label>
+					
+					<div class="alert alert-danger hidden" data-rel="addresscontent-content">
+							Précisez votre adresse pour recevoir plus facilement vos produits
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<input type="text" class="form-control" required name="addresspobox" id="addresspobox-content" data-rel="pobox" data-content="true" autocomplete="nope">
+					<span class="hightlight"></span>
+					<span class="bar"></span>
+					<label for="name-content">Code postal</label>
+						
+					<div class="alert alert-danger hidden" data-rel="addresspobox-content">
+							Spécifiez votre adresse pour faciliter la livraison de vos produits
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<input type="text" class="form-control" required name="addresscity" id="addresscity-content" data-rel="city" data-content="true" autocomplete="nope">
+					<span class="hightlight"></span>
+					<span class="bar"></span>
+					<label for="name-content">Ville</label>
+						
+					<div class="alert alert-danger hidden" data-rel="addresscity-content">
+							La ville est obligatoire.
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<input type="text" class="form-control" readonly name="addresscountry" value="France" id="addresscountry-content" data-rel="country" data-content="true" autocomplete="nope">
+					<span class="hightlight"></span>
+					<span class="bar"></span>
+					<label for="addresscountry-content">Pays</label>
+				</div>
+				
+			
+					<input type="checkbox" id="addressasbilling-content" checked name="addressasbilling" class="switch-input">
+					<label for="addressasbilling-content" class="switch-label">Utilisez cette adresse comme adresse de livraison 
+						<span class="toggle--on">Oui</span>
+						<span class="toggle--off">Non</span>
+					</label>				
+			</fieldset>
+			
+			<fieldset class="text-center">
+				<button type="submit" id="add-address" class="btn btn-success">
+					Ajouter
+				</button>
+			</fieldset>
+		</form>
+	</div>
+</div>
