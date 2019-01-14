@@ -11,7 +11,35 @@
 		{{ include("@Content/Default/checkoutstepper.html.twig", {"step": "delivery"}) }}
 	</div>
 	
+	<section class="row" id="total-basket">
+		<div class="col-12 text-right">
+			Montant de votre panier : <span class="amount"></span>
+		</div>
+	</section>
+	
 	<section class="row">
-		Checkout works !
+		<address id="billing-address" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+			<h4>Adresse de facturation</h4>
+			<ul class="list-unstyled">
+				<li class="address"></li>
+				<li class="city"></li>
+				<li class="country"></li>
+			</ul>
+		</address>
+		
+		<address id="delivery-address" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+			<h4>Adresse de livraison</h4>
+			<ul class="list-unstyled">
+				<li class="address"></li>
+				<li class="city"></li>
+				<li class="country"></li>
+			</ul>
+		</address>
+	</section>
+	
+	<section id="shipment-charge" class="row">
+		<header>
+			Livraison
+		</header>
 	</section>
 {% endblock %}

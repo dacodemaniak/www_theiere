@@ -1,3 +1,4 @@
+import { CheckoutModule } from './../basket/checkout.module';
 import { DeliveryModule } from './../basket/delivery-module';
 import { AuthenticationModule } from './../user/authentication-module';
 import { BasketListModule } from './../basket/basket-list.module';
@@ -16,8 +17,6 @@ import { AccountModule } from '../user/account-module';
      public constructor() {
          let url: string = location.pathname.slice(1) || '/';
 
-         console.info(url.indexOf('.php'));
-
          if (url.indexOf('.php') !== -1) {
             console.info('Mode développement');
             let slicer: number;
@@ -31,7 +30,7 @@ import { AccountModule } from '../user/account-module';
              console.info('Mode production');
          }
 
-         console.log('Before slicing : ' + url);
+         //console.log('Before slicing : ' + url);
 
          if (url.indexOf('product/') !== -1 || url.indexOf('products/') !== -1) {
             url = 'product';
@@ -41,6 +40,14 @@ import { AccountModule } from '../user/account-module';
             url = 'account';
          }
 
+         let deliveryAddress: string;
+
+         if (url.indexOf('checkout/') !== -1) {
+            let urlParts: Array<string>;
+            urlParts = url.split('/');
+            deliveryAddress = urlParts[1];
+            url = 'checkout';
+         }
          let from: string;
          if (url.indexOf('signin/') !== -1) {
             if (url.indexOf('checkout') !== -1) {
@@ -79,6 +86,10 @@ import { AccountModule } from '../user/account-module';
 
              case 'delivery':
                module = new DeliveryModule();
+             break;
+
+             case 'checkout':
+               module = new CheckoutModule(deliveryAddress);
              break;
          }
 

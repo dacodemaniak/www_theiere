@@ -26,6 +26,7 @@ export class StepComponent {
         this.signinStep = $('#signin');
         this.basketStep = $('#basket-checkin');
         this.deliveryStep = $('#delivery-checkin');
+        this.paymentStep = $('#payment');
 
         this._init();
     }
@@ -35,6 +36,12 @@ export class StepComponent {
         point.addClass('complete');
     }
 
+    public markAsActive(property: string): void {
+        const point: JQuery = $('#' + property);
+        point
+            .addClass('active')
+            .removeClass('disabled');
+    }
     private _init(): void {
         console.info('Step Component in loading');
 
