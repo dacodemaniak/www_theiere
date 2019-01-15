@@ -355,8 +355,6 @@ class Article
         }
         
         return $noImage;
-        
-        $package = new Package(new EmptyVersionStrategy());
   
 
     }
