@@ -95,6 +95,14 @@ class CategoryController extends FOSRestController {
 	    }
 	    $ancestors[] = $this->category; // Catégorie courante dans le fil d'ariane
 	    
+	    /**
+	    $products = $this->getCategoryProductsCollection();
+	    foreach ($products as $product) {
+	        //if ($product->getId() === 4) {
+	            var_dump($product->getMainImage());
+	        //}
+	    }
+	    **/
 	    
 	    return $this->render(
 	        "@Content/category/products.html.twig",

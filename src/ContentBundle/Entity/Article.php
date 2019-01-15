@@ -309,7 +309,14 @@ class Article
     public function getMainImage() {
         $images = [];
         $imagePath = "";
+
+       $package = new Package(new EmptyVersionStrategy());
         
+       $noImage =  [
+            "src" => $package->getUrl("/images/no-image-icon.png"), // $assetPackage->getUrl("images/" . $content->slide),
+            "alt" => $this->getTitleFr() . " pas encore d'image"
+        ];
+       
         foreach ($this->decors as $toDecors) {
             if ($toDecors->getDecor()->getSlug() === "images-produits") {
                 $content = $toDecors->getDecor()->getContent();
@@ -319,9 +326,25 @@ class Article
             }
         }
         
-        $image = array_pop($images)[count($images)];
+        //echo "Images : ";
+        //var_dump($images);
         
-
+        if (is_array($images)) {
+            $content = array_pop($images);
+            if (is_array($content)) {
+                $image = array_pop($content);
+            } else {
+                return $noImage;
+            }
+        } else {
+            return $noImage;
+        }
+        
+        
+        //echo "Image récupérée : " . $this->getId();
+        //var_dump($image);
+        
+        
         if ($image) {
             if (property_exists($image, "src")) {
                 return [
@@ -331,12 +354,11 @@ class Article
             }
         }
         
-        $package = new Package(new EmptyVersionStrategy());
+        return $noImage;
         
-        return [
-            "src" => $package->getUrl("/images/no-image-icon.png"), // $assetPackage->getUrl("images/" . $content->slide),
-            "alt" => $this->getTitleFr() . " pas encore d'image"
-        ];
+        $package = new Package(new EmptyVersionStrategy());
+  
+
     }
     
     /**
