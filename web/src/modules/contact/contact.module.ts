@@ -30,6 +30,7 @@ export class ContactModule {
         this.userService.hasUser().then((has: boolean) => {
             if (has) {
                 this.nameField.val(this.userService.getUser().getName());
+                this.emailField.val(this.userService.getUser().getEmail());
             }
         });
     }
