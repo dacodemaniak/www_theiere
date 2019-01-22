@@ -12,6 +12,6 @@ export class Constants {
         if (Constants.hostname === 'api.lessoeurstheiere.com' || Constants.hostname === 'lessoeurstheiere.com' || Constants.hostname === 'www.lessoeurstheiere.com') {
             return 'https://api.lessoeurstheiere.com/';
         }
-        return 'http://api.lessoeurstheiere.wrk/app_dev.php/';
+        return 'http://api.lessoeurstheiere.wrk/';
     }
 }
