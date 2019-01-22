@@ -1,3 +1,4 @@
+import { UserService } from './../../services/user.service';
 import { Constants } from './../../shared/constants';
 import { EmailHelper } from './../../helpers/email.helper';
 import { ToastModule } from '../toast/toast.module';
@@ -18,9 +19,19 @@ export class ContactModule {
 
     private buttonField: JQuery = $('#send');
 
+    private userService: UserService;
+
     public constructor() {
         this.apiRoot = Constants.apiRoot;
         this._setListeners();
+
+        // Récupère l'utilisateur si existe
+        this.userService = new UserService();
+        this.userService.hasUser().then((has: boolean) => {
+            if (has) {
+                this.nameField.val(this.userService.getUser().getName());
+            }
+        });
     }
 
     private _setListeners(): void {
