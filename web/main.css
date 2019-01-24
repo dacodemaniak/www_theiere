@@ -619,6 +619,9 @@ section.product-container #product-slider a span.carousel-control-next-icon {
 #basket-warns p.inactive {
   display: none;
 }
+#address-selector .container #address-selector-group.hidden {
+  display: none;
+}
 #banner-rgpd {
   position: absolute;
   top: 0;

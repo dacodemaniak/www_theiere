@@ -15,6 +15,12 @@
 			<div class="container">
     			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
     				<!-- Liste des adresses créées -->
+					<div class="form-group hidden" id="address-selector-group">
+						<label for="address-selector-content" aria-hidden="true" aria-labelled-by="address-selector-content">Adresses</label>
+						<select class="form-control" name="address" id="address-selector-content" data-content="true" size="1">
+							<option value="" disabled selected>Choisissez...</option>
+						</select>
+					</div>    				
     			</div>
     			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
     				<button class="btn btn-primary" type="button" id="btn-add-address">
@@ -26,64 +32,78 @@
 		
 		<!-- Adresse de livraison sélectionnée -->
 		<div class="col-12">
-			<form id="form-selected-address" class="form material-like">
-				
-				<div class="form-group">
-					<input type="text" class="form-control" required name="name" id="name-content" data-rel="name" data-content="true" autocomplete="nope">
-					<span class="hightlight"></span>
-					<span class="bar"></span>
-					<label for="name-content">Libellé</label>
-						
-					<div class="alert alert-danger hidden" data-rel="zipcode-content">
-							Le libellé de l'adresse ne peut pas être vide.
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<textarea name="address" id="address-content" class="form-control" data-rel="address" autocomplete="nope" required></textarea>
-					<span class="hightlight"></span>
-					<span class="bar"></span>
-					<label for="message-content">Adresse complète</label>
-					
-					<div class="alert alert-danger hidden" data-rel="addresscontent-content">
-							Précisez votre adresse pour recevoir plus facilement vos produits
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<input type="text" class="form-control" required name="zipcode" id="zipcode-content" data-rel="zipcode" data-content="true" autocomplete="nope">
-					<span class="hightlight"></span>
-					<span class="bar"></span>
-					<label for="zipcode-content">Code postal</label>
-						
-					<div class="alert alert-danger hidden" data-rel="zipcode-content">
-							Le code postal ne peut pas être vide.
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<input type="text" class="form-control" required name="city" id="city-content" data-rel="city" data-content="true" autocomplete="nope">
-					<span class="hightlight"></span>
-					<span class="bar"></span>
-					<label for="city-content">Ville</label>
-						
-					<div class="alert alert-danger hidden" data-rel="addresscity-content">
-							La ville est obligatoire.
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<input type="text" class="form-control" required readonly name="country" value="France" id="country-content" data-rel="country" data-content="true" autocomplete="nope">
-					<span class="hightlight"></span>
-					<span class="bar"></span>
-					<label for="country-content">Pays</label>
-				</div>			
-			</fieldset>
-			
-			<fieldset class="text-right">
-				<button type="submit" id="manage-address" disabled class="btn btn-success">
-				</button>
-			</fieldset>			
-			</form>
+			<div class="row">
+				<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        			<form id="form-selected-address" class="form material-like">
+        				<fieldset>
+        					<legend>Vous souhaitez être livré où ?</legend>
+            				<div class="form-group">
+            					<input type="text" class="form-control" required name="name" id="name-content" data-rel="name" data-content="true" autocomplete="nope">
+            					<span class="hightlight"></span>
+            					<span class="bar"></span>
+            					<label for="name-content">Libellé</label>
+            						
+            					<div class="alert alert-danger hidden" data-rel="zipcode-content">
+            							Le libellé de l'adresse ne peut pas être vide.
+            					</div>
+            				</div>
+            				
+            				<div class="form-group">
+            					<textarea name="address" id="address-content" class="form-control" data-rel="address" autocomplete="nope" required></textarea>
+            					<span class="hightlight"></span>
+            					<span class="bar"></span>
+            					<label for="message-content">Adresse complète</label>
+            					
+            					<div class="alert alert-danger hidden" data-rel="addresscontent-content">
+            							Précisez votre adresse pour recevoir plus facilement vos produits
+            					</div>
+            				</div>
+            				
+            				<div class="form-group">
+            					<input type="text" class="form-control" required name="zipcode" id="zipcode-content" data-rel="zipcode" data-content="true" autocomplete="nope">
+            					<span class="hightlight"></span>
+            					<span class="bar"></span>
+            					<label for="zipcode-content">Code postal</label>
+            						
+            					<div class="alert alert-danger hidden" data-rel="zipcode-content">
+            							Le code postal ne peut pas être vide.
+            					</div>
+            				</div>
+            				
+            				<div class="form-group">
+            					<input type="text" class="form-control" required name="city" id="city-content" data-rel="city" data-content="true" autocomplete="nope">
+            					<span class="hightlight"></span>
+            					<span class="bar"></span>
+            					<label for="city-content">Ville</label>
+            						
+            					<div class="alert alert-danger hidden" data-rel="addresscity-content">
+            							La ville est obligatoire.
+            					</div>
+            				</div>
+            				
+            				<div class="form-group">
+            					<input type="text" class="form-control" required readonly name="country" value="France" id="country-content" data-rel="country" data-content="true" autocomplete="nope">
+            					<span class="hightlight"></span>
+            					<span class="bar"></span>
+            					<label for="country-content">Pays</label>
+            				</div>			
+        			</fieldset>
+        			
+        			<fieldset class="text-right">
+        				<button type="submit" id="manage-address" disabled class="btn btn-success">
+        				</button>
+        			</fieldset>			
+        			</form>
+        		</div>
+        		
+        		<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+        			<ul class="list-unstyled" id="summary">
+        				<li>Montant de votre commande : <span class="full-tax-total"></span></li>
+        				<li>Poids total : <span class="full-load"></span></li>
+        			</ul>
+        			
+        			
+        		</div>
+			</div>
 		</div>
 {% endblock %}

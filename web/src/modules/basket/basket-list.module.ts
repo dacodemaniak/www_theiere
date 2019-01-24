@@ -22,7 +22,8 @@ export class BasketListModule {
         console.log('BasketListModule works !');
         this.userService = new UserService();
 
-        this.userService.hasUser().then((has) => {
+        this.userService.hasUser().then((has: boolean) => {
+            let disableButton: boolean = !has;
             this._init().then((panier) => {
                 this.basket = panier;
     
@@ -60,7 +61,6 @@ export class BasketListModule {
 
             // Gestion des alertes
             const warning: JQuery = $('#basket-warns');
-            let disableButton: boolean = false;
             if (!has) {
                 // Pas encore d'utilisateur connecté
                 const noUser: JQuery = warning.children('.no-user').eq(0);
@@ -74,7 +74,7 @@ export class BasketListModule {
                 }
             }
             if (disableButton) {
-                $('#next-step').attr('disabled', 'disabled');
+                $('#next-step').addClass('disabled');
             }
         });
 

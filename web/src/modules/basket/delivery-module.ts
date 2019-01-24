@@ -1,3 +1,4 @@
+import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
 import { RouterModule } from './../router/router.module';
 import { BasketModel } from "./models/basket.model";
 import { UserService } from "../../services/user.service";
@@ -22,6 +23,9 @@ export class DeliveryModule {
     private fields: Array<JQuery> = new Array<JQuery>();
     private button: JQuery;
 
+    private fullTaxBasket: number = 0;
+    private fullLoad: number = 0;
+
     public constructor() {
         this.button = $('#manage-address');
 
@@ -33,16 +37,31 @@ export class DeliveryModule {
             .set('zipcode', 'zipcode')
             .set('city', 'city')
             .set('country', 'country');
+
         this.userService.hasUser().then((has) => {
             this._init().then((panier) => {
                 this.basket = panier;
-    
+                
+                // Calcule les totaux : prix TTC et Poids totaux
+                this._getBasketTotals();
+
+                
+
                 // Instancie le gestionnaire de progression
                 this.stepComponent = new StepComponent(this.userService, this.basket);
                 this.stepComponent.markAsComplete('basketStep');
                 // Initialise la liste des Adresses de livraison
                 this.deliveryAddresses = this.userService.getUser().getDeliveryAddresses();
-    
+                
+                if (this.deliveryAddresses.size === 0) {
+                    $('#manage-address').attr('disabled', 'disabled');
+                } else {
+                    if (this.deliveryAddresses.size > 1) {
+                        // Créer la liste des adresses de livraison
+                        this._addOptions();
+                    }                    
+                }
+
                 // Passe les données au formulaire
                 this._setForm();
 
@@ -65,15 +84,12 @@ export class DeliveryModule {
         });
     }
 
-    private _setForm(): void {
-        if (this.deliveryAddresses.size > 1) {
-            // Créer la liste des adresses de livraison
-            
-        }
-            
+    private _setForm(address: string = 'Principale'): void {
 
         // Juste alimenter le formulaire en parcourant le Map
-        const delivery: any = this.deliveryAddresses.get('Principale');
+        const delivery: any = this.deliveryAddresses.get(address);
+
+        
             
         this.ids.forEach((rel, id) => {
             let field: JQuery = $('#' + id + '-content');
@@ -93,6 +109,12 @@ export class DeliveryModule {
         $('#btn-add-address').on(
             'click',
             (event: any): void => this._addForm(event)
+        );
+
+        // Sélection dans la liste des adresses
+        $('#address-selector-content').on(
+            'change',
+            (event: any): void => this._loadAddress(event)
         );
 
         $('#form-selected-address').on(
@@ -182,8 +204,53 @@ export class DeliveryModule {
                 }
             });
         } else {
-            console.info('Passer à l\'étape suivante avec l\'adresse principale');
-            router.changeLocation('/checkout/Principale');
+            console.info('Passer à l\'étape suivante avec l\'adresse sélectionnée');
+            let addressSlug: string = 'Principale';
+
+            const addressSelector: JQuery = $('#address-selector-content');
+            if (!addressSelector.parent('div').hasClass('hidden')) {
+                addressSlug = addressSelector.find(':selected').val().toString();
+            }
+            router.changeLocation('/checkout/' + addressSlug);
         }
+    }
+
+    private _addOptions(): void {
+        const selector: JQuery = $('#address-selector-content');
+        selector.children('option').removeAttr('selected');
+        let indice: number = 0;
+        this.deliveryAddresses.forEach((address, title) => {
+            const option: JQuery = $('<option>');
+            option
+                .attr('value', title)
+                .html(title);
+            if (indice === 0) {
+                option.attr('selected', 'selected');
+            }
+            option.appendTo(selector);
+            indice++;
+        });
+        // Montrer la liste
+        $('#address-selector-group').removeClass('hidden');
+    }
+
+    private _loadAddress(event: any): void {
+        const selectedAddress: string = $(event.target).find(':selected').val().toString();
+        this._setForm(selectedAddress);
+    }
+
+    private _getBasketTotals(): void {
+        for (let basket of this.basket) {
+            this.fullTaxBasket = this.fullTaxBasket + basket.getFullTaxTotal();
+            this.fullLoad += basket.getFullLoad();
+        }
+
+        // Affiche les totaux
+        const fullTaxTotal: JQuery = $('.full-tax-total');
+        const fullLoad: JQuery = $('.full-load');
+
+        console.log('Convertir ' + this.fullLoad + " en kg");
+        fullTaxTotal.html(StringToNumberHelper.toCurrency(this.fullTaxBasket.toString()));
+        fullLoad.html((this.fullLoad/1000).toString() + " Kg");
     }
 }

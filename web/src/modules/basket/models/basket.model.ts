@@ -53,6 +53,23 @@ export class BasketModel {
         this.productService = new ProductService();
     }
 
+    public getFullTaxTotal(): number {
+        const quantity: number = this.quantity;
+        const fullTaxPrice: number = this._getFullTaxPrice();
+        let total: number = 0;
+
+        return quantity * fullTaxPrice;
+    }
+
+    public getFullLoad(): number {
+        const quantity: number = this.quantity;
+        if (this.servingSize !== null) {
+            return parseInt(this.servingSize) * quantity;
+        }
+
+        return this._getServingSize() * quantity;
+    }
+
     public getTableRow(): Promise<JQuery> {
         return new Promise((resolve) => {
             const _tr: JQuery = $('<tr>');
@@ -191,6 +208,24 @@ export class BasketModel {
             }
             return maxPerOrder;
         }
+    }
+
+    private _getFullTaxPrice(): number {
+        if (this.servingSize === null) {
+            // Le prix total est le prix de la seule ligne de prix
+            return this.product.pricing[0].ttc;
+        }
+
+        // Chercher le prix ttc en fonction de la quantité servie
+        const pricing: any[] = this.product.pricing;
+        const index: number = pricing.findIndex((obj) => { return obj.quantity == this.servingSize});
+        return pricing[index].ttc;
+    }
+
+    private _getServingSize(): number {
+        
+        // Le prix total est le prix de la seule ligne de prix
+        return parseInt(this.product.pricing[0].quantity);
     }
 
     public deserialize(basket: any): BasketModel {
