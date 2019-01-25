@@ -3,6 +3,8 @@
 namespace SiteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Encoder\JsonDecode;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
  * Site
@@ -67,9 +69,26 @@ class Site
      */
     public function getContent()
     {
-        return $this->content;
+        if ($this->content) {
+            $json = new JsonDecode();
+            return $json->decode($this->content, JsonEncoder::FORMAT);
+        }
     }
 
+    /**
+     * Retourne le contenu de l'article sous forme de tableau
+     * @return array
+     */
+    public function getRawContent(): array {
+        if ($this->content) {
+            
+            $json = new JsonDecode(true);
+            
+            return $json->decode($this->content, JsonEncoder::FORMAT);
+        }
+        
+        return [];
+    }
     /**
      * Set isEnabled
      *

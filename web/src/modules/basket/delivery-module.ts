@@ -4,9 +4,10 @@ import { BasketModel } from "./models/basket.model";
 import { UserService } from "../../services/user.service";
 import { StepComponent } from "./step-component";
 import { BasketService } from "../../services/basket.service";
+import { SiteService } from "./../../services/site.service";
 import { Constants } from "../../shared/constants";
 import { ToastModule } from "../toast/toast.module";
-
+import { CarryingModel } from "./models/carrying.model";
 /**
  * @name DeliveryModule
  * @desc Sélection de l'adresse de livraison du panier
@@ -19,6 +20,7 @@ export class DeliveryModule {
     private userService: UserService;
     private stepComponent: StepComponent;
     private deliveryAddresses: Map<string, any>;
+    private carriers: Map<string, CarryingModel> = new Map<string, CarryingModel>();
     private ids: Map<string, string> = new Map<string, string>();
     private fields: Array<JQuery> = new Array<JQuery>();
     private button: JQuery;
@@ -31,44 +33,57 @@ export class DeliveryModule {
 
         this.userService = new UserService();
 
+        const siteService: SiteService = new SiteService();
+
         this.ids
             .set('name', 'name')
             .set('address', 'address')
             .set('zipcode', 'zipcode')
             .set('city', 'city')
             .set('country', 'country');
+        siteService.getSite().then((siteDatas) => {
+            // Récupère la liste des tarifs d'expédition
+            siteDatas.carrying.forEach((carrier: any) => {
+                const port: CarryingModel = new CarryingModel();
+                port.deserialize(carrier);
+                this.carriers.set(port.getName(), port);
+            });
 
-        this.userService.hasUser().then((has) => {
-            this._init().then((panier) => {
-                this.basket = panier;
-                
-                // Calcule les totaux : prix TTC et Poids totaux
-                this._getBasketTotals();
+            this.userService.hasUser().then((has) => {
+                this._init().then((panier) => {
+                    this.basket = panier;
+                    
+                    // Calcule les totaux : prix TTC et Poids totaux
+                    this._getBasketTotals();
+    
+                    
+                    // Instancie le gestionnaire de progression
+                    this.stepComponent = new StepComponent(this.userService, this.basket);
+                    this.stepComponent.markAsComplete('basketStep');
+                    // Initialise la liste des Adresses de livraison
+                    this.deliveryAddresses = this.userService.getUser().getDeliveryAddresses();
+                    
+                    if (this.deliveryAddresses.size === 0) {
+                        $('#manage-address').attr('disabled', 'disabled');
+                    } else {
+                        if (this.deliveryAddresses.size > 1) {
+                            // Créer la liste des adresses de livraison
+                            this._addOptions();
+                        }                    
+                    }
+                    
+                    // Choix du mode de livraison
+                    this._carryingModePicker();
 
-                
-
-                // Instancie le gestionnaire de progression
-                this.stepComponent = new StepComponent(this.userService, this.basket);
-                this.stepComponent.markAsComplete('basketStep');
-                // Initialise la liste des Adresses de livraison
-                this.deliveryAddresses = this.userService.getUser().getDeliveryAddresses();
-                
-                if (this.deliveryAddresses.size === 0) {
-                    $('#manage-address').attr('disabled', 'disabled');
-                } else {
-                    if (this.deliveryAddresses.size > 1) {
-                        // Créer la liste des adresses de livraison
-                        this._addOptions();
-                    }                    
-                }
-
-                // Passe les données au formulaire
-                this._setForm();
-
-                // Définit les listeners
-                this._setListeners();
+                    // Passe les données au formulaire
+                    this._setForm();
+    
+                    // Définit les listeners
+                    this._setListeners();
+                });
             });
         });
+
 
     }
 
@@ -252,5 +267,38 @@ export class DeliveryModule {
         console.log('Convertir ' + this.fullLoad + " en kg");
         fullTaxTotal.html(StringToNumberHelper.toCurrency(this.fullTaxBasket.toString()));
         fullLoad.html((this.fullLoad/1000).toString() + " Kg");
+    }
+
+    private _carryingModePicker() {
+        const placeholder: JQuery = $('#picker');
+
+        // Boucle sur les modes de livraison
+        this.carriers.forEach((carrier, name) => {
+            const line: JQuery = $('<li>');
+            const logo: JQuery = $('<img>');
+            console.log('Logo : ' + carrier.getLogo());
+            logo
+                .attr('src', '/images/' + carrier.getLogo())
+                .attr('height', 50)
+                .attr('width', 150)
+                .addClass('img-responsive');
+            logo.appendTo(line);
+            // Si unsigned, signed ajouter une sous-liste
+            if (carrier.notOnlyPicking()) {
+                const sublist: JQuery = $('<ul>');
+                sublist
+                    .addClass('list-unstyled')
+                    .addClass('subpicker')
+                    .addClass('hidden');
+                carrier.getModes().forEach((mode: any) => {
+                    const subline: JQuery = $('<li>');
+                    subline.html(mode.value)
+                        .attr('data-rel', mode.key);
+                    subline.appendTo(sublist);
+                });
+                sublist.appendTo(line);
+            }
+            line.appendTo(placeholder);
+        });
     }
 }

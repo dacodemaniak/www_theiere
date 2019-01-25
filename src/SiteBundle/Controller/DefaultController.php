@@ -4,14 +4,25 @@ namespace SiteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
-class DefaultController extends Controller
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\FOSRestController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\View\View;
+use SiteBundle\Entity\Site;
+class DefaultController extends FOSRestController
 {
+    
     /**
-     * @Route("/site")
+     * @Rest\Get("/site")
      */
-    public function indexAction()
-    {
-        return $this->render('SiteBundle:Default:index.html.twig');
+    public function getAction(Request $request) {
+        
+        $site = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(Site::class)
+            ->find(1);
+        
+        return new View($site->getRawContent(), Response::HTTP_OK);
     }
 }

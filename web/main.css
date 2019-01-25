@@ -476,7 +476,7 @@ form.material-like .form-group label[aria-hidden] {
 }
 form.material-like .form-group input:focus ~ label,
 form.material-like .form-group input:valid ~ label,
-form.material-like .form-group input:read-only,
+form.material-like .form-group input[readonly] ~ label,
 form.material-like .form-group textarea:focus ~ label,
 form.material-like .form-group textarea:valid ~ label {
   top: -0.875em;
