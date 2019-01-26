@@ -8,7 +8,7 @@ import { UserService } from './../../services/user.service';
  */
 
  import * as $ from 'jquery';
-import { BasketModel } from './models/basket.model';
+import { ProductBasketModel } from './models/product-basket.model';
 
 export class StepComponent {
     private signinStep: JQuery;
@@ -17,9 +17,9 @@ export class StepComponent {
     private paymentStep: JQuery;
 
     private userService: UserService;
-    private basket: Array<BasketModel>;
+    private basket: Array<ProductBasketModel>;
 
-    public constructor(userService: UserService, basket: Array<BasketModel>) {
+    public constructor(userService: UserService, basket: Array<ProductBasketModel>) {
         this.userService = userService;
         this.basket = basket;
 

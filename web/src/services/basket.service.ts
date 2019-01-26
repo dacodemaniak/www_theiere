@@ -7,35 +7,35 @@
  */
 
 import * as $ from 'jquery';
-import { BasketModel } from './../modules/basket/models/basket.model';
+import { ProductBasketModel } from '../modules/basket/models/product-basket.model';
 
 export class BasketService {
     /**
      * Tableau des produits du panier courant
      * @var Array<BasketModel>
      */
-    private basket: Array<BasketModel>;
+    private basket: Array<ProductBasketModel>;
 
     /**
      * Produit supprimé
      */
-    private product: BasketModel;
+    private product: ProductBasketModel;
 
     public constructor(){
-        this.basket = new Array<BasketModel>();
+        this.basket = new Array<ProductBasketModel>();
     }
 
     /**
      * Promesse de panier local
      */
-    public localBasket(): Promise<Array<BasketModel>> {
+    public localBasket(): Promise<Array<ProductBasketModel>> {
         return new Promise((resolve) => {
             const basket = JSON.parse(localStorage.getItem('eshop-basket'));
-            const panier: Array<BasketModel> = new Array<BasketModel>();
+            const panier: Array<ProductBasketModel> = new Array<ProductBasketModel>();
             if (basket) {
                 console.log('Panier: ' + JSON.stringify(basket));
                 for (let element of basket) {
-                    const product = new BasketModel();
+                    const product = new ProductBasketModel();
                     panier.push(product.deserialize(element));
                 };
             }
@@ -47,7 +47,7 @@ export class BasketService {
      * Ajoute ou met à jour un produit dans le panier courant
      * @return Promise<Array<BasketModel>>
      */
-    public addProduct(product: BasketModel): Promise<Array<BasketModel>> {
+    public addProduct(product: ProductBasketModel): Promise<Array<ProductBasketModel>> {
         console.log('Ajoute un produit au panier');
         return new Promise((resolve) => {
             this.localBasket().then((panier) => {
@@ -58,7 +58,7 @@ export class BasketService {
 
                     });
                     if (index !== -1) {
-                        const updateProduct: BasketModel = panier[index];
+                        const updateProduct: ProductBasketModel = panier[index];
                         updateProduct.quantity += product.quantity;
                         panier[index] = updateProduct;
                     } else {
@@ -78,7 +78,7 @@ export class BasketService {
 
     }
     
-    public get(): BasketModel {
+    public get(): ProductBasketModel {
         return this.product;
     }
 
@@ -109,7 +109,7 @@ export class BasketService {
         });
     }
 
-    public updateProduct(productId: string, newQty: number): Promise<BasketModel> {
+    public updateProduct(productId: string, newQty: number): Promise<ProductBasketModel> {
         return new Promise((resolve) => {
             console.log('Suppression d\'un produit du panier');
             const productParts: Array<string> = productId.split('_');

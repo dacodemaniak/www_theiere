@@ -1,6 +1,6 @@
 import { ProductService } from './../../services/product.service';
 import { ToastModule } from './../toast/toast.module';
-import { BasketModel } from './models/basket.model';
+import { ProductBasketModel } from './models/product-basket.model';
 import { BasketService } from './../../services/basket.service';
 /**
  * @name CartModule
@@ -148,7 +148,7 @@ import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
         }
         console.log('Ajouter un produit dans le panier : \n' + button.data('id') + '\nPrix : ' + price + '\nQuantité : ' + quantity + '\nService : ' + servingSize);
 
-        const basketModel: BasketModel = new BasketModel();
+        const basketModel: ProductBasketModel = new ProductBasketModel();
         basketModel.id = button.data('id');
         basketModel.priceHT = price;
         basketModel.quantity = quantity;

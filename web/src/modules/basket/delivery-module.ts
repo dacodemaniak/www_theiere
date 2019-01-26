@@ -1,6 +1,6 @@
 import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
 import { RouterModule } from './../router/router.module';
-import { BasketModel } from "./models/basket.model";
+import { ProductBasketModel } from "./models/product-basket.model";
 import { UserService } from "../../services/user.service";
 import { StepComponent } from "./step-component";
 import { BasketService } from "../../services/basket.service";
@@ -16,7 +16,7 @@ import { CarryingModel } from "./models/carrying.model";
  * @version 1.0.0
  */
 export class DeliveryModule {
-    private basket: Array<BasketModel>;
+    private basket: Array<ProductBasketModel>;
     private userService: UserService;
     private stepComponent: StepComponent;
     private deliveryAddresses: Map<string, any>;
@@ -89,7 +89,7 @@ export class DeliveryModule {
     /**
      * Récupère les produits du panier
      */
-    private _init(): Promise<Array<BasketModel>> {
+    private _init(): Promise<Array<ProductBasketModel>> {
         return new Promise((resolve) => {
             const basketService: BasketService = new BasketService();
             basketService.localBasket().then((panier) => {

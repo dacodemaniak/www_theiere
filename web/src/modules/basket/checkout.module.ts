@@ -1,5 +1,5 @@
 import { RouterModule } from './../router/router.module';
-import { BasketModel } from "./models/basket.model";
+import { ProductBasketModel } from "./models/product-basket.model";
 import { UserService } from "../../services/user.service";
 import { StepComponent } from "./step-component";
 import { BasketService } from "../../services/basket.service";
@@ -14,7 +14,7 @@ import { ToastModule } from "../toast/toast.module";
  * @version 1.0.0
  */
 export class CheckoutModule {
-    private basket: Array<BasketModel>;
+    private basket: Array<ProductBasketModel>;
     private userService: UserService;
     private stepComponent: StepComponent;
     private deliveryAddressLabel: string;
@@ -66,7 +66,7 @@ export class CheckoutModule {
     /**
      * Récupère les produits du panier
      */
-    private _init(): Promise<Array<BasketModel>> {
+    private _init(): Promise<Array<ProductBasketModel>> {
         return new Promise((resolve) => {
             const basketService: BasketService = new BasketService();
             basketService.localBasket().then((panier) => {
@@ -111,7 +111,7 @@ export class CheckoutModule {
         return poids;
     }
 
-    private _getPoids(product: BasketModel) {
+    private _getPoids(product: ProductBasketModel) {
         let index: number = 0;
         const pricing: Array<any> = product.product.pricing;
         if (pricing.length > 0) {

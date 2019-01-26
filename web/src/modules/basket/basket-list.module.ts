@@ -3,7 +3,7 @@ import { RouterModule } from './../router/router.module';
 import { UserService } from './../../services/user.service';
 import { ToastModule } from './../toast/toast.module';
 import { BasketService } from './../../services/basket.service';
-import { BasketModel } from './models/basket.model';
+import { ProductBasketModel } from './models/product-basket.model';
 import { StringToNumberHelper } from '../../helpers/string-to-number.helper';
 import { DialogModule } from './../dialog/dialog.module';
 /**
@@ -14,7 +14,7 @@ import { DialogModule } from './../dialog/dialog.module';
  * @version 1.0.0
  */
 export class BasketListModule {
-    private basket: Array<BasketModel>;
+    private basket: Array<ProductBasketModel>;
     private userService: UserService;
     private stepComponent: StepComponent;
 
@@ -83,7 +83,7 @@ export class BasketListModule {
     /**
      * Récupère les produits du panier
      */
-    private _init(): Promise<Array<BasketModel>> {
+    private _init(): Promise<Array<ProductBasketModel>> {
         return new Promise((resolve) => {
             const basketService: BasketService = new BasketService();
             basketService.localBasket().then((panier) => {
@@ -144,7 +144,7 @@ export class BasketListModule {
                     if (result) {
                         // Suppression de la ligne dans le tableau HTML
                         $('tr#' + $(event.target).attr('data-rel')).remove();
-                        const product: BasketModel = basketService.get();
+                        const product: ProductBasketModel = basketService.get();
                         // Recalcule les totaux...
                         let totalHT: number = StringToNumberHelper.toNumber($('.gran-total').html());
                         let totalTTC: number = StringToNumberHelper.toNumber($('.fulltax-total').html());
@@ -289,7 +289,7 @@ export class BasketListModule {
         }
     }
 
-    private _getTTC(inBasket: BasketModel, product: any): number {
+    private _getTTC(inBasket: ProductBasketModel, product: any): number {
         const priceList: Array<any> = product.pricing;
         
         let price: any;

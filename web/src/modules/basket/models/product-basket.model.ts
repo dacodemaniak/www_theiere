@@ -1,4 +1,4 @@
-import { ProductService } from './../../../services/product.service';
+import { ProductService } from '../../../services/product.service';
 import { StringToNumberHelper } from '../../../helpers/string-to-number.helper';
 /**
  * @name BasketModel
@@ -7,7 +7,7 @@ import { StringToNumberHelper } from '../../../helpers/string-to-number.helper';
  * @package modules/basket/models
  * @version 1.0.0
  */
-export class BasketModel {
+export class ProductBasketModel {
     /**
      * Identifiant du produit dans le panier
      * @var number
@@ -47,6 +47,9 @@ export class BasketModel {
      */
     public product: any;
 
+    /**
+     * Instance de ProductService pour récupérer le produit distant
+     */
     private productService: ProductService;
 
     public constructor() {
@@ -228,7 +231,7 @@ export class BasketModel {
         return parseInt(this.product.pricing[0].quantity);
     }
 
-    public deserialize(basket: any): BasketModel {
+    public deserialize(basket: any): ProductBasketModel {
         Object.assign(this, basket);
         return this;
     }
