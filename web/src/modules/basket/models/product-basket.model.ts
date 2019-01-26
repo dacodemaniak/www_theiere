@@ -1,3 +1,4 @@
+import { Constants } from './../../../shared/constants';
 import { ProductService } from '../../../services/product.service';
 import { StringToNumberHelper } from '../../../helpers/string-to-number.helper';
 /**
@@ -228,7 +229,11 @@ export class ProductBasketModel {
     private _getServingSize(): number {
         
         // Le prix total est le prix de la seule ligne de prix
-        return parseInt(this.product.pricing[0].quantity);
+        if (!isNaN(parseInt(this.product.pricing[0].quantity))) {
+            return parseInt(this.product.pricing[0].quantity);
+        }
+
+        return Constants.averageWeight;
     }
 
     public deserialize(basket: any): ProductBasketModel {

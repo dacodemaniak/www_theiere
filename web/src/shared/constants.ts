@@ -14,4 +14,8 @@ export class Constants {
         }
         return 'http://api.lessoeurstheiere.wrk/';
     }
+
+    public static get averageWeight() {
+        return 500;
+    }
 }

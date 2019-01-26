@@ -82,7 +82,7 @@ export class BasketService {
     }
 
     public addDeliveryDatas(deliveryDatas: any) {
-
+        this._persist(deliveryDatas);
     }
     
     public get(): ProductBasketModel {
@@ -149,12 +149,18 @@ export class BasketService {
         });
     }
 
-    private _persist(obj: any, key: string): void {
+    private _persist(obj: any, key: string = null): void {
         let eShop: any = JSON.parse(localStorage.getItem('eshop-basket'));
         if (eShop === null) {
             eShop = {};
         }
-        eShop[key] = obj;
+        if (key !== null) {
+            eShop[key] = obj;
+        } else {
+            eShop.carrier = obj.carrier;
+            eShop.carryingType = obj.carryingType;
+            eShop.carryingCharge = obj.carryingCharge;
+        }
         
         localStorage.setItem('eshop-basket', JSON.stringify(eShop));
     }

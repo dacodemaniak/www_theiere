@@ -186,7 +186,32 @@ export class DeliveryModule {
     private _submit(event: any): void {
         event.preventDefault();
         
-        const router: RouterModule = new RouterModule();
+        // Récupère les données de livraison et le montant associé
+        const basketService: BasketService = new BasketService();
+
+        const selectedLine: JQuery = $('#picker').find('li.selector.active');
+
+        const carrier: string = selectedLine
+            .parent('ul')
+            .parent('li')
+            .attr('data-rel');
+        
+        const carryingType: string = selectedLine
+            .attr('data-rel');
+        
+        const carryingCharge: number = parseFloat(selectedLine
+            .attr('data-price'));
+
+        console.log('Données finales : ' + carryingType + ' : ' + carrier + ' : ' + carryingCharge);
+
+        // Ajoute les données au panier courant
+        basketService.addDeliveryDatas(
+            {
+                carrier: carrier,
+                carryingType: carryingType,
+                carryingCharge: carryingCharge
+            }
+        );
 
         if (this.button.hasClass('btn-add')) {
             console.info('Ajouter une adresse et passer à l\'étape suivante');
@@ -213,7 +238,7 @@ export class DeliveryModule {
                 data: formContent,
                 success: (datas) => {
                     console.log('Adresse : ' + JSON.stringify(datas));
-                    router.changeLocation('/checkout/' + datas.name);
+                    this._changeLocation('/checkout/' + datas.name);
                 },
                 error: (xhr, error) => {
                     const toast: ToastModule = new ToastModule({
@@ -240,8 +265,17 @@ export class DeliveryModule {
             //  - Montant du port
             
 
-            router.changeLocation('/checkout/' + addressSlug);
+            this._changeLocation('/checkout/' + addressSlug);
         }
+    }
+
+    /**
+     * Routage vers une autre page
+     */
+    private _changeLocation(location: string): void {
+        const router: RouterModule = new RouterModule();
+
+        router.changeLocation(location);
     }
 
     private _addOptions(): void {
@@ -294,7 +328,6 @@ export class DeliveryModule {
     private _evaluateCarryingCharge(): void {
         this.carriers.forEach((carrier, name) => {
             const tarifs = carrier.getPrices();
-            console.log("Tarifs : " + JSON.stringify(tarifs));
             let found: boolean = false;
             tarifs.forEach((tarif) => {
                 if (!found) {
@@ -310,6 +343,7 @@ export class DeliveryModule {
                         } else {
                             load.picking = tarif.picking * 1.2;
                         }
+                        console.info('Ajoute ' + JSON.stringify(load) + ' pour ' + carrier.getSlug());
                         this.loadCharges.set(carrier.getSlug(), load);
                         found = true;
                     }
@@ -323,6 +357,8 @@ export class DeliveryModule {
 
         // Boucle sur les modes de livraison
         this.carriers.forEach((carrier, name) => {
+            console.log('Livraison : ' + JSON.stringify(carrier));
+            
             const line: JQuery = $('<li>');
             line.attr('data-rel', carrier.getSlug());
 
@@ -343,6 +379,7 @@ export class DeliveryModule {
                     .addClass('hidden');
                 carrier.getModes().forEach((mode: any) => {
                     const subline: JQuery = $('<li>');
+                    console.info('Lit la valeur de : ' + JSON.stringify(this.loadCharges.get(carrier.getSlug())) + ' de ' + carrier.getSlug());
                     const charge: number = this.loadCharges.get(carrier.getSlug())[mode.key];
                     subline.attr('data-price', this.loadCharges.get(carrier.getSlug())[mode.key].toFixed(2));
                     subline.html(mode.value + ' : + <span class="charge">' + StringToNumberHelper.toCurrency(charge.toString()) + '</span>')
@@ -373,7 +410,11 @@ export class DeliveryModule {
     }
 
     private _selectCarryingMode(event: any): void {
-        const choice: JQuery = $(event.target);
+        let choice: JQuery = $(event.target);
+
+        if (choice.is('span')) {
+            choice = choice.parent('li');
+        }
         const amount: JQuery = $('.amount');
 
         // Enlève la classe "active" sur toutes les lignes "selector"
@@ -383,6 +424,7 @@ export class DeliveryModule {
         choice.addClass('active');
 
         // Récupère le montant des frais de port
+
         const price: number = parseFloat(choice.attr('data-price'));
 
         // Recalcule le montant total
