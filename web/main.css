@@ -750,6 +750,36 @@ section.product-container #product-slider a span.carousel-control-next-icon {
   margin-top: 2em;
   margin-bottom: 2em;
 }
+#delivery .total-payment {
+  border-top-left-radius: 0;
+  border-top-right-radius: 1em;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 1em;
+  padding: 2em;
+  text-align: center;
+  font-size: 1.3em;
+  color: #ffffff;
+  background-color: #ed912f;
+  box-shadow: -0.1em 0.1em 0.1em #000000;
+}
+#delivery .mode-livraison-container ul#picker > li {
+  margin-bottom: 2em;
+}
+#delivery .mode-livraison-container ul#picker > li ul.subpicker {
+  margin-left: 1.5em;
+}
+#delivery .mode-livraison-container ul#picker > li ul.subpicker li {
+  cursor: pointer;
+}
+#delivery .mode-livraison-container ul#picker > li ul.subpicker li span.charge {
+  font-weight: bold;
+}
+#delivery .mode-livraison-container ul#picker > li ul.subpicker li.active span.charge {
+  background-color: #ed912f;
+  color: #ffffff;
+  border-radius: 1.5em;
+  padding: 0.3em;
+}
 /**
 * Importation des polices
 **/

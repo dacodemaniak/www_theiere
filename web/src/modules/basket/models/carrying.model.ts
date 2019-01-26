@@ -20,6 +20,7 @@
 
 export class CarryingModel {
     private name: string;
+    private slug: string;
     private logo: string;
     private hasMany: boolean;
     private modes?: ModeInterface[];
@@ -29,6 +30,10 @@ export class CarryingModel {
         return this.name;
     }
 
+    public getSlug(): string {
+        return this.slug;
+    }
+    
     public getLogo(): string {
         return this.logo;
     }

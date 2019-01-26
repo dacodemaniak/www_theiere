@@ -74,6 +74,10 @@ export class BasketService {
         });
     }
 
+    public addDeliveryDatas(deliveryDatas: any) {
+
+    }
+    
     public get(): BasketModel {
         return this.product;
     }
