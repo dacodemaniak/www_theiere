@@ -1,3 +1,4 @@
+
 /**
  * @name BasketService
  * @desc Service de gestion du panier de commande
@@ -7,6 +8,8 @@
  */
 
 import * as $ from 'jquery';
+
+import { BasketModel } from './../modules/basket/models/basket.model';
 import { ProductBasketModel } from '../modules/basket/models/product-basket.model';
 
 export class BasketService {
@@ -30,9 +33,10 @@ export class BasketService {
      */
     public localBasket(): Promise<Array<ProductBasketModel>> {
         return new Promise((resolve) => {
-            const basket = JSON.parse(localStorage.getItem('eshop-basket'));
+            const eShopBasket = JSON.parse(localStorage.getItem('eshop-basket'));
             const panier: Array<ProductBasketModel> = new Array<ProductBasketModel>();
-            if (basket) {
+            if (eShopBasket) {
+                const basket: Array<ProductBasketModel> = eShopBasket.basket;
                 console.log('Panier: ' + JSON.stringify(basket));
                 for (let element of basket) {
                     const product = new ProductBasketModel();
@@ -50,7 +54,8 @@ export class BasketService {
     public addProduct(product: ProductBasketModel): Promise<Array<ProductBasketModel>> {
         console.log('Ajoute un produit au panier');
         return new Promise((resolve) => {
-            this.localBasket().then((panier) => {
+            this.localBasket().then((basket: Array<ProductBasketModel>) => {
+                let panier: Array<ProductBasketModel> = basket;
                 if (panier.length) {
                     const index: number = panier.findIndex((obj) => { 
                             return (obj.id == product.id &&
@@ -68,7 +73,9 @@ export class BasketService {
                     panier.push(product);
                 }
                 // Met à jour le stockage local
-                localStorage.setItem('eshop-basket', JSON.stringify(panier));
+                const obj: any = {basket: panier};
+                //localStorage.setItem('eshop-basket', JSON.stringify(obj));
+                this._persist(panier, 'basket');
                 resolve(panier);
             });
         });
@@ -100,7 +107,9 @@ export class BasketService {
                 if (index !== -1) {
                     this.product = panier[index];
                     panier.splice(index, 1);
-                    localStorage.setItem('eshop-basket', JSON.stringify(panier));
+                    const obj: any = {basket: panier};
+                    //localStorage.setItem('eshop-basket', JSON.stringify(obj));
+                    this._persist(panier, 'basket');
                     resolve(true);
                 } else {
                     resolve(false);
@@ -129,12 +138,24 @@ export class BasketService {
                     this.product = panier[index];
                     this.product.quantity = newQty;
                     panier[index] = this.product;
-                    localStorage.setItem('eshop-basket', JSON.stringify(panier));
+                    const obj: any = {basket: panier};
+                    //localStorage.setItem('eshop-basket', JSON.stringify(obj));
+                    this._persist(panier, 'basket');
                     resolve(this.product);
                 } else {
                     resolve(null);
                 }
             });
         });
+    }
+
+    private _persist(obj: any, key: string): void {
+        let eShop: any = JSON.parse(localStorage.getItem('eshop-basket'));
+        if (eShop === null) {
+            eShop = {};
+        }
+        eShop[key] = obj;
+        
+        localStorage.setItem('eshop-basket', JSON.stringify(eShop));
     }
 }
