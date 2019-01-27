@@ -25,9 +25,17 @@ import { ProductBasketModel } from "./product-basket.model";
          return this;
      }
 
+     public getCarrier(): string {
+         return this.carrier;
+     }
+
      public setDeliveryType(deliveryType: string): BasketModel {
          this.deliveryType = deliveryType;
          return this;
+     }
+
+     public getDeliveryType(): string {
+        return this.deliveryType;
      }
 
      public setCharge(charge: number): BasketModel {

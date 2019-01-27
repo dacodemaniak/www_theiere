@@ -20,7 +20,7 @@ use UserBundle\Entity\Groupe;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Common\Util\ClassUtils;
 use UserBundle\Service\TokenService;
-
+use UserBundle\Payment\PaymentProcess;
 
 class UserController extends FOSRestController {
 	
@@ -48,6 +48,7 @@ class UserController extends FOSRestController {
 	 */
 	public function __construct(TokenService $tokenService) {
 	    $this->tokenService = $tokenService;
+	    echo "Constructeur user";
 	}
 	
 	/**
@@ -346,6 +347,52 @@ class UserController extends FOSRestController {
 	    }
 	    
 	    return new View("Token non valide ou expiré", $authGuard["code"]);
+	}
+
+	/**
+	 * @Rest\Post("/checkout/process")
+	 *
+	 * @param Request $request
+	 */
+	public function processPaymentAction(Request $request) {
+	    $authGuard = $this->tokenService->tokenAuthentication($request);
+	    
+	    if ($authGuard["code"] === Response::HTTP_OK) {
+	        $user = $this->getDoctrine()
+	           ->getManager()
+	           ->getRepository("UserBundle:User")
+	           ->find($authGuard["user"]);
+	        
+	       return new View(json_encode($user), Response::HTTP_OK);
+	           
+	        // Gérer l'appel à l'API de paiement
+	        echo "Chargement du module de paiement<br>\n";
+	        
+	        $processing = new PaymentProcess();
+	        
+	        $processing->setAmount($request->get("amount"))
+	           ->setCardNumber($request->get("cardnumber"))
+	           ->setExpiryMonth($request->get("expirationmonth"))
+	           ->setExpiryYear($request->get("expirationyear"))
+	           ->setCsc($request->get("cvv"))
+	           ->setScheme($request->get("scheme", "visa"))
+	           ->setOrderId($request->get("token", $request->headers->get('X-Auth-Token')));
+	        
+	           try {
+	               $response = $processing->process("simple");
+	               $info = $response->createPaymentResult->commonResponse;
+	               $responseContent = [
+	                   "code" => $info->responseCode,
+	                   "status" => $info->transactionStatusLabel
+	               ];
+	               
+	               return new View(json_encode($responseContent), Response::HTTP_OK);
+	           } catch(\Exception $exception) {
+	               return new View("An error occured while payment processing : " . $exception, Response::HTTP_SERVICE_UNAVAILABLE);
+	           }
+	    }
+	    
+	    return new View("Token non valide ou expiré", Response::HTTP_NETWORK_AUTHENTICATION_REQUIRED);
 	}
 	
 	/**

@@ -70,7 +70,7 @@ export class CheckoutModule {
                 this.totalBasket = this.fullTaxBasket + this.carryingCharge;
                 $('#total-basket .full-amount').html(
                     StringToNumberHelper.toCurrency(this.totalBasket.toString())
-                );
+                ).attr('data-price', this.totalBasket);
 
                 // Années valides pour la date d'expiration de la carte
                 this._populateCardYears();
@@ -118,7 +118,11 @@ export class CheckoutModule {
             (event: any): void => this._validForm(event)
         );
 
-        
+        $('#credit-card-form').on(
+            'submit',
+            (event: any): void => this._submit(event)
+        );
+
         $('#expirationmonth-content, #expirationyear-content').on(
             'change',
             (event: any): void => this._validForm(event)
@@ -239,5 +243,56 @@ export class CheckoutModule {
             yearList.append(option);
             currentYear++;
         }
+    }
+
+    /**
+     * Soumission du formulaire de paiement
+     */
+    private _submit(event: any): void {
+        event.preventDefault();
+
+        // Authentification de la requête
+        const header: any = {
+            'X-Auth-Token': this.userService.getUser().getToken()
+        };
+
+        // Définition des données à transmettre
+        const datas: any = {};
+
+        datas.amount = $('.full-amount').attr('data-price');
+        datas.owner = $('#owner-content').val();
+        datas.cardnumber = $('#cardnumber-content').val();
+        datas.expirationmonth = $('#expirationmonth-content').val();
+        datas.expirationyear = $('#expirationyear-content').val();
+        datas.cvv = $('#cvv-content').val();
+        datas.scheme = $('#cards-logo img.cc-logo.active').attr('id');
+        
+        // Détermine l'adresse de livraison
+        const deliveryAddress = $('#delivery-address ul li.address').html() + 
+        $('#delivery-address ul li.city').html();
+        datas.deliveryAddress = deliveryAddress;
+
+        // Mode de livraison
+        datas.carrier = this.basketService.getBasket().getCarrier();
+        datas.carryingType = this.basketService.getBasket().getDeliveryType();
+        datas.basket = this.basket;
+
+        // Effectue l'appel à l'API
+        console.info('Call api with : ' + JSON.stringify(datas));
+
+        $.ajax({
+            headers: header,
+            url: Constants.apiRoot + 'checkout/process',
+            method: 'post',
+            dataType: 'json',
+            data: datas,
+            success: (datas) => {
+                console.log('Call success');
+            },
+            error: (xhr, error) => {
+                console.log('Call error : ' + error);
+            }
+        })
+
     }
 }
