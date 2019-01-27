@@ -23,7 +23,7 @@ var webpack = require('webpack');
                  test: /\.tsx?$/,
                  use: 'ts-loader',
                  exclude: /node_modules/
-             }              
+             }            
          ]
      },
      resolve: {
@@ -33,5 +33,6 @@ var webpack = require('webpack');
     		 '.tsx'
     	 ]
      },
-     devtool: 'source-map'
+     devtool: 'source-map',
+
  };

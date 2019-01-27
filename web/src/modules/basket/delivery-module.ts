@@ -42,6 +42,7 @@ export class DeliveryModule {
             .set('zipcode', 'zipcode')
             .set('city', 'city')
             .set('country', 'country');
+            
         siteService.getSite().then((siteDatas) => {
             // Récupère la liste des tarifs d'expédition
             siteDatas.carrying.forEach((carrier: any) => {

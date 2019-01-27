@@ -21,3 +21,32 @@
 .bs-wizard > .bs-wizard-step:first-child  > .progress {left: 50%; width: 50%;}
 .bs-wizard > .bs-wizard-step:last-child  > .progress {width: 50%;}
 .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot{ pointer-events: none; }
+
+#total-basket {
+    div {
+        p {
+            padding: 1.5em;
+            background-color: @default_hover_color;
+            color: @default_menu_color;
+            font-size: 1.2em;
+
+            span {
+                font-weight: bold;
+            }
+        }
+    }
+}
+#payment-picker {
+    .logo {
+        width: 15%;
+        height: 15%;
+    }
+}
+
+#cards-logo {
+    img {
+        &.active {
+            transform: scale(1.1);
+        }
+    }
+}

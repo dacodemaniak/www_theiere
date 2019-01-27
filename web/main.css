@@ -746,6 +746,22 @@ section.product-container #product-slider a span.carousel-control-next-icon {
 .bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot {
   pointer-events: none;
 }
+#total-basket div p {
+  padding: 1.5em;
+  background-color: #ed912f;
+  color: #ffffff;
+  font-size: 1.2em;
+}
+#total-basket div p span {
+  font-weight: bold;
+}
+#payment-picker .logo {
+  width: 15%;
+  height: 15%;
+}
+#cards-logo img.active {
+  transform: scale(1.1);
+}
 #delivery #address-selector {
   margin-top: 2em;
   margin-bottom: 2em;

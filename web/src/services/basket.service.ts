@@ -18,6 +18,7 @@ export class BasketService {
      * @var Array<BasketModel>
      */
     private basket: Array<ProductBasketModel>;
+    private basketModel: BasketModel = new BasketModel();
 
     /**
      * Produit supprimé
@@ -28,6 +29,10 @@ export class BasketService {
         this.basket = new Array<ProductBasketModel>();
     }
 
+    public getBasket(): BasketModel {
+        return this.basketModel;
+    }
+    
     /**
      * Promesse de panier local
      */
@@ -38,6 +43,13 @@ export class BasketService {
             if (eShopBasket) {
                 const basket: Array<ProductBasketModel> = eShopBasket.basket;
                 console.log('Panier: ' + JSON.stringify(basket));
+                // Instancie l'objet Basket
+                this.basketModel
+                    .setCarrier((eShopBasket.hasOwnProperty('carrier') && eShopBasket.carrier !== null) ? eShopBasket.carrier : null)
+                    .setDeliveryType((eShopBasket.hasOwnProperty('carryingType') && eShopBasket.carryingType !== null) ? eShopBasket.carryingType : null)
+                    .setCharge((eShopBasket.hasOwnProperty('carryingCharge') && eShopBasket.carryingCharge !== null) ? eShopBasket.carryingCharge : null)
+                    .setBasket(basket);
+
                 for (let element of basket) {
                     const product = new ProductBasketModel();
                     panier.push(product.deserialize(element));
