@@ -51,7 +51,7 @@ class SystempaySoapV5ToolBox
      * @param $soap_options array
      */
     
-    public function __construct(array $args, $soap_options = false)
+    public function __construct($args, $soap_options = false)
     {
         $shopID = (isset($args['shopID']))? $args['shopID'] : '';
         $certTest = (isset($args['certTest']))? $args['certTest'] : '';

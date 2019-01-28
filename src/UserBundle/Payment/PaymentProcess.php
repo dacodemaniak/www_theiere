@@ -26,8 +26,6 @@ class PaymentProcess {
     private $callArgs = [];
     
     public function __construct() {
-        echo "Constructeur du processus de paiement<br>\n";
-        
         $this->toolBox = $this->_getToolbox();
         
         $this->callArgs = [
@@ -115,8 +113,6 @@ class PaymentProcess {
             "wsdl" => "https://paiement.systempay.fr/vads-ws/v5?wsdl",
             "ns" => "http://v5.ws.vads.lyra.com/Header"
         ];
-        
-        return null;
         
         return new SystempaySoapV5ToolBox($args, $soap_options);
     }

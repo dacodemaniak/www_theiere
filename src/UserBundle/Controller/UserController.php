@@ -48,7 +48,6 @@ class UserController extends FOSRestController {
 	 */
 	public function __construct(TokenService $tokenService) {
 	    $this->tokenService = $tokenService;
-	    echo "Constructeur user";
 	}
 	
 	/**
@@ -363,10 +362,10 @@ class UserController extends FOSRestController {
 	           ->getRepository("UserBundle:User")
 	           ->find($authGuard["user"]);
 	        
-	       return new View(json_encode($user), Response::HTTP_OK);
+	       //return new View(json_encode($user), Response::HTTP_OK);
 	           
 	        // Gérer l'appel à l'API de paiement
-	        echo "Chargement du module de paiement<br>\n";
+	        //echo "Chargement du module de paiement<br>\n";
 	        
 	        $processing = new PaymentProcess();
 	        
