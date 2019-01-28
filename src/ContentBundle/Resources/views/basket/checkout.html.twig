@@ -1,14 +1,14 @@
 {%  extends "base.html.twig" %}
 
 {% block title %}
-	Livraison - Les Soeurs Théière
+	Finalisez votre commande - Les Soeurs Théière
 {% endblock %}
 
 {% block body %}
 	<div class="container" id="checkout">
 	
 		<!-- Inclusion du progress stepper -->
-		{{ include("@Content/Default/checkoutstepper.html.twig", {"step": "delivery"}) }}
+		{{ include("@Content/Default/checkoutstepper.html.twig", {"step": "checkout"}) }}
 	</div>
 	
 	<section class="row" id="total-basket">
@@ -60,13 +60,13 @@
 			<div class="collapse show" id="credit-card">
 				<div class="card card-body">
 					<div class="alert alert-info alert-dismissible fade show">
-						Les informations saisies ici ne sont pas conservées sur notre site afin de garantir le maximum de sécurité concernant votre carte.
+						Les informations saisies ici ne sont pas conservéees sur notre site afin de garantir le maximum de sécurité concernant votre carte.
 						<button type="button" class="close" data-dismiss="alert" aria-label="Fermer">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					
-					<!-- Le formulaire lui-même -->
+					<!-- Le formulaire lui-m�me -->
 					<form id="credit-card-form" class="form material-like">
         				<fieldset>
         					<legend>Payez en ligne en toute sécurité</legend>
@@ -157,6 +157,28 @@
             			</fieldset>						
 					</form>
 				</div>
+			</div>
+			
+			<p>
+				<a class="" title="Règlement par chèque" data-toggle="collapse" data-target="#bank-check" aria-expanded="false" aria-controls="bank-check">
+					<img src="{{ asset("images/logo-cheque.png") }}" class="img-responsive logo" alt="Logo Règlement par chèque à l'attention des Soeurs Théière">
+				</a>
+			</p>
+			
+			<div class="collapse" id="bank-check">
+				<p>Votre commande sera expédiée à réception de votre règlement par chèque à l'attention de : <strong>{{ address.name }}</strong></p>
+				<address itemprop="address">
+					<ul class="list-unstyled">
+						{% if address.address.hote|length %}
+							<li>{{ address.address.hote }}</li>
+						{%  endif %}
+						<li itemprop="streetAddress">
+							{{ address.address.streetNumber }} {{ address.address.street }}
+						</li>
+						<li><span itemprop="postalCode">{{ address.address.zipcode }}</span> <span itemprop="addressLocality">{{ address.address.city }}</span>
+					</ul>
+				
+				</address>
 			</div>
 		</div>
 		
