@@ -106,8 +106,8 @@ class PaymentProcess {
         $soap_options = [];
         
         $args = [
-            "shopID" => "SITE_ID",
-            "certTest" => "TEST",
+            "shopID" => "57890042",
+            "certTest" => "9uGrmuYph7x3JgyS",
             "certProd" => "PRODUCTION",
             "ctxMode" => "TEST",
             "wsdl" => "https://paiement.systempay.fr/vads-ws/v5?wsdl",

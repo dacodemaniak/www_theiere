@@ -33,6 +33,14 @@ export class BasketService {
         return this.basketModel;
     }
     
+    public remove(): Promise<void> {
+        return new Promise(() => {
+            this.basketModel = null;
+            this.product = null;
+            localStorage.removeItem('eshop-basket');
+        });
+    }
+
     /**
      * Promesse de panier local
      */

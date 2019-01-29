@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Common\Util\ClassUtils;
 use UserBundle\Service\TokenService;
 use UserBundle\Payment\PaymentProcess;
+use UserBundle\Entity\Basket;
 
 class UserController extends FOSRestController {
 	
@@ -362,33 +363,70 @@ class UserController extends FOSRestController {
 	           ->getRepository("UserBundle:User")
 	           ->find($authGuard["user"]);
 	        
-	       //return new View(json_encode($user), Response::HTTP_OK);
-	           
+	       // Créer une nouvelle instance de panier
+	       try {
+	           $order = new Basket();
+    	       $order->setUser($user)
+    	           ->setReference("00001")
+    	           ->setConvertDate(new \DateTime())
+    	           ->setConvertTime(new \DateTime())
+    	           ->setFullTaxTotal($request->get("amount"))
+    	           ->setPaymentMode($request->get("paymentMode"))
+    	           ->setContent($request);
+    	       // Dans tous les cas, on génère l'email final
+    	       $emailContent = $this->renderView(
+    	               "@User/Email/order.html.twig",
+    	               [
+    	                   "order" => $order
+    	               ]
+    	       );
+	       } catch(\Exception $e) {
+	           return new View("Erreur d'instanciation : " . $e->getMessage(), 500);
+	       }
 	        // Gérer l'appel à l'API de paiement
 	        //echo "Chargement du module de paiement<br>\n";
-	        
-	        $processing = new PaymentProcess();
-	        
-	        $processing->setAmount($request->get("amount"))
-	           ->setCardNumber($request->get("cardnumber"))
-	           ->setExpiryMonth($request->get("expirationmonth"))
-	           ->setExpiryYear($request->get("expirationyear"))
-	           ->setCsc($request->get("cvv"))
-	           ->setScheme($request->get("scheme", "visa"))
-	           ->setOrderId($request->get("token", $request->headers->get('X-Auth-Token')));
-	        
-	           try {
-	               $response = $processing->process("simple");
-	               $info = $response->createPaymentResult->commonResponse;
-	               $responseContent = [
-	                   "code" => $info->responseCode,
-	                   "status" => $info->transactionStatusLabel
-	               ];
-	               
-	               return new View(json_encode($responseContent), Response::HTTP_OK);
-	           } catch(\Exception $exception) {
-	               return new View("An error occured while payment processing : " . $exception, Response::HTTP_SERVICE_UNAVAILABLE);
-	           }
+	        if ($request->get("paymentMode") === "cc") {
+    	        $processing = new PaymentProcess();
+    	        
+    	        $processing->setAmount($request->get("amount"))
+    	           ->setCardNumber($request->get("cardnumber"))
+    	           ->setExpiryMonth($request->get("expirationmonth"))
+    	           ->setExpiryYear($request->get("expirationyear"))
+    	           ->setCsc($request->get("cvv"))
+    	           ->setScheme($request->get("scheme", "visa"))
+    	           ->setOrderId($request->get("token", $request->headers->get('X-Auth-Token')));
+    	        
+    	        try {
+    	           $response = $processing->process("simple");
+    	           $info = $response->createPaymentResult->commonResponse;
+    	           $responseContent = [
+    	               "code" => $info->responseCode,
+    	               "status" => $info->transactionStatusLabel
+    	           ];
+    	               
+    	           return new View(json_encode($responseContent), Response::HTTP_OK);
+    	       } catch(\Exception $exception) {
+    	           return new View("An error occured while payment processing : " . $exception, Response::HTTP_SERVICE_UNAVAILABLE);
+
+    	       }
+	        } else {
+	            if ($request->get("paymentMode") === "ch") {
+	                // Persistence de la commande
+	                $entityManager = $this->getDoctrine()->getManager();
+	                $entityManager->persist($order);
+	                
+	                $entityManager->flush();
+	                
+	                // Génère l'e-mail à l'attention des administrateurs
+	                $message = "Votre commande a bien été enregistrée.";
+	                if (!$this->_sendMail($emailContent)) {
+	                    $message .= "Une erreur est survenue lors de l'envoi de l'email vers notre boutique.";
+	                }
+	                
+	                // Mode de paiement asynchrone
+	                return new View($message, Response::HTTP_OK);
+	            }
+	        }
 	    }
 	    
 	    return new View("Token non valide ou expiré", Response::HTTP_NETWORK_AUTHENTICATION_REQUIRED);
@@ -574,5 +612,31 @@ class UserController extends FOSRestController {
 		$datas["menus"] = $menus;
 		
 		return $datas;
+	}
+	
+	private function _sendMail(string $content) {
+	    $mailer = $this->get("mailer");
+	    
+	    $message = (new \Swift_Message("Contact depuis le site"))
+	       ->setFrom("hello@lessoeurstheiere.com")
+	       ->setTo([
+	        
+	        //"natacha@lessoeurstheiere.com" => "e-Shop - Les soeurs théière",
+	        "jean-luc.a@web-projet.com" => "e-Shop - Les soeurs théière"
+	       ])
+	       ->setBcc([
+	            "jean-luc.a@web-projet.com" => "eShop - Les Soeurs Théière"
+	        ])
+	        ->setCharset("utf-8")
+	        ->setBody(
+                $content,
+	            "text/html"
+	         );
+	    // Envoi le mail proprement dit
+	    if (($recipients = $mailer->send($message)) !== 0) {
+	        // Retourne le message au client
+	        return true;
+	    }
+	    return false;
 	}
 }

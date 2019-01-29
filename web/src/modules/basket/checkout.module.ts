@@ -118,7 +118,7 @@ export class CheckoutModule {
             (event: any): void => this._validForm(event)
         );
 
-        $('#credit-card-form').on(
+        $('#credit-card-form, #check-payment-form').on(
             'submit',
             (event: any): void => this._submit(event)
         );
@@ -250,6 +250,16 @@ export class CheckoutModule {
      */
     private _submit(event: any): void {
         event.preventDefault();
+        
+        // Quel formulaire a été validé
+        const formToSubmit = $(event.target).attr('id');
+        let paymentMode: string;
+
+        if (formToSubmit === 'credit-card-form') {
+            paymentMode = 'cc';
+        } else if (formToSubmit === 'check-payment-form') {
+            paymentMode = 'ch';
+        }
 
         // Authentification de la requête
         const header: any = {
@@ -258,15 +268,18 @@ export class CheckoutModule {
 
         // Définition des données à transmettre
         const datas: any = {};
-
+        datas.paymentMode = paymentMode;
         datas.amount = $('.full-amount').attr('data-price');
-        datas.owner = $('#owner-content').val();
-        datas.cardnumber = $('#cardnumber-content').val();
-        datas.expirationmonth = $('#expirationmonth-content').val();
-        datas.expirationyear = $('#expirationyear-content').val();
-        datas.cvv = $('#cvv-content').val();
-        datas.scheme = $('#cards-logo img.cc-logo.active').attr('id');
-        
+
+        if (paymentMode === 'cc') {
+            datas.owner = $('#owner-content').val();
+            datas.cardnumber = $('#cardnumber-content').val();
+            datas.expirationmonth = $('#expirationmonth-content').val();
+            datas.expirationyear = $('#expirationyear-content').val();
+            datas.cvv = $('#cvv-content').val();
+            datas.scheme = $('#cards-logo img.cc-logo.active').attr('id');
+        }
+
         // Détermine l'adresse de livraison
         const deliveryAddress = $('#delivery-address ul li.address').html() + 
         $('#delivery-address ul li.city').html();
@@ -286,13 +299,30 @@ export class CheckoutModule {
             method: 'post',
             dataType: 'json',
             data: datas,
-            success: (datas) => {
-                console.log('Call success');
+            success: (datas, textStatus, response) => {
+                console.log('Statut de la réponse : ' + JSON.stringify(response.status));
+
+                if (response.status === 200) {
+                    const toast: ToastModule = new ToastModule({
+                        title: "Votre commande a été envoyée",
+                        message: datas,
+                        type: 'success',
+                        position: 'middle-center',
+                        duration: 4
+                    });
+                    toast.show();
+
+                    // Vider le panier...
+                    this.basketService.remove().then(() => {
+                        const userBasketQuantity: JQuery = $('#user-basket span');
+                        userBasketQuantity.html('0');
+                    });
+                }
             },
             error: (xhr, error) => {
                 console.log('Call error : ' + error);
             }
-        })
+        });
 
     }
 }
