@@ -365,9 +365,18 @@ class UserController extends FOSRestController {
 	        
 	       // Créer une nouvelle instance de panier
 	       try {
+	           // Récupère le nombre de commandes réalisées
+	           $repository = $this
+	               ->getDoctrine()
+	               ->getRepository("UserBundle:Basket");
+	           $nextOrderNum = $repository->getNextOrderNum();
+	           
+	           $date = new \DateTime();
+	           
+	           $orderNum = $date->format('Ymd') . "-" . sprintf("%'.05d\n", $nextOrderNum);
 	           $order = new Basket();
     	       $order->setUser($user)
-    	           ->setReference("00001")
+    	           ->setReference($orderNum)
     	           ->setConvertDate(new \DateTime())
     	           ->setConvertTime(new \DateTime())
     	           ->setFullTaxTotal($request->get("amount"))

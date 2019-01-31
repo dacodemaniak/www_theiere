@@ -10,4 +10,17 @@ namespace UserBundle\Repository;
  */
 class BasketRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getNextOrderNum(): int {
+        $query = $this->createQueryBuilder("b")
+            ->select('COUNT(b.id) as quantity')
+            ->from('UserBundle:Basket','order')
+        ;
+            
+       $result = $query
+        ->getQuery()
+        ->getSingleScalarResult();
+            
+            
+       return $result->quantity + 1;
+    }
 }

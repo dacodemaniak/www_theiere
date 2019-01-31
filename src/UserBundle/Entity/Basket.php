@@ -91,12 +91,12 @@ class Basket
     /**
      * Set reference
      *
-     * @param string $reference
+     * @param void
      *
      * @return Basket
      */
-    public function setReference($reference)
-    {
+    public function setReference(String $reference): self
+    {   
         $this->reference = $reference;
 
         return $this;
