@@ -53,20 +53,10 @@
 					{% for product in order.getBasket() %}
 						<tr>
 							<td>{{ product.product.title.fr }}</td>
-						</tr>
-						<tr>
 							<td>{{ product.quantity }}</td>
-						</tr>
-						<tr>
 							<td>{{ product.priceHT }}</td>
-						</tr>
-						<tr>
 							<td>{{ product.product.vat * 100 }}</td>
-						</tr>
-						<tr>
 							<td>{{ product.priceHT * product.quantity }}</td>
-						</tr>
-						<tr>
 							<td>{{ (product.priceHT * product.quantity) * (1 + product.product.vat) }}</td>
 						</tr>
 					{% endfor %}

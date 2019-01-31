@@ -362,15 +362,19 @@ class UserController extends FOSRestController {
 	           ->getManager()
 	           ->getRepository("UserBundle:User")
 	           ->find($authGuard["user"]);
-	        
+
+	        // Récupère le nombre de commandes réalisées
+	        $repository = $this
+	           ->getDoctrine()
+	           ->getManager()
+	           ->getRepository("UserBundle:Basket");
+	         
+
+	        $nextOrderNum = $repository->getNextOrderNum();
+
+	          
 	       // Créer une nouvelle instance de panier
 	       try {
-	           // Récupère le nombre de commandes réalisées
-	           $repository = $this
-	               ->getDoctrine()
-	               ->getRepository("UserBundle:Basket");
-	           $nextOrderNum = $repository->getNextOrderNum();
-	           
 	           $date = new \DateTime();
 	           
 	           $orderNum = $date->format('Ymd') . "-" . sprintf("%'.05d\n", $nextOrderNum);
@@ -390,7 +394,7 @@ class UserController extends FOSRestController {
     	               ]
     	       );
 	       } catch(\Exception $e) {
-	           return new View("Erreur d'instanciation : " . $e->getMessage(), 500);
+	           return new View("Erreur d'instanciation : " . $e->getMessage() . "Commande : " . $orderNum . " Montant : " . $request->get("amount"), 500);
 	       }
 	        // Gérer l'appel à l'API de paiement
 	        //echo "Chargement du module de paiement<br>\n";
@@ -626,7 +630,7 @@ class UserController extends FOSRestController {
 	private function _sendMail(string $content) {
 	    $mailer = $this->get("mailer");
 	    
-	    $message = (new \Swift_Message("Contact depuis le site"))
+	    $message = (new \Swift_Message("Une nouvelle commande vient d'être effectuée"))
 	       ->setFrom("hello@lessoeurstheiere.com")
 	       ->setTo([
 	        

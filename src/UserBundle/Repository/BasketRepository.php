@@ -12,15 +12,18 @@ class BasketRepository extends \Doctrine\ORM\EntityRepository
 {
     public function getNextOrderNum(): int {
         $query = $this->createQueryBuilder("b")
-            ->select('COUNT(b.id) as quantity')
-            ->from('UserBundle:Basket','order')
+            ->select('COUNT(b.id)')
+            ->from('UserBundle:Basket', 'commandes')
         ;
-            
-       $result = $query
-        ->getQuery()
-        ->getSingleScalarResult();
-            
-            
-       return $result->quantity + 1;
+       
+      try {
+           $result = $query
+            ->getQuery()
+            ->getSingleScalarResult();
+           
+           return $result;
+      } catch(\Exception $e) {
+          return 2;
+      }
     }
 }
