@@ -1,3 +1,4 @@
+
 import { CreditCardHelper } from './../../helpers/credit-card.helper';
 import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
 import { RouterModule } from './../router/router.module';
@@ -7,9 +8,10 @@ import { StepComponent } from "./step-component";
 import { BasketService } from "../../services/basket.service";
 import { Constants } from "../../shared/constants";
 import { ToastModule } from "../toast/toast.module";
+import { CryptoHelper } from './../../helpers/crypto-helper';
 
 import * as $ from 'jquery';
-
+import * as moment from 'moment';
 /**
  * @name CheckoutModule
  * @desc Validation du panier
@@ -270,14 +272,24 @@ export class CheckoutModule {
         const datas: any = {};
         datas.paymentMode = paymentMode;
         datas.amount = $('.full-amount').attr('data-price');
+        const amount = parseFloat(datas.amount) * 100;
+
+        const vads: any = {};
 
         if (paymentMode === 'cc') {
-            datas.owner = $('#owner-content').val();
-            datas.cardnumber = $('#cardnumber-content').val();
-            datas.expirationmonth = $('#expirationmonth-content').val();
-            datas.expirationyear = $('#expirationyear-content').val();
-            datas.cvv = $('#cvv-content').val();
-            datas.scheme = $('#cards-logo img.cc-logo.active').attr('id');
+            vads.vads_site_id = '57890042';
+            vads.vads_ctx_mode = 'TEST';
+            vads.vads_trans_date = this._getUTCDate();
+            vads.vads_trans_id = datas.vads_trans_date;
+            vads.vads_amount = amount;
+            vads.vads_currency = 978;
+            vads.vads_action_mode = 'INTERACTIVE';
+            vads.vads_page_action = 'PAYMENT';
+            vads.vads_version = 'V2';
+            vads.vads_payment_config = 'SINGLE';
+            vads.vads_capture_delay = 0;
+            vads.vads_validation_mode = 0;
+            vads.signature = this._packSignature(datas, '9uGrmuYph7x3JgyS');
         }
 
         // Détermine l'adresse de livraison
@@ -292,37 +304,96 @@ export class CheckoutModule {
 
         // Effectue l'appel à l'API
         console.info('Call api with : ' + JSON.stringify(datas));
+        if (paymentMode !== 'cc') {
+            $.ajax({
+                headers: header,
+                url: Constants.apiRoot + 'checkout/process',
+                method: 'post',
+                dataType: 'json',
+                data: datas,
+                success: (datas, textStatus, response) => {
+                    console.log('Statut de la réponse : ' + JSON.stringify(response.status));
 
-        $.ajax({
-            headers: header,
-            url: Constants.apiRoot + 'checkout/process',
-            method: 'post',
-            dataType: 'json',
-            data: datas,
-            success: (datas, textStatus, response) => {
-                console.log('Statut de la réponse : ' + JSON.stringify(response.status));
+                    if (response.status === 200) {
+                        const toast: ToastModule = new ToastModule({
+                            title: "Votre commande a été envoyée",
+                            message: datas,
+                            type: 'success',
+                            position: 'middle-center',
+                            duration: 4
+                        });
+                        toast.show();
 
-                if (response.status === 200) {
-                    const toast: ToastModule = new ToastModule({
-                        title: "Votre commande a été envoyée",
-                        message: datas,
-                        type: 'success',
-                        position: 'middle-center',
-                        duration: 4
-                    });
-                    toast.show();
-
-                    // Vider le panier...
-                    this.basketService.remove().then(() => {
-                        const userBasketQuantity: JQuery = $('#user-basket span');
-                        userBasketQuantity.html('0');
-                    });
+                        // Vider le panier...
+                        this.basketService.remove().then(() => {
+                            const userBasketQuantity: JQuery = $('#user-basket span');
+                            userBasketQuantity.html('0');
+                        });
+                    }
+                },
+                error: (xhr, error) => {
+                    console.log('Call error : ' + error);
                 }
-            },
-            error: (xhr, error) => {
-                console.log('Call error : ' + error);
-            }
-        });
+            });
+        } else {
+            $.ajax({
+                headers: header,
+                url: Constants.paymentUrl,
+                method: 'post',
+                dataType: 'html',
+                data: vads,
+                success: (datas, textStatus, response) => {
+                    console.log('Statut de la réponse : ' + JSON.stringify(datas));
 
+                    if (response.status === 200) {
+                        const toast: ToastModule = new ToastModule({
+                            title: "Votre commande a été envoyée",
+                            message: datas,
+                            type: 'success',
+                            position: 'middle-center',
+                            duration: 4
+                        });
+                        toast.show();
+
+                        // Vider le panier...
+                        this.basketService.remove().then(() => {
+                            const userBasketQuantity: JQuery = $('#user-basket span');
+                            userBasketQuantity.html('0');
+                        });
+                    }
+                },
+                error: (xhr, error) => {
+                    console.log('Call error : ' + error);
+                }
+            });            
+        }
+
+    }
+
+    private _getUTCDate(): number {
+        const jsDate: string = new Date().toUTCString();
+        const now = moment(jsDate);
+
+        return parseInt(now.format('YYYYMMDDHHmmssSSS'));
+        
+    }
+
+    private _packSignature(datas: any, certificat: string): string {
+        const signature = 
+            datas.vads_action_mode +
+            datas.vads_amount +
+            datas.vads_capture_delay +
+            datas.vads_ctx_mode +
+            datas.vads_currency +
+            datas.vads_page_action +
+            datas.vads_payment_config +
+            datas.vads_site_id +
+            datas.vads_trans_date +
+            datas.vads_trans_id +
+            datas.vads_validation_mode +
+            datas.vads_version + 
+            certificat;
+
+        return CryptoHelper.SHA(signature);
     }
 }

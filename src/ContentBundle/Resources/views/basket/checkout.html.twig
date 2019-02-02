@@ -70,73 +70,6 @@
 					<form id="credit-card-form" class="form material-like">
         				<fieldset>
         					<legend>Payez en ligne en toute sécurité</legend>
-            				<div class="form-group owner">
-            					<input type="text" class="form-control" required name="owner" id="owner-content" data-content="false" autocomplete="nope">
-            					<span class="hightlight"></span>
-            					<span class="bar"></span>
-            					<label for="owner-content">Titulaire</label>
-            						
-            					<div class="alert alert-danger hidden" data-rel="owner-content">
-            							Veuillez renseigner le titulaire de la carte.
-            					</div>
-            				</div>
-            				
-            				<div class="form-group cardnumber">
-            					<input type="text" class="form-control" required name="cardnumber" id="cardnumber-content" data-content="false" autocomplete="nope">
-            					<span class="hightlight"></span>
-            					<span class="bar"></span>
-            					<label for="cardnumber-content">N° de carte</label>
-            						
-            					<div class="alert alert-danger hidden" data-rel="cardnumber-content" id="cardnumber-alert">
-            					
-            					</div>
-            				</div>
-            				
-            				<div class="form-group expiration-date">
- 								<div class="row">
-            						<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
-                						<label for="expirationmonth-content" aria-hidden="true" aria-labelled-by="expirationmonth-content">Date d'expiration</label>
-                						
-                						<select class="form-control" id="expirationmonth-content" size="1" required>
-                							<option value="" disabled selected>Mois...</option>
-                							<option value="01">Janvier</option>
-                							<option value="02">Février</option>
-                							<option value="03">Mars</option>
-                							<option value="04">Avril</option>
-                							<option value="05">Mai</option>
-                							<option value="06">Juin</option>
-                							<option value="07">Juillet</option>
-                							<option value="08">Août</option>
-                							<option value="09">Septembre</option>
-                							<option value="10">Octobre</option>
-                							<option value="11">Novembre</option>
-                							<option value="12">Décembre</option>
-                						</select>
-            						
-            						</div>
-            						
-            						<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                						<label for="expirationyear-content" aria-hidden="true" aria-labelled-by="expirationyear-content">Date d'expiration</label>
-                						<select class="form-control" size="1" id="expirationyear-content" data-rel="year" required>
-                							<option value="" disabled selected>Année...</option>
-                						</select>	            						
-            						</div>
-            					</div>
-            				</div>
-            				
-            				<!--  Cryptogramme de la carte -->
-            				<div class="form-group">
-                				<div class="form-group cvv">
-                					<input type="text" class="form-control" required name="cvv" id="cvv-content" data-content="false" autocomplete="nope">
-                					<span class="hightlight"></span>
-                					<span class="bar"></span>
-                					<label for="cvv-content">Crypto</label>
-                						
-                					<div class="alert alert-danger hidden" data-rel="cvv-content">
-                							Le cryptogramme est obligatoire
-                					</div>
-                				</div>            					
-            				</div>
             				
             				<!-- Réassurance de type de carte -->
             				<div class="row" id="cards-logo">
@@ -149,7 +82,7 @@
             				
             				<div class="row">
             					<div class="col-12">
-            						<button type="submit" disabled class="btn btn-outline-primary" id="confirm-payment">
+            						<button type="submit" class="btn btn-outline-primary" id="confirm-payment">
             							Validez votre achat
             						</button>
             					</div>
