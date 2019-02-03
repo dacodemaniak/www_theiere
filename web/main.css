@@ -20,6 +20,12 @@
   text-decoration: none;
   color: #000000;
 }
+#main-header #search form#search-form {
+  height: inherit;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
 #main-header #user-basket .wrapper {
   height: inherit;
   position: absolute;

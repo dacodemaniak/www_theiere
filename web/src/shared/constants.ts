@@ -16,7 +16,7 @@ export class Constants {
     }
 
     public static get paymentUrl(): string {
-        return 'https://paiement.systempay.fr/vads-payement/';
+        return 'https://paiement.systempay.fr/vads-payment/';
     }
 
     public static get averageWeight() {

@@ -3,12 +3,22 @@
  */
 var path = require('path');
 var webpack = require('webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
  module.exports = {
      entry: './app.ts',
      output: {
          path: path.resolve(__dirname, 'build'),
          filename: 'bundle.js'
+     },
+     optimization: {
+        minimizer: [
+            new UglifyJsPlugin(
+                {
+                    test: /\.js(\?.*)?$/i,
+                }
+            )
+        ]
      },
      module: {
          rules: [
@@ -33,6 +43,6 @@ var webpack = require('webpack');
     		 '.tsx'
     	 ]
      },
-     devtool: 'source-map',
+     devtool: 'source-map'
 
  };

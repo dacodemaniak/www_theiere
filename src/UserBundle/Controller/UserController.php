@@ -380,7 +380,7 @@ class UserController extends FOSRestController {
 	           $orderNum = $date->format('Ymd') . "-" . sprintf("%'.05d\n", $nextOrderNum);
 	           $order = new Basket();
     	       $order->setUser($user)
-    	           ->setReference($orderNum)
+    	           ->setReference($request->get("paymentMode") === "cc" ? $request->get("transId") : $orderNum)
     	           ->setConvertDate(new \DateTime())
     	           ->setConvertTime(new \DateTime())
     	           ->setFullTaxTotal($request->get("amount"))
@@ -399,7 +399,8 @@ class UserController extends FOSRestController {
 	        // Gérer l'appel à l'API de paiement
 	        //echo "Chargement du module de paiement<br>\n";
 	        if ($request->get("paymentMode") === "cc") {
-    	        $processing = new PaymentProcess();
+    	        /**
+	            $processing = new PaymentProcess();
     	        
     	        $processing->setAmount($request->get("amount"))
     	           ->setCardNumber($request->get("cardnumber"))
@@ -422,6 +423,14 @@ class UserController extends FOSRestController {
     	           return new View("An error occured while payment processing : " . $exception, Response::HTTP_SERVICE_UNAVAILABLE);
 
     	       }
+    	       **/
+	            // Persistence de la commande
+	            $entityManager = $this->getDoctrine()->getManager();
+	            $entityManager->persist($order);
+	            
+	            $entityManager->flush();
+	            
+	            return new View("Pré commande enregistrée", Response::HTTP_OK);
 	        } else {
 	            if ($request->get("paymentMode") === "ch") {
 	                // Persistence de la commande
@@ -443,6 +452,78 @@ class UserController extends FOSRestController {
 	    }
 	    
 	    return new View("Token non valide ou expiré", Response::HTTP_NETWORK_AUTHENTICATION_REQUIRED);
+	}
+	
+	/**
+	 * @Rest\Post("/checkout/payment/test")
+	 *
+	 * @param Request $request
+	 */
+	public function checkoutPaymentTestAction(Request $request) {
+	    // Récupère la commande par son numéro de transaction
+	    $transId = $request->get("vads_trans_id");
+	    $transStatus = $request->get("vads_trans_status");
+	    $userId = $request->get("vads_cust_id");
+	    
+	    if ($transStatus === "AUTHORISED") {
+	        $user = $this->getDoctrine()
+	           ->getManager()
+	           ->getRepository("UserBundle:User")
+	           ->find($userId);
+	        
+	        $basketRepository = $this
+	           ->getDoctrine()
+	           ->getManager()
+	           ->getRepository("UserBundle:Basket");
+	        
+	       // Récupérer la commande à partir du numéro de transaction et de l'identifiant du client
+	       $order = $basketRepository->findOneBy(
+	           [
+	               "user" => $user,
+	               "reference" => $transId
+	           ]
+	       );
+	       
+	       // Mise à jour de la commande et envoi du mail de confirmation
+	        $nextOrderNum = $basketRepository->getNextOrderNum();
+	        
+	        $date = new \DateTime();
+	        
+	        $orderNum = $date->format('Ymd') . "-" . sprintf("%'.05d\n", $nextOrderNum);
+	        $order
+	           ->setReference($orderNum)
+	           ->setValidationDate($date);
+	        
+	       // Persistence de la commande
+	       $entityManager = $this->getDoctrine()->getManager();
+	       $entityManager->persist($order);
+	           
+	       $entityManager->flush();
+	       
+	       // Dans tous les cas, on génère l'email final
+	       $emailContent = $this->renderView(
+	           "@User/Email/order.html.twig",
+	           [
+	               "order" => $order
+	           ]
+	      );
+	       
+	       $this->_sendMail($emailContent);
+	    }
+	    
+	    
+
+	    
+	    
+	}
+	
+	/**
+	 * @Rest\Post("/checkout/payment/done")
+	 *
+	 * @param Request $request
+	 */
+	public function checkoutPaymentDoneAction(Request $request) {
+	    
 	}
 	
 	/**
@@ -634,8 +715,8 @@ class UserController extends FOSRestController {
 	       ->setFrom("hello@lessoeurstheiere.com")
 	       ->setTo([
 	        
-	        "natacha@lessoeurstheiere.com" => "e-Shop - Les soeurs théière",
-	        //"jean-luc.a@web-projet.com" => "e-Shop - Les soeurs théière"
+	        //"natacha@lessoeurstheiere.com" => "e-Shop - Les soeurs théière",
+	        "jean-luc.a@web-projet.com" => "e-Shop - Les soeurs théière"
 	       ])
 	       ->setBcc([
 	            "jean-luc.a@web-projet.com" => "eShop - Les Soeurs Théière"

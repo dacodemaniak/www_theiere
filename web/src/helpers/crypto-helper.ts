@@ -6,14 +6,17 @@
  * @version 1.0.0
  */
 
+const sha1 = require('sha1');
+
+
  export class CryptoHelper {
     private static toEncode: string;
     private static encoded: string;
 
     public static SHA(toEncode: string): string {
-        CryptoHelper.toEncode = CryptoHelper.UTF8Encode(toEncode);
-
-        CryptoHelper.encoded = CryptoHelper._sha1();
+        //CryptoHelper.toEncode = CryptoHelper.UTF8Encode(toEncode);
+        CryptoHelper.toEncode = toEncode;
+        CryptoHelper.encoded = sha1(CryptoHelper.toEncode).toString();
 
         return CryptoHelper.encoded;
     }
@@ -33,7 +36,7 @@
         let hexa3: number = 0x10325476;
         let hexa4: number = 0xC3D2E1F0;
 
-        let A, B, C, D, E: any;
+        let A, B, C, D, E: number;
 
         let temp: number;
 
@@ -71,15 +74,14 @@
 
         while( (wordArray.length % 16) != 14 ) wordArray.push( 0 );
 
-        wordArray.push( dataLength>>>29 );
+        wordArray.push( dataLength >>> 29 );
 
         wordArray.push( (dataLength << 3)&0x0ffffffff );
 
-        for ( blockStart=0; blockStart<wordArray.length; blockStart+=16 ) {
+        for ( blockStart=0; blockStart<wordArray.length; blockStart += 16 ) {
             for( let i: number = 0; i < 16; i++ ) w[i] = wordArray[blockStart+i];
-        
-        
-            for( let i = 16; i <= 79; i++ ) w[i] = CryptoHelper._rotateLeft(w[i-3] ^ w[i-8] ^ w[i-14] ^ w[i-16], 1);
+
+            for( let i: number = 16; i <= 79; i++ ) w[i] = CryptoHelper._rotateLeft(w[i-3] ^ w[i-8] ^ w[i-14] ^ w[i-16], 1);
         
             A = hexa0;
             B = hexa1;
@@ -87,9 +89,7 @@
             D = hexa3;
             E = hexa4;
         
-            for( let i = 0; i <= 19; i++ ) {
-        
-        
+            for( let i: number = 0; i <= 19; i++ ) {
                 temp = (CryptoHelper._rotateLeft(A,5) + ((B&C) | (~B&D)) + E + w[i] + 0x5A827999) & 0x0ffffffff;
 
                 E = D;        
@@ -136,6 +136,9 @@
         hexa3 = (hexa3 + D) & 0x0ffffffff;
         hexa4 = (hexa4 + E) & 0x0ffffffff;
 
+        console.warn('0 :' + hexa0 + ' 1 : ' + hexa1 + ' 2 :' + hexa2 + ' 3 :' + hexa3 + ' 4 :' + hexa4);
+        console.warn('A :' + A + ' B : ' + B + ' C :' + C + ' D :' + D + ' E :' + E);
+
         return CryptoHelper._convertHex(hexa0) + 
             CryptoHelper._convertHex(hexa1) + 
             CryptoHelper._convertHex(hexa2) + 
@@ -167,13 +170,18 @@
     private static _convertHex(value: number): string {
         let returnValue: string;
         let v: number;
+        
+        if (value < 0) {
+            value = value * -1;
+        }
 
-        for (let i = 7; i >= 0; i--) {
-            v = (value >>> (i*4))&0x0f;
+        for (let i: number = 7; i >= 0; i--) {
+            v = (value >>> (i*4)) & 0x0f;
 
 
             returnValue += v.toString(16);            
         }
+        console.info('Retourne ' + returnValue + ' à partir de ' + value);
         return returnValue;
     }
 
