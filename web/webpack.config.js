@@ -12,10 +12,12 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
          filename: 'bundle.js'
      },
      optimization: {
+        minimize: true,
         minimizer: [
             new UglifyJsPlugin(
                 {
                     test: /\.js(\?.*)?$/i,
+                    include: /\.min\.js$/
                 }
             )
         ]

@@ -323,7 +323,6 @@ export class CheckoutModule {
         datas.basket = this.basket;
 
         // Effectue l'appel à l'API
-        console.info('Call api with : ' + JSON.stringify(datas));
         if (paymentMode !== 'cc') {
             event.preventDefault();
             $.ajax({
@@ -333,8 +332,6 @@ export class CheckoutModule {
                 dataType: 'json',
                 data: datas,
                 success: (datas, textStatus, response) => {
-                    console.log('Statut de la réponse : ' + JSON.stringify(response.status));
-
                     if (response.status === 200) {
                         const toast: ToastModule = new ToastModule({
                             title: "Votre commande a été envoyée",
@@ -346,9 +343,13 @@ export class CheckoutModule {
                         toast.show();
 
                         // Vider le panier...
+                        console.log('Vidage du panier en cours...');
                         this.basketService.remove().then(() => {
                             const userBasketQuantity: JQuery = $('#user-basket span');
                             userBasketQuantity.html('0');
+                            console.info('Panier vidé, redirection');
+                            const router: RouterModule = new RouterModule();
+                            router.changeLocation('/');
                         });
                     }
                 },
@@ -376,6 +377,11 @@ export class CheckoutModule {
 
     }
 
+    /**
+     * Traitement du paiement par carte bancaire
+     * @param event Initiateur de l'événement
+     * @return void
+     */
     private _processCC(event: any): void {
         event.preventDefault();
 
@@ -405,6 +411,8 @@ export class CheckoutModule {
             dataType: 'json',
             data: datas,
             success: () => {
+                // Vider le panier avant soumission du formulaire
+                this.basketService.remove();
                 $(event.target).submit();
             },
             error: (xhr, error) => {

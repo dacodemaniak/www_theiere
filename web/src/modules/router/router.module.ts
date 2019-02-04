@@ -96,7 +96,8 @@ import { AccountModule } from '../user/account-module';
      }
 
      public changeLocation(location: string): void {
-      document.location.replace(location);
+         console.log('Redirection vers ' + location);
+         document.location.replace(location);
      }
 
      private _setListeners() {

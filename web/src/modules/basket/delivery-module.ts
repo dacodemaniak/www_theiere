@@ -14,6 +14,7 @@ import { CarryingModel } from "./models/carrying.model";
  * @author IDea Factory - Jan. 2019 (dev-team@ideafactory.fr)
  * @package modules/basket
  * @version 1.0.0
+ * @version 1.0.1 Modification de la gestion du bouton si ajout d'une nouvelle adresse de livraison
  */
 export class DeliveryModule {
     private basket: Array<ProductBasketModel>;
@@ -181,7 +182,14 @@ export class DeliveryModule {
                 return;               
             }
         }
-        this.button.removeAttr('disabled');        
+
+        // Vérifier si un des mode de livraison a été sélectionné
+        const pickingSelector: number = $('li.selector.active').length;
+        if (pickingSelector > 0) {
+            this.button.removeAttr('disabled'); 
+        }
+         
+              
     }
 
     private _submit(event: any): void {
