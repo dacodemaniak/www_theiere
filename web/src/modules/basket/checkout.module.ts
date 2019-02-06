@@ -92,8 +92,8 @@ export class CheckoutModule {
                 const ccForm: JQuery = $('#credit-card-form');
                 ccForm.attr('action', Constants.paymentUrl);
 
-                this.vads.vads_site_id = '57890042';
-                this.vads.vads_ctx_mode = 'TEST';
+                this.vads.vads_site_id = Constants.merchantId;
+                this.vads.vads_ctx_mode = Constants.ctxMode;
                 this.vads.vads_trans_date = transaction;
                 this.vads.vads_trans_id = transId;
                 this.vads.vads_amount = (this.totalBasket * 100).toFixed(0);
@@ -105,10 +105,10 @@ export class CheckoutModule {
                 this.vads.vads_capture_delay = 0;
                 this.vads.vads_validation_mode = 0;
                 this.vads.vads_cust_id = this.userService.getUser().getId();
-                this.vads.signature = this._packSignature(this.vads, '9uGrmuYph7x3JgyS');
+                this.vads.signature = this._packSignature(this.vads, Constants.merchantKey);
 
-                $('#site-id').val('57890042');
-                $('#ctx-mode').val('TEST');
+                $('#site-id').val(Constants.merchantId);
+                $('#ctx-mode').val(Constants.ctxMode);
                 $('#trans-id').val(transId);
                 $('#trans-date').val(transaction);
                 $('#amount').val(this.vads.vads_amount);
