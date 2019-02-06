@@ -26,6 +26,40 @@
   top: 50%;
   transform: translateY(-50%);
 }
+#main-header #search #search-result {
+  position: absolute;
+  top: 5.5em;
+  z-index: 1000;
+  background-color: #ed912f;
+}
+#main-header #search #search-result.hidden {
+  display: none;
+}
+#main-header #search #search-result h4 {
+  font-size: 0.85em;
+}
+#main-header #search #search-result h4 span {
+  font-weight: bold;
+}
+#main-header #search #search-result ul#product-items li a {
+  text-decoration: none;
+}
+#main-header #search #search-result ul#product-items li a.item-product {
+  color: #ffffff !important;
+  font-weight: bold;
+}
+#main-header #search #search-result ul#product-items li p.item-category {
+  color: #ffffff;
+  font-style: italic;
+  margin-left: 1em;
+}
+#main-header #search #search-result ul#product-items li p.item-category::before {
+  content: ">> ";
+}
+#main-header #search #search-result ul#product-items li p.item-category a {
+  color: inherit;
+  font-style: inherit;
+}
 #main-header #user-basket .wrapper {
   height: inherit;
   position: absolute;

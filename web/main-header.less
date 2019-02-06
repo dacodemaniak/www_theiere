@@ -22,6 +22,50 @@
                 .vertical-alignement;
             }
         }
+        #search-result {
+            position: absolute;
+            top: 5.5em;
+            z-index: 1000;
+            background-color: @default_hover_color;
+            &.hidden {
+                display: none;
+            }
+            h4 {
+                font-size: 0.85em;
+                span {
+                    font-weight: bold;
+                }
+            }
+
+            ul {
+                &#product-items {
+                    li {
+                        a {
+                            text-decoration: none;
+                            &.item-product {
+                                color: @default_menu_color!important;
+                                font-weight: bold;
+                            }
+                        }
+
+                        p {
+                            &.item-category {
+                                color: @default_menu_color;
+                                font-style: italic;
+                                margin-left: 1em;
+                                &::before {
+                                    content: ">> ";
+                                }
+                                a {
+                                    color: inherit;
+                                    font-style: inherit;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     #logo-soeurs-theiere {}

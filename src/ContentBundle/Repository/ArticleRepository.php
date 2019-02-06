@@ -15,8 +15,9 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository {
         
         return $this->createQueryBuilder('p')
             ->addSelect("MATCH_AGAINST (p.content, :terms 'IN NATURAL MODE') as score")
-            ->add('where', 'MATCH_AGAINST(p.content, :terms) > 0.8')
-            ->setParameter('terms', $terms)
+            ->add('where', 'MATCH_AGAINST(p.content, :terms) >= 0.8')
+            ->andWhere('p.isEnabled = 1')
+            ->setParameter('terms', '+' . $terms)
             ->orderBy('score', 'desc')
             ->setMaxResults(10)
             ->getQuery()
