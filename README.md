@@ -65,6 +65,21 @@ released under the MIT or BSD license.
 
 Enjoy!
 
+Deployment steps :
+
+Deployment requires three folders :
+* - api To host REST Calls to the backend of the application
+* - www to host Web parts of the development
+* - images : to host assets (product images)
+
+Just clone this repo in the api and www folders then run :
+
+* $/api/[path_to_composer] composer install
+* $/www/[path_to_composer] composer install
+
+to install required Symfony Packages
+
+
 [1]:  https://symfony.com/doc/3.4/setup.html
 [6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
 [7]:  https://symfony.com/doc/3.4/doctrine.html
