@@ -79,6 +79,14 @@ Just clone this repo in the api and www folders then run :
 
 to install required Symfony Packages
 
+You have to build CLIENT parts of the web application, require NODE and NPM :
+
+* $/www/web/npm i
+* $/www/web/npm run webpack:dev
+
+To build the "build" folder
+
+Use any lesscss compiler to build CSS
 
 [1]:  https://symfony.com/doc/3.4/setup.html
 [6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
