@@ -1,3 +1,4 @@
+import { ProductSearchComponent } from './shared/product-search-component';
 import { BannerComponent } from './shared/banner-component';
 import { RouterModule } from './modules/router/router.module';
 import { BasketModule } from './modules/basket/basket.module';
@@ -9,6 +10,7 @@ import { UserService } from "./services/user.service";
  * @desc Lancement de l'application front-end
  * @author IDea Factory - Déc. 2018 (dev-team@ideafactory.fr)
  * @version 1.0.0
+ * @version 1.0.1 Ajout de la recherche live dans le menu
  */
 export class Bootstrap {
     private userService: UserService;
@@ -26,6 +28,8 @@ export class Bootstrap {
         const basketModule: BasketModule = new BasketModule(this.userService);
 
         const routerModule: RouterModule = new RouterModule();
+        
+        const productSearch: ProductSearchComponent = new ProductSearchComponent();
         
         console.log('Bootstrap application done');
 

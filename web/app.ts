@@ -3,6 +3,7 @@ import * as $ from 'jquery';
 
 import { Bootstrap } from './src/bootstrap';
 
+/**
 $(window).on(
     'load',
     (event: any) => {
@@ -12,3 +13,11 @@ $(window).on(
         const bootstrap = new Bootstrap(userService);
     }
 )
+**/
+$(document).ready(
+    (event: any) => {
+        const userService: UserService = new UserService();
+        console.log('app is running');
+        const bootstrap = new Bootstrap(userService);       
+    }
+);

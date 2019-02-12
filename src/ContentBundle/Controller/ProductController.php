@@ -35,7 +35,7 @@ class ProductController extends FOSRestController {
     public function __construct() {}
     
     /**
-     * @Rest\Get("/product/search/{terms}")
+     * @Rest\Get("/product/search/for/{terms}")
      * 
      * @param Request $request
      */
@@ -58,7 +58,7 @@ class ProductController extends FOSRestController {
                     "id" => $product->getId(),
                     "slug" => $product->getSlug(),
                     "content" => $product->getRawContent(),
-                    "decorators" => $product->getDecorators(),
+                    "category" => $this->_filter($product->getCategories()),
                     "score" => $result["score"]
                 ];
             }
@@ -138,5 +138,19 @@ class ProductController extends FOSRestController {
     
     private function getTaxonomies(): array {
         return [];
+    }
+    
+    private function _filter($categories) {
+        if ($categories) {
+            if ($categories[0] instanceof \ContentBundle\Entity\CategorieToArticles) {
+                $catToArticle = $categories[0];
+                $categorie = $catToArticle->getCategorie();
+                return [
+                    "id" => $categorie->getId(),
+                    "title" => $categorie->getTitleFr()
+                ];
+            }
+        }
+        return null;
     }
 }

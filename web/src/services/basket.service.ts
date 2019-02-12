@@ -11,6 +11,7 @@ import * as $ from 'jquery';
 
 import { BasketModel } from './../modules/basket/models/basket.model';
 import { ProductBasketModel } from '../modules/basket/models/product-basket.model';
+import { resolve } from 'path';
 
 export class BasketService {
     /**
@@ -33,6 +34,15 @@ export class BasketService {
         return this.basketModel;
     }
     
+    public remove(): Promise<boolean> {
+        return new Promise((resolve) => {
+            this.basketModel = null;
+            this.product = null;
+            localStorage.removeItem('eshop-basket');
+            resolve(true);
+        });
+    }
+
     /**
      * Promesse de panier local
      */

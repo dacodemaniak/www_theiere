@@ -87,11 +87,19 @@ class User
      * @ORM\JoinColumn(name="groupe_id", referencedColumnName="id")
      */
     private $group;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Basket::class, cascade={"persist", "remove"}, mappedBy="user")
+     */
+    protected $orders;
     
     /**
      * Constructeur de la classe User
      */
-    public function __construct() {}
+    public function __construct() {
+        
+        $this->orders = new ArrayCollection();
+    }
     
     /**
      * Get id
@@ -339,6 +347,24 @@ class User
     
     public function setGroup($group) {
     	$this->group = $group;
+    }
+    
+    /**
+     * Retourne la liste des commandes de l'utilisateur concerné
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getOrders() {
+        return $this->orders;
+    }
+    
+    public function addOrder(Basket $basket) {
+        $this->orders[] = $basket;
+    }
+    
+    public function getName(): string {
+        $content = $this->getContent();
+        
+        return $content->civility . " " . $content->lastName . " " . $content->firstName;
     }
 }
 

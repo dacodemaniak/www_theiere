@@ -45,6 +45,8 @@ export class UserModule {
                 this.userService.getAnonymouseUser().then((response) => {
                     const menus: Array<any> = response.menus;
                     
+                    console.log('Réponse : ' + JSON.stringify(response));
+
                     const accountMenu = menus.filter(
                         (element) => { return element.region === '_top-left'}
                     );

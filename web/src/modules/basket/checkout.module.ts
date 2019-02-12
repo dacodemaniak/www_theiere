@@ -1,3 +1,4 @@
+
 import { CreditCardHelper } from './../../helpers/credit-card.helper';
 import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
 import { RouterModule } from './../router/router.module';
@@ -7,9 +8,10 @@ import { StepComponent } from "./step-component";
 import { BasketService } from "../../services/basket.service";
 import { Constants } from "../../shared/constants";
 import { ToastModule } from "../toast/toast.module";
+import { CryptoHelper } from './../../helpers/crypto-helper';
 
 import * as $ from 'jquery';
-
+import * as moment from 'moment';
 /**
  * @name CheckoutModule
  * @desc Validation du panier
@@ -38,6 +40,8 @@ export class CheckoutModule {
     private cardNumber: JQuery = $('#cardnumber-content');
     
     private formContent: Array<JQuery> = new Array<JQuery>();
+
+    private vads: any = {};
 
     public constructor(deliveryAddress: string) {
 
@@ -80,6 +84,36 @@ export class CheckoutModule {
                 this.stepComponent.markAsComplete('signin');
                 this.stepComponent.markAsComplete('basket-checkin');
                 this.stepComponent.markAsActive('payment');
+
+                // Définit les valeurs du formulaire de paiement en ligne
+                const transaction: string = this._getUTCDate().toString();
+                const transId: string = this._generateId();
+
+                const ccForm: JQuery = $('#credit-card-form');
+                ccForm.attr('action', Constants.paymentUrl);
+
+                this.vads.vads_site_id = Constants.merchantId;
+                this.vads.vads_ctx_mode = Constants.ctxMode;
+                this.vads.vads_trans_date = transaction;
+                this.vads.vads_trans_id = transId;
+                this.vads.vads_amount = (this.totalBasket * 100).toFixed(0);
+                this.vads.vads_currency = 978;
+                this.vads.vads_action_mode = 'INTERACTIVE';
+                this.vads.vads_page_action = 'PAYMENT';
+                this.vads.vads_version = 'V2';
+                this.vads.vads_payment_config = 'SINGLE';
+                this.vads.vads_capture_delay = 0;
+                this.vads.vads_validation_mode = 0;
+                this.vads.vads_cust_id = this.userService.getUser().getId();
+                this.vads.signature = this._packSignature(this.vads, Constants.merchantKey);
+
+                $('#site-id').val(Constants.merchantId);
+                $('#ctx-mode').val(Constants.ctxMode);
+                $('#trans-id').val(transId);
+                $('#trans-date').val(transaction);
+                $('#amount').val(this.vads.vads_amount);
+                $('#cust-id').val(this.vads.vads_cust_id);
+                $('#signature').val(this.vads.signature);
             });
 
             // Récupérer l'adresse de facturation
@@ -118,9 +152,16 @@ export class CheckoutModule {
             (event: any): void => this._validForm(event)
         );
 
-        $('#credit-card-form').on(
+        $('#check-payment-form').on(
             'submit',
             (event: any): void => this._submit(event)
+        );
+
+        $('#credit-card-form').one(
+            'submit',
+            (event: any): void => {
+                this._processCC(event)
+            } 
         );
 
         $('#expirationmonth-content, #expirationyear-content').on(
@@ -249,7 +290,16 @@ export class CheckoutModule {
      * Soumission du formulaire de paiement
      */
     private _submit(event: any): void {
-        event.preventDefault();
+        
+        // Quel formulaire a été validé
+        const formToSubmit = $(event.target).attr('id');
+        let paymentMode: string;
+
+        if (formToSubmit === 'credit-card-form') {
+            paymentMode = 'cc';
+        } else if (formToSubmit === 'check-payment-form') {
+            paymentMode = 'ch';
+        }
 
         // Authentification de la requête
         const header: any = {
@@ -258,15 +308,10 @@ export class CheckoutModule {
 
         // Définition des données à transmettre
         const datas: any = {};
-
+        datas.paymentMode = paymentMode;
         datas.amount = $('.full-amount').attr('data-price');
-        datas.owner = $('#owner-content').val();
-        datas.cardnumber = $('#cardnumber-content').val();
-        datas.expirationmonth = $('#expirationmonth-content').val();
-        datas.expirationyear = $('#expirationyear-content').val();
-        datas.cvv = $('#cvv-content').val();
-        datas.scheme = $('#cards-logo img.cc-logo.active').attr('id');
-        
+        const amount = parseFloat(datas.amount) * 100;
+
         // Détermine l'adresse de livraison
         const deliveryAddress = $('#delivery-address ul li.address').html() + 
         $('#delivery-address ul li.city').html();
@@ -278,21 +323,139 @@ export class CheckoutModule {
         datas.basket = this.basket;
 
         // Effectue l'appel à l'API
-        console.info('Call api with : ' + JSON.stringify(datas));
+        if (paymentMode !== 'cc') {
+            event.preventDefault();
+            $.ajax({
+                headers: header,
+                url: Constants.apiRoot + 'checkout/process',
+                method: 'post',
+                dataType: 'json',
+                data: datas,
+                success: (datas, textStatus, response) => {
+                    if (response.status === 200) {
+                        const toast: ToastModule = new ToastModule({
+                            title: "Votre commande a été envoyée",
+                            message: datas,
+                            type: 'success',
+                            position: 'middle-center',
+                            duration: 4
+                        });
+                        toast.show();
 
+                        // Vider le panier...
+                        console.log('Vidage du panier en cours...');
+                        this.basketService.remove().then(() => {
+                            const userBasketQuantity: JQuery = $('#user-basket span');
+                            userBasketQuantity.html('0');
+                            console.info('Panier vidé, redirection');
+                            const router: RouterModule = new RouterModule();
+                            router.changeLocation('/');
+                        });
+                    }
+                },
+                error: (xhr, error) => {
+                    console.log('Call error : ' + error);
+                }
+            });
+        } else {
+            
+            $.ajax({
+                headers: header,
+                url: Constants.apiRoot + 'checkout/process',
+                method: 'post',
+                dataType: 'html',
+                data: this.vads,
+                success: () => {
+                    alert('Enregistrement de la commande okay');
+                },
+                error: (xhr, error) => {
+                    alert('Erreur de stockage de la commande : ' + error);
+                    event.stopPropagation();
+                }
+            });            
+        }
+
+    }
+
+    /**
+     * Traitement du paiement par carte bancaire
+     * @param event Initiateur de l'événement
+     * @return void
+     */
+    private _processCC(event: any): void {
+        event.preventDefault();
+
+        // Authentification de la requête
+        const header: any = {
+            'X-Auth-Token': this.userService.getUser().getToken()
+        };
+       // Définition des données à transmettre
+       const datas: any = {};
+       datas.paymentMode = 'cc';
+       datas.amount = $('.full-amount').attr('data-price');
+
+       // Détermine l'adresse de livraison
+       const deliveryAddress = $('#delivery-address ul li.address').html() + 
+       $('#delivery-address ul li.city').html();
+       datas.deliveryAddress = deliveryAddress;
+
+       // Mode de livraison
+       datas.carrier = this.basketService.getBasket().getCarrier();
+       datas.carryingType = this.basketService.getBasket().getDeliveryType();
+       datas.basket = this.basket;
+       datas.transId = this.vads.vads_trans_id;
         $.ajax({
             headers: header,
             url: Constants.apiRoot + 'checkout/process',
             method: 'post',
             dataType: 'json',
             data: datas,
-            success: (datas) => {
-                console.log('Call success');
+            success: () => {
+                // Vider le panier avant soumission du formulaire
+                this.basketService.remove();
+                $(event.target).submit();
             },
             error: (xhr, error) => {
-                console.log('Call error : ' + error);
+                // TODO Inclure le toast d'erreur de traitement de l'enregistrement
+                event.stopPropagation();
             }
-        })
+        });
+    }
 
+    private _getUTCDate(): number {
+        const jsDate: string = new Date().toUTCString();
+        const now = moment(jsDate);
+
+        return parseInt(now.format('YYYYMMDDHHmmss'));
+        
+    }
+
+    private _generateId(): string {
+        const jsDate: string = new Date().toUTCString();
+        const now = moment(jsDate);
+
+        return now.format('ammSS');        
+    }
+    private _packSignature(datas: any, certificat: string): string {
+        const signature = 
+            datas.vads_action_mode + '+' + // INTERACTIVE
+            datas.vads_amount + '+'  + // 2805
+            datas.vads_capture_delay + '+'  + // 0
+            datas.vads_ctx_mode + '+'  + // TEST
+            datas.vads_currency + '+'  + // 978 (?)
+            datas.vads_cust_id + '+' + // Identifiant du client
+            datas.vads_page_action + '+'  + // PAYMENT
+            datas.vads_payment_config + '+'  + // SINGLE
+            datas.vads_site_id + '+'  + // 57890042
+            datas.vads_trans_date + '+'  +
+            datas.vads_trans_id + '+'  +
+            datas.vads_validation_mode + '+'  +
+            datas.vads_version + '+'  + 
+            certificat;
+        // Pour test, gérer la signature en clair
+        $('#signature').attr('data-rel', signature);
+
+        //console.info('Signature à encoder : ' + signature);
+        return CryptoHelper.SHA(signature);
     }
 }

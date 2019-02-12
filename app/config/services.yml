@@ -36,7 +36,7 @@ services:
     #         $someArgument: 'some_value'
     UserBundle\: 
         resource: '../../src/UserBundle/*'
-        exclude: '../../src/UserBundle/{Entity,Repository,Tests}'
+        exclude: '../../src/UserBundle/{Entity,Repository,Tests,Payment}'
         public: true
     
     UserBundle\Controller\: 
@@ -46,7 +46,10 @@ services:
     UserBundle\Service\TokenService: 
         arguments: 
             $secret: '%jwt_token_secret%'
-
+    UserBundle\Payment\Tools\SystempaySoapV5ToolBox: 
+        public: false
+        autowire: false
+        autoconfigure: false
     token_service: 
         public: true
         alias: UserBundle\Service\TokenService

@@ -210,6 +210,10 @@ class Article
         return $decorators;
     }
     
+    public function getCategories() {
+        return $this->categorieToArticles;    
+    }
+    
     /**
      * Extrait le prix le plus bas du produit courant
      * @return number

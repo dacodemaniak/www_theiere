@@ -19,7 +19,6 @@ import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
     private cartForm: JQuery;
 
     public constructor() {
-        console.log('Instanciation de CartModule');
         this.cartForm = $('.formCart');
 
         // Gère les listeners
@@ -35,8 +34,6 @@ import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
             'change',
             (event: any): void => this._handleQuantitySelector(event)
         );
-
-        console.log('Définit les listeners sur les boutons + et -');
         
         $('.increase').on(
             'click',
@@ -146,7 +143,6 @@ import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
         } else {
             price = quantitySelector.data('price');
         }
-        console.log('Ajouter un produit dans le panier : \n' + button.data('id') + '\nPrix : ' + price + '\nQuantité : ' + quantity + '\nService : ' + servingSize);
 
         const basketModel: ProductBasketModel = new ProductBasketModel();
         basketModel.id = button.data('id');
