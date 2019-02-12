@@ -149,7 +149,7 @@ class UserController extends FOSRestController {
     				->setLogin($request->get("email"))
     				->setSecurityPass($this->_createPassword($request->get("password"), $salt))
     				->setSalt($salt)
-    				->setIsValid(false)
+    				->setIsValid(true)
     				->setCreatedAt(new \DateTime())
     				->setLastLogin(new \DateTime())
     				->setValidatedAt(new \DateTime())
