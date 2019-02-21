@@ -51,19 +51,24 @@ export class BasketService {
             const eShopBasket = JSON.parse(localStorage.getItem('eshop-basket'));
             const panier: Array<ProductBasketModel> = new Array<ProductBasketModel>();
             if (eShopBasket) {
-                const basket: Array<ProductBasketModel> = eShopBasket.basket;
-                console.log('Panier: ' + JSON.stringify(basket));
-                // Instancie l'objet Basket
-                this.basketModel
-                    .setCarrier((eShopBasket.hasOwnProperty('carrier') && eShopBasket.carrier !== null) ? eShopBasket.carrier : null)
-                    .setDeliveryType((eShopBasket.hasOwnProperty('carryingType') && eShopBasket.carryingType !== null) ? eShopBasket.carryingType : null)
-                    .setCharge((eShopBasket.hasOwnProperty('carryingCharge') && eShopBasket.carryingCharge !== null) ? eShopBasket.carryingCharge : null)
-                    .setBasket(basket);
+                if (eShopBasket.hasOwnProperty('basket')) {
+                    const basket: Array<ProductBasketModel> = eShopBasket.basket;
+                    console.log('Panier: ' + JSON.stringify(basket));
+                    // Instancie l'objet Basket
+                    this.basketModel
+                        .setCarrier((eShopBasket.hasOwnProperty('carrier') && eShopBasket.carrier !== null) ? eShopBasket.carrier : null)
+                        .setDeliveryType((eShopBasket.hasOwnProperty('carryingType') && eShopBasket.carryingType !== null) ? eShopBasket.carryingType : null)
+                        .setCharge((eShopBasket.hasOwnProperty('carryingCharge') && eShopBasket.carryingCharge !== null) ? eShopBasket.carryingCharge : null)
+                        .setBasket(basket);
 
-                for (let element of basket) {
-                    const product = new ProductBasketModel();
-                    panier.push(product.deserialize(element));
-                };
+                    for (let element of basket) {
+                        const product = new ProductBasketModel();
+                        panier.push(product.deserialize(element));
+                    };
+                } else {
+                    // Nettoyage des anciens paniers
+                    localStorage.removeItem('eshop-basket');
+                }
             }
             resolve(panier);
         });

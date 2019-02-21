@@ -12,7 +12,7 @@ export class Constants {
      * Définit le mode d'utilisation du système de paiement
      * Rebuild with false to enable testMode
      */
-    public static prodMode: boolean = false;
+    public static prodMode: boolean = true;
 
     public static get apiRoot() {
         if (Constants.hostname === 'api.lessoeurstheiere.com' || Constants.hostname === 'lessoeurstheiere.com' || Constants.hostname === 'www.lessoeurstheiere.com') {
