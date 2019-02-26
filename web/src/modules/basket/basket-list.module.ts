@@ -6,6 +6,9 @@ import { BasketService } from './../../services/basket.service';
 import { ProductBasketModel } from './models/product-basket.model';
 import { StringToNumberHelper } from '../../helpers/string-to-number.helper';
 import { DialogModule } from './../dialog/dialog.module';
+import { Constants } from '../../shared/constants';
+import { UserModel } from '../user/models/user.model';
+import { UserMenuModel } from '../user/models/user-menu.model';
 /**
  * @name BasketListModule
  * @desc Affichage de la liste des produits dans le panier
@@ -113,6 +116,11 @@ export class BasketListModule {
             'submit',
             (event: any): void => this._signin(event)
         );
+
+        $('#modal-login-form').on(
+            'keyup',
+            (event: any) => this._manageLoginForm(event)
+        );
     }
 
     private _click(event: any): void {
@@ -137,7 +145,105 @@ export class BasketListModule {
 
     private _signin(event: any) {
         event.preventDefault();
-        console.log('Fermeture de la modale signin après validation');
+
+        // Consomme le service d'identification
+        const formContent: any = {
+            login: $('#login-content').val(),
+            password: $('#password-content').val()
+        };
+
+        $.ajax({
+            url: Constants.apiRoot + 'signin',
+            method: 'post',
+            dataType: 'json',
+            data: formContent,
+            success: (datas) => {
+                console.log('Authentication success');
+                const toast: ToastModule = new ToastModule({
+                    title: 'Bonjour ' + datas.name,
+                    message: datas.name + ' bienvenue sur la boutique des Soeurs Théière',
+                    type: 'success',
+                    position: 'top-center'
+                });
+                toast.show();
+
+                // Reset le formulaire
+                $('#login-content').val('');
+                $('#password-content').val('');
+                $('#modal-signin').attr('disabled', 'disabled');
+
+                // TODO  Mettre à jour le menu Utilisateur
+                
+                // Ajoute le token dans le localStorage
+                this.userService.setToken(datas.token);
+
+                console.log('Fermeture de la modale signin après validation');
+                $('#login-modal').modal('hide');
+
+                this.userService.hasUser().then((has) => {
+                    const user: UserModel = this.userService.getUser();
+                    const menus: Array<any> = user.getMenus();
+
+                    const accountMenu = menus.filter(
+                        (element) => { return element.region === '_top-left'}
+                    );
+                    const userMenu = new UserMenuModel();
+                    userMenu.deserialize(accountMenu[0]);
+                    
+                    // Vider user-menu
+                    $('#user-menu div.wrapper a').remove();
+
+                    userMenu.render(user);
+
+                    // Effacer le bandeau d'avertissement
+                    $('#no-user').addClass('inactive');
+                    $('#basket-warns').addClass('hidden');
+
+                    // Activer le bouton de passage à la livraison
+                    $('#next-step').removeClass('disabled');
+                });
+            },
+            error: (xhr, error) => {
+                const httpError: number = xhr.status;
+                const response: string = xhr.responseJSON;
+
+                const toast: ToastModule = new ToastModule(
+                    {
+                        title: 'Erreur d\'identification',
+                        message: response,
+                        type: 'danger'
+                    }
+                );
+                toast.show();
+
+                // Reset le formulaire
+                $('#login-content').val('');
+                $('#password-content').val('');
+                $('#modal-signin').attr('disabled', 'disabled');
+            }
+        });
+    }
+
+    private _manageLoginForm(event: any): void {
+        const fields: Array<JQuery> = new Array<JQuery>(
+            $('#login-content'),
+            $('#password-content')
+        );
+
+        let enableButton: boolean = true;
+
+        fields.forEach((element) => {
+            if (element.val() === '') {
+                enableButton = false;
+            }
+        });
+
+        if (enableButton) {
+            $('#modal-signin').removeAttr('disabled');
+        } else {
+            $('#modal-signin').attr('disabled', 'disabled');
+        }
+        
     }
 
     private _remove(element: JQuery): void {

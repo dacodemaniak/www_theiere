@@ -7,8 +7,9 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <form id="modal-login-form" class="form material-like">
+      <form id="modal-login-form" class="form material-like">
+      	<div class="modal-body">
+        
 			<div class="form-group">
 				<input type="email" class="form-control" required name="login" id="login-content" autocomplete="nope">
 				<span class="hightlight"></span>
@@ -22,12 +23,12 @@
 				<span class="bar"></span>
 				<label for="password-content">Votre mot de passe</label>
 			</div>        	
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-        <button type="submit" id="modal-signin" class="btn btn-primary">Valider</button>
-      </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            <button type="submit" id="modal-signin" class="btn btn-primary" disabled>Valider</button>
+          </div>
+		</form>
     </div>
   </div>
 </div>
