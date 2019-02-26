@@ -62,14 +62,20 @@ export class BasketListModule {
             // Gestion des alertes
             const warning: JQuery = $('#basket-warns');
             if (!has) {
+                console.log('Gestion des alertes::Aucun utilisateur connecté');
                 // Pas encore d'utilisateur connecté
-                const noUser: JQuery = warning.children('.no-user').eq(0);
+                //const noUser: JQuery = warning.children('p.no-user').eq(0);
+                const noUser: JQuery = $('#no-user');
                 noUser.removeClass('inactive');
+                warning.removeClass('hidden');
                 disableButton = true;
             } else {
                 if (!this.userService.getUser().hasAddresses()) {
-                    const noAddress: JQuery = warning.children('.no-address').eq(0);
+                    console.log('Gestion des alertes::Aucune adresse définie');
+                    //const noAddress: JQuery = warning.children('.no-address').eq(0);
+                    const noAddress: JQuery = $('#no-address');
                     noAddress.removeClass('inactive');
+                    warning.removeClass('hidden');
                     disableButton = true;
                 }
             }
@@ -97,6 +103,16 @@ export class BasketListModule {
             'click',
             (event: any): void => this._click(event)
         );
+
+        $('#login-modal').on(
+            'hidden.bs.modal',
+            (event: any): void => this.closeModal(event)
+        );
+
+        $('#modal-login-form').on(
+            'submit',
+            (event: any): void => this._signin(event)
+        );
     }
 
     private _click(event: any): void {
@@ -113,6 +129,15 @@ export class BasketListModule {
             console.info('Diminuer la quantité de produit ' + bundleId);
             this._decrease(element);
         }
+    }
+
+    private closeModal(event: any): void {
+        console.log('Fermeture de la modale signin');
+    }
+
+    private _signin(event: any) {
+        event.preventDefault();
+        console.log('Fermeture de la modale signin après validation');
     }
 
     private _remove(element: JQuery): void {
