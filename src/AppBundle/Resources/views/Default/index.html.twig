@@ -58,9 +58,9 @@
 	
 	{% block promotions %}
 		{% if promotions %}
-    			<div class="row" id="promotions">
+    			<div class="d-flex justify-content-around" id="promotions">
             		{%  for promotion in promotions %}
-            			<div class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-xs-12 promotion">
+            			<div class="promotion">
                 			<figure class="card">
                 				<a href="{{ path("product", {'slug': promotion.product.getId(), 'category': promotion.category.getId()}) }}" title="Voir {{ promotion.product.getTitleFr() }}">
                 					<img src="{{ promotion.image.src }}" alt="{{ promotion.image.alt }}" class="d-block w-100 img-responsive">

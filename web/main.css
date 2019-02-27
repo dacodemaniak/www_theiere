@@ -60,6 +60,9 @@
   color: inherit;
   font-style: inherit;
 }
+#main-header #logo-soeurs-theiere {
+  padding-top: .25em;
+}
 #main-header #user-basket .wrapper {
   height: inherit;
   position: absolute;
@@ -127,6 +130,9 @@
 }
 #main-nav.navbar.navbar-light.bg-light {
   background-color: #ed912f !important;
+}
+#main-nav.navbar.navbar-light.bg-light ul {
+  margin: 0 auto;
 }
 #main-nav.navbar.navbar-light.bg-light ul li.nav-item {
   width: 15em;
