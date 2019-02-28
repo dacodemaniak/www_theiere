@@ -619,6 +619,14 @@ section.category-products article.card div.card-body p.card-text {
   font-size: .9em;
   text-align: justify;
 }
+section.category-products article.card div.card-body a.btn.btn-outline-primary {
+  color: #ed912f;
+  border-color: #ed912f;
+}
+section.category-products article.card div.card-body a.btn.btn-outline-primary:hover {
+  background-color: #ed912f;
+  color: #ffffff;
+}
 section.category-products article.card div.min-price {
   padding-right: 5%;
 }
@@ -630,8 +638,26 @@ section.category-products article form.form-cart {
   padding: 0.5em;
   margin-top: 1em;
 }
+section.product-container article {
+  background-color: rgba(179, 179, 179, 0.5);
+  padding: 1.5em;
+}
+section.product-container article form button.btn.btn-warning {
+  background-color: #ed912f;
+  color: #ffffff;
+  border-radius: 0;
+}
+section.product-container article form button.btn.btn-warning.add-to-cart {
+  width: 15em;
+  height: 3em;
+}
+section.product-container article div.stock {
+  height: 3em;
+  margin-left: 80%;
+}
 section.product-container aside#decor-produit {
   margin-top: .5em;
+  margin-bottom: 1em;
   padding: 1em;
   font-size: .7em;
   font-weight: bold;
@@ -684,17 +710,16 @@ section.product-container #product-slider a span.carousel-control-next-icon {
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(237, 145, 47, 0.5);
+  background-color: rgba(128, 128, 128, 0.5);
   z-index: 999;
 }
 #dialog div.dialog.inner {
-  background-color: #ed912f;
+  background-color: rgba(26, 26, 26, 0.5);
   color: #ffffff;
   position: relative;
-  height: 300px;
-  width: 500px;
+  height: 12.375em;
+  width: 47.875em;
   left: 30%;
-  border: solid 2px #ffffff;
   border-radius: .5em;
   margin: 0 auto;
   position: absolute;
@@ -703,11 +728,20 @@ section.product-container #product-slider a span.carousel-control-next-icon {
 }
 #dialog div.dialog.inner header {
   padding-top: 1em;
-  padding-bottom: 1em;
+  padding-bottom: 0.5em;
 }
 #dialog div.dialog.inner header h4 {
-  font-size: .8em;
+  font-size: 1.2em;
   text-align: center;
+}
+#dialog div.dialog.inner blockquote {
+  padding: 1em;
+}
+#dialog div.dialog.inner footer.text-right {
+  padding-right: 2em;
+}
+#dialog div.dialog.inner footer.text-right button.btn.btn-primary {
+  background-color: #ed912f;
 }
 .bs-wizard {
   margin-top: 40px;
@@ -919,7 +953,7 @@ i [class*=" icon-"] {
 }
 .toast.success {
   color: #ffffff;
-  background-color: #28a745;
+  background-color: #ed912f;
 }
 .toast.info {
   color: #ffffff;

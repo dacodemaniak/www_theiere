@@ -65,6 +65,19 @@ section {
                                 text-align: justify;
                             }
                         }
+                        a {
+                            &.btn {
+                                &.btn-outline-primary {
+                                    color: @default_hover_color;
+                                    border-color: @default_hover_color;
+
+                                    &:hover {
+                                        background-color: @default_hover_color;
+                                        color: @default_menu_color;
+                                    }
+                                }
+                            } 
+                        }
                     }
                     &.min-price {
                         padding-right: 5%;
@@ -86,9 +99,36 @@ section {
         }
     }
     &.product-container {
+        article {
+            background-color: lighten(@default_dialog_background_color, 20%);
+            padding: 1.5em;
+
+            form {
+                button {
+                    &.btn {
+                        &.btn-warning {
+                            background-color: @default_hover_color;
+                            color: @default_menu_color;
+                            border-radius: 0;
+                            &.add-to-cart {
+                                width: 15em;
+                                height: 3em;
+                            }
+                        }
+                    }
+                }
+            }
+            div {
+                &.stock {
+                    height: 3em;
+                    margin-left: 80%;
+                }
+            }
+        }
         aside {
             &#decor-produit {
                 margin-top: .5em;
+                margin-bottom: 1em;
                 padding: 1em;
                 font-size: .7em;
                 font-weight: bold;

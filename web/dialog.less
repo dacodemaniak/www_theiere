@@ -17,23 +17,41 @@
     div {
         &.dialog {
             &.inner {
-                background-color: @default_hover_color;
+                background-color: darken(@default_dialog_background_color, 40%);
                 color: @default_menu_color;
                 position: relative;
-                height: 300px;
-                width: 500px;
+                height: 12.375em;
+                width: 47.875em;
                 left: 30%;
-                border: solid 2px @default_menu_color;
+                //border: solid 2px @default_menu_color;
                 border-radius: .5em;
                 margin: 0 auto;
                 .vertical-alignement;
 
                 header {
                     padding-top: 1em;
-                    padding-bottom: 1em;
+                    padding-bottom: 0.5em;
                     h4 {
-                        font-size: .8em;
+                        font-size: 1.2em;
                         text-align: center;
+                    }
+                }
+
+                blockquote {
+                    padding: 1em;
+                }
+
+                footer {
+                    &.text-right {
+                        padding-right: 2em;
+
+                        button {
+                            &.btn {
+                                &.btn-primary {
+                                    background-color: @default_hover_color;
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -49,16 +49,20 @@
                         	</div>
                         	
                 			<figure>
-                				<img class="card-img-top" src="{{ product.getMainImage()["src"] }}" alt="{{ product.getMainImage()["alt"] }}">
+                				<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="" title="En savoir plus sur {{ product.getTitleFr() }}">
+                					<img class="card-img-top" src="{{ product.getMainImage()["src"] }}" alt="{{ product.getMainImage()["alt"] }}">
+                				</a>
                 			</figure>
                 			
                 			<div class="card-body">
                 				<p class="card-text">
                 					{{ product.getDescriptionFr()|length > 218 ?  product.getDescriptionFr()|slice(0, 218) : product.getDescriptionFr()}}
                 				</p>
-                				<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="btn btn-outline-primary" role="button" title="Voir {{ product.getTitleFr() }}">
-                					Plus d'information
-                				</a>
+                            	<div class="text-center">
+                        			<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="btn btn-outline-primary" role="button" title="Voir {{ product.getTitleFr() }}">
+                        				Plus d'information
+                        			</a>
+                    			</div>
 								{{ include("@Content/product/form.html.twig", {"product": product}) }}
                 			</div>
                 		</article>
@@ -95,16 +99,20 @@
                             			</div>
                             			
                             			<figure>
-                            				<img class="card-img-top" src="{{ product.getMainImage()["src"] }}" alt="{{ product.getMainImage()["alt"] }}">
+                            				<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="" title="En savoir plus sur {{ product.getTitleFr() }}">
+                								<img class="card-img-top" src="{{ product.getMainImage()["src"] }}" alt="{{ product.getMainImage()["alt"] }}">
+                							</a>
                             			</figure>
                             			
                             			<div class="card-body">
                             				<p class="card-text">
                                                 {{ product.getDescriptionFr()|length > 218 ?  product.getDescriptionFr()|slice(0, 218) : product.getDescriptionFr()}}
                             				</p>
-                    						<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="btn btn-outline-primary" role="button" title="Voir {{ product.getTitleFr() }}">
-                    							Plus d'information
-                    						</a>
+                            				<div class="text-center">
+                        						<a href="{{ path("product", {'slug': product.getId(), 'category': currentCategory.getId()}) }}" class="btn btn-outline-primary" role="button" title="Voir {{ product.getTitleFr() }}">
+                        							Plus d'information
+                        						</a>
+                    						</div>
                                             {{ include("@Content/product/form.html.twig", {"product": product}) }}
                             			</div>
                             		</article>
