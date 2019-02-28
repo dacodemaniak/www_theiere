@@ -10,7 +10,9 @@ export class ToastModule {
 
     public constructor(options: any) {
         this.options = {
-            position: options.position || 'top',
+            position: options.position || null,
+            top: options.top || null,
+            left: options.left || null,
             duration: options.duration || 3,
             appear: options.appear || 'bounceInDown',
             disappear: options.disappear || 'bounceOutDown',
@@ -45,12 +47,16 @@ export class ToastModule {
             .addClass('toast')
             .addClass('animated')
             .addClass(this.options.appear)
-            .addClass(this.options.position)
             .addClass(this.options.type)
             .attr('width', this.options.width)
             .attr('height', this.options.height)
             .html('<h5>' + this.options.title + '</h5>')
-            .html('<blockquote>' + this.options.message + '</blockquote>')
+            .html('<blockquote>' + this.options.message + '</blockquote>');
+        if (this.options.position != null) {
+            toast.addClass(this.options.position);
+        } else {
+            toast.css('top', this.options.top).css('left', this.options.left);
+        }
         
         toast.appendTo($('body'));
         

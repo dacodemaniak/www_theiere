@@ -937,3 +937,7 @@ i [class*=" icon-"] {
   color: #ffffff;
   background-color: #868e96;
 }
+.btn.btn-default {
+  background-color: #ffffff;
+  color: #000000;
+}

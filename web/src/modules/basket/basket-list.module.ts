@@ -22,7 +22,6 @@ export class BasketListModule {
     private stepComponent: StepComponent;
 
     public constructor() {
-        console.log('BasketListModule works !');
         this.userService = new UserService();
 
         this.userService.hasUser().then((has: boolean) => {
@@ -45,7 +44,7 @@ export class BasketListModule {
     
                         fullTaxTotal += this._getTTC(product, product.product);
     
-                        product.getTableRow().then((row) => {
+                        product.getTableRow().then((row: JQuery) => {
                             tbody.append(row);
                             // Ajouter le total HT au pied de tableau
                             $('.gran-total').html(StringToNumberHelper.toCurrency(granTotal.toString()));
@@ -426,7 +425,7 @@ export class BasketListModule {
         let price: any;
 
         if (priceList.length > 1) {
-            const index: number = priceList.findIndex((obj) => { return obj.quantity == inBasket.servingSize});
+            const index: number = priceList.findIndex((obj: any) => { return obj.quantity == inBasket.servingSize});
             price = priceList[index];
         } else {
             price = priceList[0];

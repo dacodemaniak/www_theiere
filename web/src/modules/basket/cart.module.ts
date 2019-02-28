@@ -127,6 +127,8 @@ import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
      */
     private _addToCart(event: any): void {
         const button: JQuery = $(event.target);
+        const position: any = button.offset();
+
         const form: JQuery = button.parents('form');
         const input: JQuery = $('input[data-rel="' + form.attr('id') + '"]');
         let price: number = 0;
@@ -163,7 +165,9 @@ import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
                 const toast: ToastModule = new ToastModule({
                     title: 'Produit ajouté',
                     message: 'Le produit a bien été ajouté au panier.',
-                    position: 'middle-center'
+                    //position: 'middle-center',
+                    top: position.top,
+                    left: position.left + 50
                 });
                 toast.show();
             });
