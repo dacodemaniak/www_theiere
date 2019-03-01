@@ -122,16 +122,21 @@
                     	{% endif %}
                     	
                     	<!-- Stock -->
-                    	<div class="stock float-right">
+                    	<div class="stock">
                     		<i class="icon-checkmark2"></i> En stock
                     	</div>
                     	
+                    	<div class="text-center">
                     	<!-- Bouton d'ajout au panier -->
                     	<button type="button" class="btn btn-warning mx-auto add-to-cart" data-id="{{ product.getId() }}">
     						Ajouter au panier
-    					</button> 
+    					</button>                     	
+                    	</div>
+
     				</fieldset>
     			</form>
+    		</div>
+    	</article>
             	{% if decorators|length %}
                 	<aside id="decor-produit" class="row">
                 		{% for decor in decorators if decor.isIconic %}
@@ -170,7 +175,5 @@
                 		{% endfor %}
                 	</aside>
                 {% endif %}
-    		</div>
-    	</article>
     </section>
 {% endblock %}
