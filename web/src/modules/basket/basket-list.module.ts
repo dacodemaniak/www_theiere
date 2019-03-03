@@ -254,7 +254,7 @@ export class BasketListModule {
             element,
             {
                 title: 'Retirer un produit du panier',
-                content: 'Etes-vous sûr de vouloir retirer <strong>' + productName + '</strong> de votre panier ?'
+                content: 'Etes-vous sûr de vouloir retirer<br><strong>' + productName + '</strong><br>de votre panier ?'
             }
         );
         dialog.show();
@@ -295,28 +295,21 @@ export class BasketListModule {
                         $('.gran-total').html(StringToNumberHelper.toCurrency(totalHT.toString()));
                         $('.fulltax-total').html(StringToNumberHelper.toCurrency(totalTTC.toString()));
 
-                        // Redessine le nombre de produits dans le panier
-                        const inBasket: number = $('#basket-list tbody tr').length;
-                        const basketCount: JQuery = $('#user-basket div.wrapper span.badge.badge-warning.exposant');
                         // Si plus aucune ligne dans le panier, on réactive le hidden
-                        if (inBasket === 0) {
-                            $('#basket-list').addClass('hidden');
+                        $('#basket-list').addClass('hidden');
 
-                            // on ajoute un message...
-                            const toast: ToastModule = new ToastModule({
-                                type: 'info',
-                                title: 'Votre panier est vide',
-                                position: 'middle-center',
-                                message: 'Plus aucun produit dans votre panier.'
-                            });
-                            toast.show();
+                        // on ajoute un message...
+                        const toast: ToastModule = new ToastModule({
+                            type: 'info',
+                            title: 'Votre panier est vide',
+                            position: 'middle-center',
+                            message: 'Plus aucun produit dans votre panier.'
+                        });
+                        toast.show();
 
-                            // on redirige vers l'accueil
-                            const router: RouterModule = new RouterModule();
-                            router.changeLocation('/');
-                        } else {
-                            basketCount.html('').html(inBasket.toString());
-                        }
+                        // on redirige vers l'accueil
+                        const router: RouterModule = new RouterModule();
+                        router.changeLocation('/');
                     } else {
                         const toast: ToastModule = new ToastModule({
                             type: 'danger',
