@@ -2,6 +2,10 @@ import { ProductService } from './../../services/product.service';
 import { ToastModule } from './../toast/toast.module';
 import { ProductBasketModel } from './models/product-basket.model';
 import { BasketService } from './../../services/basket.service';
+import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
+
+import * as $ from 'jquery';
+
 /**
  * @name CartModule
  * @desc Gestion du formulaire d'ajout au panier
@@ -10,7 +14,7 @@ import { BasketService } from './../../services/basket.service';
  * @version 1.0.0
  */
 
-import { StringToNumberHelper } from './../../helpers/string-to-number.helper';
+
 
  export class CartModule {
     /**

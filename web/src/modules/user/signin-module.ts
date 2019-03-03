@@ -1,9 +1,9 @@
 import { ToastModule } from './../toast/toast.module';
 import { Constants } from './../../shared/constants';
-
-import * as $ from 'jquery';
 import { EmailHelper } from '../../helpers/email.helper';
 import { RouterModule } from '../router/router.module';
+
+import * as $ from 'jquery';
 
 /**
  * @name SigninModule

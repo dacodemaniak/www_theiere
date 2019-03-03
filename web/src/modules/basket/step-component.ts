@@ -1,4 +1,8 @@
 import { UserService } from './../../services/user.service';
+import { ProductBasketModel } from './models/product-basket.model';
+
+import * as $ from 'jquery';
+
 /**
  * @name StepComponent
  * @desc Gestion du bandeau d'étapes de validation du panier
@@ -7,8 +11,7 @@ import { UserService } from './../../services/user.service';
  * @version 1.0.0
  */
 
- import * as $ from 'jquery';
-import { ProductBasketModel } from './models/product-basket.model';
+
 
 export class StepComponent {
     private signinStep: JQuery;

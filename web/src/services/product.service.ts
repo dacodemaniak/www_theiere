@@ -1,5 +1,7 @@
 import { Constants } from './../shared/constants';
+
 import * as $ from 'jquery';
+
 /**
  * @name ProductService
  * @desc Service de gestion des produits du back-end

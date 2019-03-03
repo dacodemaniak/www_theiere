@@ -1,3 +1,7 @@
+import { UserModel } from './../user/models/user.model';
+import { UserService } from './../../services/user.service';
+import { BasketMenuModel } from './models/basket-menu.model';
+
 /**
  * @name BasketModule
  * @desc Gestion du panier utilisateur
@@ -5,9 +9,7 @@
  * @package modules/basket
  * @version 1.0.0
  */
-import { UserModel } from './../user/models/user.model';
-import { UserService } from './../../services/user.service';
-import { BasketMenuModel } from './models/basket-menu.model';
+
 
 export class BasketModule {
     private userService: UserService;

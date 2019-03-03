@@ -2,6 +2,8 @@ import { UserModel } from './user.model';
 import { MenuModel } from "../../menu/models/menu.model";
 import { OptionModel } from "../../menu/models/option.model";
 
+import * as $ from 'jquery';
+
 /**
  * @name UserMenuModel
  * @desc Instance du menu Utilisateur soit anonyme, soit identifié
@@ -9,7 +11,6 @@ import { OptionModel } from "../../menu/models/option.model";
  * @package modules/user/models
  * @version 1.0.0
  */
-import * as $ from 'jquery';
 
 /**
  * @name UserMenuModel

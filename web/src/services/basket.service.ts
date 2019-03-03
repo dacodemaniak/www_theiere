@@ -6,9 +6,6 @@
  * @package services
  * @version 1.0.0
  */
-
-import * as $ from 'jquery';
-
 import { BasketModel } from './../modules/basket/models/basket.model';
 import { ProductBasketModel } from '../modules/basket/models/product-basket.model';
 import { resolve } from 'path';

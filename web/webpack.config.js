@@ -14,6 +14,9 @@ const TerserPlugin = require('terser-webpack-plugin');
      },
      optimization: {
         minimizer: [new TerserPlugin()],
+        splitChunks: {
+            chunks: 'all'
+        },
       },
      module: {
          rules: [

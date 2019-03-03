@@ -8,6 +8,9 @@ import { SiteService } from "./../../services/site.service";
 import { Constants } from "../../shared/constants";
 import { ToastModule } from "../toast/toast.module";
 import { CarryingModel } from "./models/carrying.model";
+
+import * as $ from 'jquery';
+
 /**
  * @name DeliveryModule
  * @desc Sélection de l'adresse de livraison du panier

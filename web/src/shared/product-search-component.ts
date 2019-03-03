@@ -1,8 +1,8 @@
 import { ComponentInterface } from './interfaces/component-interface';
 import { debounce } from 'ts-debounce';
+import { Constants } from './constants';
 
 import * as $ from 'jquery';
-import { Constants } from './constants';
 
 /**
  * @name ProductSearchComponent

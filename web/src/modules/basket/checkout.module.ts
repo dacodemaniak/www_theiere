@@ -10,8 +10,9 @@ import { Constants } from "../../shared/constants";
 import { ToastModule } from "../toast/toast.module";
 import { CryptoHelper } from './../../helpers/crypto-helper';
 
-import * as $ from 'jquery';
 import * as moment from 'moment';
+import * as $ from 'jquery';
+
 /**
  * @name CheckoutModule
  * @desc Validation du panier

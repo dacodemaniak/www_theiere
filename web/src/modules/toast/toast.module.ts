@@ -1,3 +1,5 @@
+import * as $ from 'jquery';
+
 /**
  * @name ToastModule
  * @desc Gestion des toasts (snackbar)

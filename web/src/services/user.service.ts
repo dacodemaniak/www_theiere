@@ -1,5 +1,9 @@
 import { UserModel } from './../modules/user/models/user.model';
 import { RouterModule } from './../modules/router/router.module';
+import { Constants } from './../shared/constants';
+import { Jwt } from './../../node_modules/@coolgk/jwt/jwt';
+
+import * as $ from 'jquery';
 
 /**
  * @name UserService
@@ -7,9 +11,7 @@ import { RouterModule } from './../modules/router/router.module';
  * @author IDea Factory - Déc. 2018 (dev-team@ideafactory.fr)
  * @version 1.0.0
  */
-import * as $ from 'jquery';
-import { Constants } from './../shared/constants';
-import { Jwt } from './../../node_modules/@coolgk/jwt/jwt';
+
 
 export class UserService {
     //private apiRoot: string = 'http://api.lessoeurstheiere.wrk/';

@@ -1,4 +1,7 @@
 import { UserModel } from './../../user/models/user.model';
+
+import * as $ from 'jquery';
+
 /**
  * @name OptionModel
  * @desc Définition des options des menus
@@ -6,8 +9,6 @@ import { UserModel } from './../../user/models/user.model';
  * @package modules/menu
  * @version 1.0.0
  */
-
-import * as $ from 'jquery';
 
 
 export class OptionModel {

@@ -9,7 +9,7 @@
         {% block stylesheets %}
         	<link rel="stylesheet" href="{{ asset("node_modules/bootstrap/dist/css/bootstrap.min.css") }}">
         	<link rel="stylesheet" href="{{ asset("node_modules/animate.css/animate.min.css") }}">
-        	<link rel="stylesheet" href="{{ asset("main.css") }}">
+        	<link rel="stylesheet" href="{{ asset("build/theiere.min.css") }}">
         {% endblock %}
         
         <link rel="apple-touch-icon" sizes="57x57" href="{{ asset("apple-icon-57x57.png") }}">
@@ -121,8 +121,7 @@
         
         </div>
         {% block javascripts %}
-        	<script src="{{ asset("node_modules/jquery/dist/jquery.min.js") }}"></script>
-        	<script src="{{ asset("node_modules/bootstrap/dist/js/bootstrap.min.js") }}"></script>
+        	<script src="{{ asset("build/vendors~main.chunk.js") }}"></script>
         	<script src="{{ asset("build/main.bundle.js") }}"></script>
         {% endblock %}
     </body>

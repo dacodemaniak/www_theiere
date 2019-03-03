@@ -3,6 +3,8 @@ import { Constants } from './../../shared/constants';
 import { EmailHelper } from './../../helpers/email.helper';
 import { ToastModule } from '../toast/toast.module';
 
+import * as $ from 'jquery';
+
 /**
  * @name ContactModule
  * @desc Gestionnaire du formulaire de contact

@@ -1,7 +1,9 @@
-import { UserService } from './src/services/user.service';
 import * as $ from 'jquery';
+import * as moment from 'moment';
+import 'bootstrap';
 
 import { Bootstrap } from './src/bootstrap';
+import { UserService } from './src/services/user.service';
 
 /**
 $(window).on(
@@ -17,7 +19,6 @@ $(window).on(
 $(document).ready(
     (event: any) => {
         const userService: UserService = new UserService();
-        console.log('app is running');
         const bootstrap = new Bootstrap(userService);       
     }
 );

@@ -5,9 +5,6 @@
  * @package shared/components
  * @version 1.0.0
  */
-
- import * as $ from 'jquery';
-
 export class BannerComponent {
     private alreadyChecked: boolean = false;
 

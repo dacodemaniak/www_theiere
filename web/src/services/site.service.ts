@@ -1,3 +1,6 @@
+import { Constants } from './../shared/constants';
+import * as $ from 'jquery';
+
 /**
  * @name SiteService
  * @desc Service de récupération des données du site
@@ -6,8 +9,6 @@
  * @version 1.0.0
  */
 
-import { Constants } from './../shared/constants';
-import * as $ from 'jquery';
 
 export class SiteService {
 

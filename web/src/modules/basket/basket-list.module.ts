@@ -9,6 +9,9 @@ import { DialogModule } from './../dialog/dialog.module';
 import { Constants } from '../../shared/constants';
 import { UserModel } from '../user/models/user.model';
 import { UserMenuModel } from '../user/models/user-menu.model';
+
+import * as $ from 'jquery';
+
 /**
  * @name BasketListModule
  * @desc Affichage de la liste des produits dans le panier

@@ -1,6 +1,9 @@
 import { Constants } from './../../../shared/constants';
 import { ProductService } from '../../../services/product.service';
 import { StringToNumberHelper } from '../../../helpers/string-to-number.helper';
+
+import * as $ from 'jquery';
+
 /**
  * @name BasketModel
  * @desc Définition d'un élément du panier
