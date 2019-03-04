@@ -1,5 +1,8 @@
 import { RouterModule } from './../router/router.module';
 import { UserService } from './../../services/user.service';
+
+import * as $ from 'jquery';
+
 /**
  * @name DisconnectComponent
  * @desc Déconnexion de l'utilisateur
@@ -28,8 +31,11 @@ export class DisconnectComponent {
     }
 
     private _disconnect(event: any) {
-        this.userService.disconnect();
-        const router: RouterModule = new RouterModule();
-        router.changeLocation('/');
+        event.preventDefault();
+        this.userService.disconnect().then((done) => {
+            const router: RouterModule = new RouterModule();
+            router.changeLocation('/');
+        });
+
     }
 }

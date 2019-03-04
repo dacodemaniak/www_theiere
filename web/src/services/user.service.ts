@@ -82,9 +82,12 @@ export class UserService {
     /**
      * Processus de déconnexion de l'utilisateur
      */
-    public disconnect(): void {
-        localStorage.removeItem('eshopUser');
-        this.user = null;
+    public disconnect(): Promise<any> {
+        return new Promise((resolve) => {
+            localStorage.removeItem('eshopUser');
+            this.user = null;
+            resolve(true);
+        });
     }
 
     private _check(token: string): Promise<boolean> {

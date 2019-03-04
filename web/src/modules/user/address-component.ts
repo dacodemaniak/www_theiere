@@ -2,6 +2,9 @@ import { UserModel } from './models/user.model';
 import { EmailHelper } from '../../helpers/email.helper';
 import { ToastModule } from '../toast/toast.module';
 import { Constants } from '../../shared/constants';
+
+import * as $ from 'jquery';
+
 /**
  * @name AddressComponent
  * @desc Composant pour la gestion de l'adresse de facturation

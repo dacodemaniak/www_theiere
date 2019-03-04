@@ -30,7 +30,7 @@ import { AccountModule } from '../user/account-module';
              console.info('Mode production');
          }
 
-         //console.log('Before slicing : ' + url);
+         console.log('Before slicing : ' + url);
 
          if (url.indexOf('product/') !== -1 || url.indexOf('products/') !== -1) {
             url = 'product';
@@ -96,7 +96,6 @@ import { AccountModule } from '../user/account-module';
      }
 
      public changeLocation(location: string): void {
-         console.log('Redirection vers ' + location);
          document.location.replace(location);
      }
 

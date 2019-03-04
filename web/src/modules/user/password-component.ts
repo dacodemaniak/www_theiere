@@ -1,6 +1,9 @@
 import { ToastModule } from './../toast/toast.module';
 import { Constants } from './../../shared/constants';
 import { UserModel } from './models/user.model';
+
+import * as $ from 'jquery';
+
 /**
  * @name PasswordComponent
  * @desc Gestion du formulaire de modification du mot de passe
