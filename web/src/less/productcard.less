@@ -56,6 +56,18 @@ section {
                                 text-align: justify;
                             }
                         }
+                        a {
+                            &.btn {
+                                &.btn-outline-primary {
+                                    color: @default_hover_color;
+                                    border-color: @default_hover_color;
+                                    &:hover {
+                                        background-color: @default_hover_color;
+                                        color: @default_menu_color;
+                                    }
+                                }
+                            }
+                        }
                     }
                     &.min-price {
                         padding-right: 5%;
@@ -77,6 +89,10 @@ section {
         }
     }
     &.product-container {
+        article {
+            background-color: lighten(@default_dialog_background_color, 15%);
+            padding: 1.5em;
+        }
         aside {
             &#decor-produit {
                 margin-top: .5em;
