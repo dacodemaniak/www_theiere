@@ -1,3 +1,5 @@
+import * as $ from 'jquery';
+
 /**
  * @name BannerComponent
  * @desc Affichage de la bannière de conformité traceurs et RGPD
