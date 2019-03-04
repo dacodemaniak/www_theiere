@@ -12,82 +12,99 @@ section {
                 color: @default_menu_color;
                 letter-spacing: .1em;
             }
-            &.child {
-                background-color: @default_hover_color;
-                h2 {
-                    padding-top: 1em;
-                    padding-bottom: 1em;
-                    font-size: 1em;
-                    color: @default_menu_color;
-                    letter-spacing: .1em;
-                    a {
-                        color: inherit;
-                    }
-                }                    
-            }
-
         }
-        article {
-            &.card {
-                header {
-                    &.card-header {
-                        background-color: @default_hover_color;
-                        height: 5em;
-                        h2, h3 {
-                            &.card-title {
-                                color: @default_menu_color;
-                                height: 2em;
-                                font-size: .9em;
-                            }
-                        }
-                    }
-                }
+        div {
+            &.row {
                 div {
-                    &.card-body {
-                        height: 25em;
-                        min-height: 25em;
-                        height: auto;
-                        p {
-                            &.card-text {
-                                height: 10em;
-                                min-height: 10em;
-                                height: auto;
-                                font-size: .9em;
-                                text-align: justify;
-                            }
-                        }
-                        a {
-                            &.btn {
-                                &.btn-outline-primary {
-                                    color: @default_hover_color;
-                                    border-color: @default_hover_color;
-                                    &:hover {
-                                        background-color: @default_hover_color;
+                    background-color: transparent;
+                    article {
+                        &.category-products {
+                            height: 10em;
+                            width: 10em;
+                            header {
+                                &.child {
+                                    background-color: @default_hover_color;
+                                    padding: 1em;
+                                    .vertical-alignement;
+                                    h2 {
+                                        padding-top: 1em;
+                                        padding-bottom: 1em;
+                                        font-size: 1em;
                                         color: @default_menu_color;
-                                    }
-                                }
+                                        letter-spacing: .1em;
+                                        a {
+                                            color: inherit;
+                                        }
+                                    }                    
+                                } 
                             }
                         }
                     }
-                    &.min-price {
-                        padding-right: 5%;
-                        p {
-                            &.badge {
-                                padding: 0.3em;
-                            }
-                        }
-                    }
-                }
-            }
-            form {
-                &.form-cart {
-                    background-color: lighten(@default_hover_color, 30%);
-                    padding: 0.5em;
-                    margin-top: 1em;
                 }
             }
         }
     }
+    article {
+        &.card {
+            header {
+                &.card-header {
+                    background-color: @default_hover_color;
+                    height: 5em;
+                    h2, h3 {
+                        &.card-title {
+                            color: @default_menu_color;
+                            height: 2em;
+                            font-size: .9em;
+                        }
+                    }
+                }
+            }
+            div {
+                &.card-body {
+                    height: 25em;
+                    min-height: 25em;
+                    height: auto;
+                    p {
+                        &.card-text {
+                            height: 10em;
+                            min-height: 10em;
+                            height: auto;
+                            font-size: .9em;
+                            text-align: justify;
+                        }
+                    }
+                    a {
+                        &.btn {
+                            &.btn-outline-primary {
+                                color: @default_hover_color;
+                                border-color: @default_hover_color;
+                                &:hover {
+                                    background-color: @default_hover_color;
+                                    color: @default_menu_color;
+                                }
+                            }
+                        }
+                    }
+                }
+                &.min-price {
+                    padding-right: 5%;
+                    p {
+                        &.badge {
+                            padding: 0.3em;
+                        }
+                    }
+                }
+            }
+        }
+        form {
+            &.form-cart {
+                background-color: lighten(@default_hover_color, 30%);
+                padding: 0.5em;
+                margin-top: 1em;
+            }
+        }
+    }
+
     &.product-container {
         article {
             background-color: lighten(@default_dialog_background_color, 15%);

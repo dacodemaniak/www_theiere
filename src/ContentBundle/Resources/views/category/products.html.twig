@@ -73,14 +73,17 @@
         	<!-- Boucle sur les sous-catégories -->
         	<div class="row">
             	{% for childrenProduct in childrenProducts if childrenProduct.products|length %}
-            		<article class="category-products col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-            			<header class="header child">
-            				<h2 class="text-center">
-            				    <a href="{{ path("products_category", {'slug': childrenProduct.category.getId()}) }}" title="Tous les produits de la catégorie {{ childrenProduct.category.getTitleFr() }}">
-            	                    {{ childrenProduct.category.getTitleFr()|upper }}
-            	                </a>
-            				</h2>
-            			</header>
+            		<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                		<article class="mx-auto category-products">
+                			<header class="header child">
+                				<h2 class="text-center">
+                				    <a href="{{ path("products_category", {'slug': childrenProduct.category.getId()}) }}" title="Tous les produits de la catégorie {{ childrenProduct.category.getTitleFr() }}">
+                	                    {{ childrenProduct.category.getTitleFr()|upper }}
+                	                </a>
+                				</h2>
+                			</header>
+                		</article>
+            		</div>
             	{% endfor %}
             </div>
         {% endif %}
