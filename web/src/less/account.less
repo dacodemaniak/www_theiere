@@ -20,4 +20,22 @@ section {
             color: @default_hover_color;
         }
     }
+
+    &#account-informations {
+        button {
+            &.btn {
+                &.btn-outline-success {
+                    color: @default_hover_color;
+                    border-color: @default_hover_color;
+                    &[disabled] {
+                        border-color: @default_hover_color;
+                    }
+                    &:hover {
+                        background-color: @default_hover_color;
+                        color: @default_menu_color;
+                    }
+                }
+            }
+        }        
+    }
 }
