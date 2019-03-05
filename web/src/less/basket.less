@@ -4,7 +4,27 @@
     &.hidden {
         display: none;
     }
+    thead {
+        &.thead-light {
+            background-color: lighten(@default_hover_color, 15%);
+            color: @default_menu_color;
 
+            tr {
+                th {
+                    background-color: inherit;
+                }
+            }
+        }
+    }
+    tfoot {
+        tr {
+            &.table-dark {
+                &>td {
+                    background-color: @default_hover_color;
+                }
+            }
+        }
+    }
     tr {
         &#total-ht {
             display: none;
@@ -14,6 +34,16 @@
         &.icon-cross {
             color: @danger;
             cursor: pointer;
+        }
+    }
+    a {
+        &.btn {
+            &.btn {
+                &.btn-success {
+                    background-color: @default_hover_color;
+                    border-color: @default_hover_color;
+                }
+            }
         }
     }
 }
