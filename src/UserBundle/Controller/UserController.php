@@ -22,6 +22,7 @@ use Doctrine\Common\Util\ClassUtils;
 use UserBundle\Service\TokenService;
 use UserBundle\Payment\PaymentProcess;
 use UserBundle\Entity\Basket;
+use AppBundle\Service\SiteService;
 
 class UserController extends FOSRestController {
 	
@@ -54,11 +55,15 @@ class UserController extends FOSRestController {
 	/**
 	 * @Route("/myaccount/{token}", methods={"GET","HEAD"}, name="my-account")
 	 */
-	public function myAccountAction(Request $request) {
+	public function myAccountAction(Request $request, SiteService $siteService) {
+	    
 	    $request->setRequestFormat("html");
 	    if ($this->authToken($request)) {
 	        return $this->render(
-	            "@User/Default/account.html.twig"
+	            "@User/Default/account.html.twig",
+	            [
+	                "phone" => $siteService->getPhoneNumber()
+	            ]
 	        );
 	    }
 	    

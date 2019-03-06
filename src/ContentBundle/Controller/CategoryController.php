@@ -17,13 +17,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use MenuBundle\Entity\Categorie;
+use AppBundle\Service\SiteService;
 use ContentBundle\Entity\Article;
 
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 
-class CategoryController extends FOSRestController {
+class CategoryController extends FOSRestController implements ContainerAwareInterface {
 	
     /**
      * Catégorie traitée
@@ -55,10 +57,18 @@ class CategoryController extends FOSRestController {
      */
     private $parentCategories;
     
+    /**
+     * Service de récupération des données du site
+     * @var SiteService
+     */
+    private $siteService;
+    
 	/**
 	 * Constructeur du contrôleur
 	 */
-	public function __construct() {}
+    public function __construct() {
+        
+    }
 	
 	/**
 	 * @Route("/products/category/{slug}", methods={"GET","HEAD"}, name="products_category")
@@ -69,6 +79,8 @@ class CategoryController extends FOSRestController {
 	 */
 	public function productFromCategory(Request $request) {
 	    $request->setRequestFormat("html");
+	    
+	    $this->siteService = $this->container->get('site_service');
 	    
 	    $routeComponent = $request->get("slug");
 
@@ -110,7 +122,8 @@ class CategoryController extends FOSRestController {
 	            "currentCategory" => $this->category,
 	            "ancestors" => $ancestors,
 	            "products" => $this->getCategoryProductsCollection(),
-	            "childrenProducts" => $this->getChildrenProductsCollection()
+	            "childrenProducts" => $this->getChildrenProductsCollection(),
+	            "phone" => $this->siteService->getPhoneNumber()
 	        ]
 	    );
 	}

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use ContentBundle\ContentBundle;
 use Symfony\Component\Asset\Packages;
+use \AppBundle\Service\SiteService;
 
 class DefaultController extends Controller
 {
@@ -15,7 +16,7 @@ class DefaultController extends Controller
 	/**
 	 * @Route("/", defaults={"_format"="html"}, name="home")
 	 */
-	public function indexAction(Request $request, Packages $assetPackage) {
+	public function indexAction(Request $request, Packages $assetPackage, SiteService $siteService) {
 	    $request->setRequestFormat("html");
 	    
 	    $editorial = $this->getEditorial();
@@ -87,26 +88,9 @@ class DefaultController extends Controller
 		      "monthProduct" => $monthProduct,
 		      "heartProduct" => $heartProduct,
 		      "homeMeeting" => $homeMeeting,
-		      "phone" => $this->_getSiteContent()
+		      "phone" => $siteService->getPhoneNumber()
 		  ]
 		);
-	}
-	
-	private function _getSiteContent() {
-	    $site = $this->getDoctrine()
-	       ->getManager()
-	       ->getRepository("SiteBundle:Site")
-	       ->find(1);
-	    
-	    $phone = $site->getContent()->phone;
-	    
-	    $publicPhone = "0" . substr($phone, 5, strlen($phone));
-	    $phone = str_replace(" ", "", $phone);
-	    
-	    return [
-	        "callNumber" => $phone,
-	        "affNumber"  => $publicPhone
-	    ];
 	}
 	
 	/**

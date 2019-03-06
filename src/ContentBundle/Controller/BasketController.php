@@ -15,19 +15,25 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
+use AppBundle\Service\SiteService;
 
 
 
 class BasketController extends FOSRestController {
 
     /**
-     * @Route("/basket", defaults={"_format"="html"}, methods={"GET","HEAD"}, name="view-basket")
+     * @Route("/basket", name="view-basket")
      */
     public function showBasketAction(Request $request) {
         $request->setRequestFormat("html");
         
+        $siteService = $this->container->get("site_service");
+        
         return $this->render(
-            "@Content/basket/basketlist.html.twig"
+            "@Content/basket/basketlist.html.twig",
+            [
+                "phone" => $siteService->getPhoneNumber()
+            ]
         );
     }
     
@@ -37,8 +43,13 @@ class BasketController extends FOSRestController {
     public function deliveryBasketAction(Request $request) {
         $request->setRequestFormat("html");
         
+        $siteService = $this->container->get("site_service");
+        
         return $this->render(
-            "@Content/basket/delivery.html.twig"
+            "@Content/basket/delivery.html.twig",
+            [
+                "phone" => $siteService->getPhoneNumber()
+            ]
             );
     }
     
@@ -57,6 +68,8 @@ class BasketController extends FOSRestController {
         
         $siteContent = $site->getContent();
         
+        $siteService = $this->container->get("site_service");
+        
         $address = [
             "name" => $siteContent->name,
             "address" => [
@@ -69,7 +82,10 @@ class BasketController extends FOSRestController {
         ];
         return $this->render(
             "@Content/basket/checkout.html.twig",
-            ["address" => $address]
+            [
+                "address" => $address,
+                "phone" => $siteService->getPhoneNumber()
+            ]
         );
     }
 }

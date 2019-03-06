@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Service\SiteService;
 
 class DefaultController extends Controller
 {
@@ -18,11 +19,16 @@ class DefaultController extends Controller
 	/**
 	 * @Route("/signin/{from}", defaults={"_format"="html", "from"="anywhere"}, methods={"GET","HEAD"}, name="signin-form")
 	 */
-	public function showFormAction(Request $request) {
+	public function showFormAction(Request $request, SiteService $siteService) {
 	    $request->setRequestFormat("html");
 	    
+	    //$siteService = $this->container->get('site_service');
+	    
 	    return $this->render(
-	        "@User/Default/index.html.twig"
+	        "@User/Default/index.html.twig",
+	        [
+	            "phone" => $siteService->getPhoneNumber()
+	        ]
 	    );
 	}
     

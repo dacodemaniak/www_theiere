@@ -9,6 +9,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
+use AppBundle\Service\SiteService;
 
 class DefaultController extends FOSRestController
 {
@@ -19,7 +20,14 @@ class DefaultController extends FOSRestController
     public function showAction(Request $request) {
         $request->setRequestFormat("html");
         
-        return $this->render("@Contact/contact.html.twig");
+        $siteService = $this->container->get("site_service");
+        
+        return $this->render(
+            "@Contact/contact.html.twig",
+            [
+                "phone" => $siteService->getPhoneNumber()
+            ]
+        );
     }
     
     /**

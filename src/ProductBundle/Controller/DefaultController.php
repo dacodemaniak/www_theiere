@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use MenuBundle\Category\CategoryHelper;
+use AppBundle\Service\SiteService;
 use ContentBundle\Entity\Article;
 
 class DefaultController extends Controller
@@ -42,6 +43,8 @@ class DefaultController extends Controller
         
         $decorators = $product->getProductDecorators();
         
+        $siteService = $this->container->get("site_service");
+        
         return $this->render(
             "@Product/Default/index.html.twig",
             [
@@ -49,7 +52,8 @@ class DefaultController extends Controller
                 "product" => $product,
                 "ancestors" => $ancestors,
                 "sliderImages" => $sliderImages,
-                "decorators" => $decorators
+                "decorators" => $decorators,
+                "phone" => $siteService->getPhoneNumber()
             ]
         );
     }
