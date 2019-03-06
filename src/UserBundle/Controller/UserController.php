@@ -510,11 +510,6 @@ class UserController extends FOSRestController {
 	       
 	       $this->_sendMail($emailContent);
 	    }
-	    
-	    
-
-	    
-	    
 	}
 	
 	/**
@@ -523,7 +518,7 @@ class UserController extends FOSRestController {
 	 * @param Request $request
 	 */
 	public function checkoutPaymentDoneAction(Request $request) {
-	    
+	    return this.checkoutPaymentTestAction($request);
 	}
 	
 	/**
