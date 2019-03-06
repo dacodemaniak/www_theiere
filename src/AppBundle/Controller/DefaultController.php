@@ -86,9 +86,27 @@ class DefaultController extends Controller
 		      "promotions" => $products,
 		      "monthProduct" => $monthProduct,
 		      "heartProduct" => $heartProduct,
-		      "homeMeeting" => $homeMeeting
+		      "homeMeeting" => $homeMeeting,
+		      "phone" => $this->_getSiteContent()
 		  ]
 		);
+	}
+	
+	private function _getSiteContent() {
+	    $site = $this->getDoctrine()
+	       ->getManager()
+	       ->getRepository("SiteBundle:Site")
+	       ->find(1);
+	    
+	    $phone = $site->getContent()->phone;
+	    
+	    $publicPhone = "0" . substr($phone, 5, strlen($phone));
+	    $phone = str_replace(" ", "", $phone);
+	    
+	    return [
+	        "callNumber" => $phone,
+	        "affNumber"  => $publicPhone
+	    ];
 	}
 	
 	/**

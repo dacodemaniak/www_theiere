@@ -41,19 +41,7 @@
     				</div>
     				
     				<div id="search" class="col-xl-3 col-lg-3 col-md-3  d-none d-sm-block d-md-block">
-    					<form id="search-form" class="form form-stacked">
-    						<div class="input-group">
-  								<input type="search" class="form-control" placeholder="Chercher..." aria-label="Chercher" aria-describedby="basic-addon2">
-  								<div class="input-group-append">
-    								<button class="btn btn-outline-secondary" type="button"><i class="icon-search"></i></button>
-  								</div>
-							</div>
-    					</form>
-    					<div class="hidden" id="search-result">
-							<h4>Correspondances : <span class="items-number"></span></h4>
-							<ul class="list list-unstyled" id="product-items">
-							</ul>
-						</div>
+						&nbsp;
     				</div>
     				
     				<div id="logo-soeurs-theiere" class="logo col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
@@ -73,6 +61,12 @@
     						<a href="{{ path("contact") }}" title="Contactez les Soeurs Théière">
     							<i class="icon-mail2"></i> Contactez-nous
     						</a>
+    						<br>
+    						<spanclass="phone-number">
+    							<a href="tel:{{ phone.callNumber }}">
+    								{{ phone.affNumber }}
+    							</a>
+    						</span>
     					</div>
     				</div>
     			{% endblock %}
