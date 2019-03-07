@@ -81,6 +81,9 @@ export class SignupModule {
     private _authenticate(event: any): void {
         event.preventDefault();
 
+        const button: JQuery = $(event.target);
+        const position: any = button.offset();
+
         this.formContent = {
             login: this.login.val(),
             password: this.password.val()
@@ -129,7 +132,10 @@ export class SignupModule {
                     {
                         title: 'Erreur d\'identification',
                         message: response,
-                        type: 'danger'
+                        type: 'danger',
+                        top: position.top,
+                        left: position.left + 50,
+                        duration: 4
                     }
                 );
                 toast.show();
