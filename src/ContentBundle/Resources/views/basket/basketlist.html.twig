@@ -10,57 +10,33 @@
 		<!-- Inclusion du progress stepper -->
 		{{ include("@Content/Default/checkoutstepper.html.twig", {"step": "basket-list"}) }}
 		
-    	<table id="basket-list" class="table table-hover table-bordered table-responsive hidden">
-    		<thead class="thead-light">
-    			<tr>
-    				<th scope="col">Produit</th>
-    				<th scope="col">Par</th>
-    				<th scope="col">Quantité</th>
-    				<th scope="col">Prix T.T.C.</th>
-    				<th scope="col">Total T.T.C.</th>
-    				<th scope="col">&nbsp;</th>
-    			</tr>
-    		</thead>
-    		
-    		<tbody>
-    		</tbody>
-    		
-    		<tfoot>
-  				<tr class="table-dark">
-    				<td colspan="4" class="text-right">
-    					Total T.T.C.
-    				</td>
-    				<td class="fulltax-total" colspan="2"></td>
-    			</tr>
-    			
-    			<!-- Bouton Suivant : adresses -->
-    			<tr>
-    				<td colspan="6" class="text-right">
-    					<a href="{{ path('delivery') }}" class="btn btn-success" role="button" id="next-step">
-    						Livraison >>
-    					</a>
-    				</td>
-    			</tr>
-    			
-    			<tr class="table-dark" id="total-ht">
-    				<td colspan="4" class="text-right">
-    					H.T.
-    				</td>
-    				<td class="gran-total" colspan="2"></td>
-    			</tr>
-    		</tfoot>
-    	</table>
+		<div id="basket-list" role="list" class="row hidden">
+			
+		</div>
+		
+		<div id="basket-total" class="row">
+			<div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+				Total panier : <span class="fulltax-total"></span>
+			</div>
+			<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+				<a href="{{ path('delivery') }}" class="btn btn-success" role="button" id="next-step">
+    				Livraison >>
+    			</a>
+			</div>
+		</div>
+		
+        <div class="alert alert-warning hidden" id="basket-warns">
+        	<p class="no-user inactive" id="no-user">
+        		Vous devez vous <a href="#" data-toggle="modal" data-target="#login-modal">authentifier</a> ou <a href="{{ path('signin-form') }}" title="Créer un compte sur le site des Soeurs Théière">créer un compte</a> pour passer à l'étape suivante.
+        	</p>
+        	
+        	<p class="no-address inactive" id="no-address">
+        		Vous devez créer une adresse de facturation / livraison pour passer à l'étape suivante.
+        	</p>
+        </div>
     </div>
     
-    <div class="alert alert-warning hidden" id="basket-warns">
-    	<p class="no-user inactive" id="no-user">
-    		Vous devez vous <a href="#" data-toggle="modal" data-target="#login-modal">authentifier</a> ou <a href="{{ path('signin-form') }}" title="Créer un compte sur le site des Soeurs Théière">créer un compte</a> pour passer à l'étape suivante.
-    	</p>
-    	
-    	<p class="no-address inactive" id="no-address">
-    		Vous devez créer une adresse de facturation / livraison pour passer à l'étape suivante.
-    	</p>
-    </div>
+
 	
 	{{ include("@Content/Default/dialog.html.twig") }}
 	{{ include("@Content/Default/login.html.twig") }}

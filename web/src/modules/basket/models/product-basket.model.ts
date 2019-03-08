@@ -77,6 +77,62 @@ export class ProductBasketModel {
         return this._getServingSize() * quantity;
     }
 
+    public getCardItem(): Promise<JQuery> {
+        return new Promise((resolve) => {
+            const product: any = this.product;
+
+            const _card: JQuery = $('<div>');
+            _card
+                .addClass('basket-card');
+            
+            const _cardHeader: JQuery = $('<div>');
+            _cardHeader
+                .addClass('.basket-card-header');
+            
+            const icon: JQuery = $('<i>');
+                icon
+                .addClass('icon-cross')
+                .addClass('remove-product')
+                .attr('data-rel', this.id + '_' + this.servingSize);
+            icon.appendTo(_cardHeader);
+
+            _cardHeader.appendTo(_card);
+
+            const _cardBody: JQuery = $('<div>');
+            _cardBody
+                .addClass('basket-card-body')
+                .addClass('container');
+
+            const _productDetail: JQuery = $('<div>');
+            _productDetail
+                .addClass('col-xl-7')
+                .addClass('col-lg-7')
+                .addClass('col-md-7')
+                .addClass('col-sm-12')
+                .addClass('col-12');
+            const _productTitle: JQuery = $('<h3>');
+            _productTitle.html(product.title.fr)
+            
+            _productTitle.appendTo(_productDetail);
+
+            const _productInfo: JQuery = $('<blockquote>');
+            const unitFullTaxPrice: number = this.priceHT * (1 + product.vat);
+            const _content: string = '<p class="product-detail">' + product.abstract.fr + '</p>' +
+                '<p><em class="product-serving-size">' +  this.servingSize + '</em> ' +
+                '<strong class="product-unit-price">' + StringToNumberHelper.toCurrency(unitFullTaxPrice.toString()) + '</strong></>'
+            
+            _productInfo.html(_content);
+            _productInfo.appendTo(_productDetail);
+
+            _productDetail.appendTo(_card);
+            
+
+
+            resolve(_card);
+            
+        });
+    }
+
     public getTableRow(): Promise<JQuery> {
         return new Promise((resolve) => {
             const _tr: JQuery = $('<tr>');

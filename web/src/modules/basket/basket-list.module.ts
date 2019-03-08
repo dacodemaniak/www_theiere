@@ -47,12 +47,18 @@ export class BasketListModule {
     
                         fullTaxTotal += this._getTTC(product, product.product);
     
-                        product.getTableRow().then((row: JQuery) => {
-                            tbody.append(row);
-                            // Ajouter le total HT au pied de tableau
+                        // product.getTableRow().then((row: JQuery) => {
+                        //     tbody.append(row);
+                        //     // Ajouter le total HT au pied de tableau
+                        //     $('.gran-total').html(StringToNumberHelper.toCurrency(granTotal.toString()));
+                        //     $('.fulltax-total').html(StringToNumberHelper.toCurrency(fullTaxTotal.toString()));
+                        // });
+
+                        product.getCardItem().then((card: JQuery) => {
+                            $('#basket-list').append(card);
                             $('.gran-total').html(StringToNumberHelper.toCurrency(granTotal.toString()));
                             $('.fulltax-total').html(StringToNumberHelper.toCurrency(fullTaxTotal.toString()));
-                        });
+                        })
                     }
                     $('#basket-list').removeClass('hidden');
                     
