@@ -523,7 +523,7 @@ class UserController extends FOSRestController {
 	 * @param Request $request
 	 */
 	public function checkoutPaymentDoneAction(Request $request) {
-	    return this.checkoutPaymentTestAction($request);
+	    return $this->checkoutPaymentTestAction($request);
 	}
 	
 	/**
