@@ -4,6 +4,8 @@
  * @package modules/user
  * @author IDea Factory - Déc. 2018 (dev-team@ideafactory.fr)
  * @version 1.0.0
+ * @version 1.0.1
+ *  - Ajout des boutons dans la barre de menu en mode responsive
  */
 import { UserModel } from  './models/user.model';
 import { UserService } from '../../services/user.service';
@@ -26,11 +28,8 @@ export class UserModule {
     private init() {
         this.userService.hasUser().then((datas) => {
             if (datas) {
-                console.log('Un utilisateur dans localStorage');
                 const user: UserModel = this.userService.getUser();
                 const menus: Array<any> = user.getMenus();
-
-                
 
                 const accountMenu = menus.filter(
                     (element) => { return element.region === '_top-left'}
@@ -41,11 +40,8 @@ export class UserModule {
                 userMenu.render(user);
 
             } else {
-                console.log('Pas d\'utilisateur dans localStorage, identification anonyme');
                 this.userService.getAnonymouseUser().then((response) => {
                     const menus: Array<any> = response.menus;
-                    
-                    console.log('Réponse : ' + JSON.stringify(response));
 
                     const accountMenu = menus.filter(
                         (element) => { return element.region === '_top-left'}

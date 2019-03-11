@@ -18,18 +18,22 @@ import * as $ from 'jquery';
  * @author IDea Factory - Déc. 2018 (dev-team@ideafactory.fr)
  * @package modules/user
  * @version 1.0.0
+ * @version 1.0.1
+ *  - Gestion du bouton de la barre de menu
  */
 export class UserMenuModel extends MenuModel {
     private isAnonymous: boolean = true;
 
     public render(user: UserModel = null) {
         const userMenu: JQuery = $('#user-menu').children('.wrapper').eq(0);
+        const responsiveUserMenu: JQuery = $('#account-menu-button');
 
         const mainOption: OptionModel = this.getOption();
 
-        console.log('Option : ' + JSON.stringify(mainOption) + ' dans ' + userMenu);
-
         mainOption.getMenu(user).appendTo(userMenu);
+
+        // Ajoute le lien dans le bouton du menu Responsive
+        responsiveUserMenu.attr('href', mainOption.getMenu(user).attr('href'));
     }
 
     public authenticateRender(user: UserModel): void {
@@ -40,7 +44,7 @@ export class UserMenuModel extends MenuModel {
         // Créer le lien pour l'option du menu
         const menuLink: JQuery = $('<a>');
         menuLink.attr('href', '#');
-        menuLink.attr('data-rel', user.getId);
+        menuLink.attr('data-rel', user.getId());
         menuLink.attr('data-slug', 'myaccount');
         menuLink.html(user.getName());
 

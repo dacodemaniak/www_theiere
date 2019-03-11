@@ -693,19 +693,32 @@ class UserController extends FOSRestController {
 		$menus = [];
 		if ($group->getMenus()) {
 			foreach($group->getMenus() as $menu) {
-				$menus[] = [
-					"id" => $menu->getId(),
-					"slug" => $menu->getSlug(),
-					"region" => $menu->getRegion(),
-					"content" => $menu->getContent(),
-					"options" => $menu->categoriesToArray()
-				];
+			    if ($this->_isDynamic($menu)) {
+			        $menus[] = [
+			            "id" => $menu->getId(),
+			            "slug" => $menu->getSlug(),
+			            "region" => $menu->getRegion(),
+			            "content" => $menu->getContent(),
+			            "options" => $menu->categoriesToArray()
+			        ];
+			    }
 			}
 		}
 		
 		$datas["menus"] = $menus;
 		
 		return $datas;
+	}
+	
+	private function _isDynamic($menu) {
+	    if (
+	        $menu->getRegion() === "_top_bottom" ||
+	        $menu->getRegion() === "_footer_left" ||
+	        $menu->getRegion() === "_footer_right"
+	    ) {
+	            return false;
+	    }
+	    return true;
 	}
 	
 	private function _sendMail(string $content) {
