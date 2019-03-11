@@ -50,7 +50,6 @@ export class BasketService {
             if (eShopBasket) {
                 if (eShopBasket.hasOwnProperty('basket')) {
                     const basket: Array<ProductBasketModel> = eShopBasket.basket;
-                    console.log('Panier: ' + JSON.stringify(basket));
                     // Instancie l'objet Basket
                     this.basketModel
                         .setCarrier((eShopBasket.hasOwnProperty('carrier') && eShopBasket.carrier !== null) ? eShopBasket.carrier : null)

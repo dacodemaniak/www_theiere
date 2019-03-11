@@ -41,8 +41,6 @@ export class BasketMenuModel extends MenuModel {
     private getOption(): OptionModel {
         const options: Array<OptionModel> = this.options;
 
-        console.log('Options : ' + JSON.stringify(options));
-
         let index: number = options.findIndex((obj: OptionModel) => { return obj.getSlug() == 'basket'});
 
         const option = options[index];
