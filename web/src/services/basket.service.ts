@@ -143,7 +143,7 @@ export class BasketService {
 
     public updateProduct(productId: string, newQty: number): Promise<ProductBasketModel> {
         return new Promise((resolve) => {
-            console.log('Suppression d\'un produit du panier');
+            console.log('Mise à jour du produit : ' + productId);
             const productParts: Array<string> = productId.split('_');
             if (productParts[1] === 'null') {
                 productParts[1] = null;

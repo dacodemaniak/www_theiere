@@ -30,8 +30,6 @@ export class Bootstrap {
         const routerModule: RouterModule = new RouterModule();
         
         const productSearch: ProductSearchComponent = new ProductSearchComponent();
-        
-        console.log('Bootstrap application done');
 
         // Affichage de la bannière Cookies et RGPD
         const banner: BannerComponent = new BannerComponent();

@@ -18,7 +18,7 @@ import { AccountModule } from '../user/account-module';
          let url: string = location.pathname.slice(1) || '/';
 
          if (url.indexOf('.php') !== -1) {
-            console.info('Mode développement');
+            //console.info('Mode développement');
             let slicer: number;
             if (url.indexOf('app.php') !== -1) {
                slicer = 8;
@@ -30,7 +30,7 @@ import { AccountModule } from '../user/account-module';
              console.info('Mode production');
          }
 
-         console.log('Before slicing : ' + url);
+         //console.log('Before slicing : ' + url);
 
          if (url.indexOf('product/') !== -1 || url.indexOf('products/') !== -1) {
             url = 'product';
@@ -59,7 +59,7 @@ import { AccountModule } from '../user/account-module';
             
          }
 
-         console.log('Current url and module to load : ' + url);
+         //console.log('Current url and module to load : ' + url);
 
          let module: any = {};
 

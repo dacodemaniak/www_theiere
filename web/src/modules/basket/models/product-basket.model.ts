@@ -81,13 +81,26 @@ export class ProductBasketModel {
         return new Promise((resolve) => {
             const product: any = this.product;
 
+            this.vat = product.vat;
+            if (this.vat === 0.05) {
+                    this.vat = 0.055;
+            }
+
+            this.priceTTC = (this.priceHT * (1 + this.vat)) * this.quantity;
+
+            const unitFullTaxPrice: number = this.priceHT * (1 + product.vat);
+
             const _card: JQuery = $('<div>');
             _card
-                .addClass('basket-card');
+                .addClass('basket-card')
+                .addClass('col-12')
+                .attr('data-rel', this.id + '_' + this.servingSize)
+                .attr('data-pricing', unitFullTaxPrice.toFixed(2))
+                .attr('id', this.id + '_' + this.servingSize);
             
             const _cardHeader: JQuery = $('<div>');
             _cardHeader
-                .addClass('.basket-card-header');
+                .addClass('basket-card-header');
             
             const icon: JQuery = $('<i>');
                 icon
@@ -101,7 +114,7 @@ export class ProductBasketModel {
             const _cardBody: JQuery = $('<div>');
             _cardBody
                 .addClass('basket-card-body')
-                .addClass('container');
+                .addClass('row');
 
             const _productDetail: JQuery = $('<div>');
             _productDetail
@@ -115,23 +128,53 @@ export class ProductBasketModel {
             
             _productTitle.appendTo(_productDetail);
 
+            // Colonne pour le type de service
+            const _productServingSize: JQuery = $('<div>');
+            _productServingSize
+                .addClass('col-6')
+                .addClass('product-serving-size')
+                .html(this.servingSize)
+                .appendTo(_productDetail);
+
             const _productInfo: JQuery = $('<blockquote>');
-            const unitFullTaxPrice: number = this.priceHT * (1 + product.vat);
             const _content: string = '<p class="product-detail">' + product.abstract.fr + '</p>' +
-                '<p><em class="product-serving-size">' +  this.servingSize + '</em> ' +
-                '<strong class="product-unit-price">' + StringToNumberHelper.toCurrency(unitFullTaxPrice.toString()) + '</strong></>'
+                '<strong class="product-unit-price">Prix : ' + StringToNumberHelper.toCurrency(unitFullTaxPrice.toString()) + '</strong></>'
             
             _productInfo.html(_content);
             _productInfo.appendTo(_productDetail);
 
-            _productDetail.appendTo(_card);
+            _productDetail.appendTo(_cardBody);
             
+            // Champ pour l'incrémentation / décrémentation des quantités
+            const _productUpdate: JQuery = $('<div>');
+            _productUpdate
+                .addClass('basket-product-update')
+                .addClass('col-xl-5')
+                .addClass('col-lg-5')
+                .addClass('col-md-5')
+                .addClass('col-sm-12')
+                .addClass('col-12')
+                .attr('data-id', this.id);
 
+            this._input(product).appendTo(_productUpdate);
+
+            // Colonnne pour le prix total pour ce produit
+            const total: number = this.priceHT * this.quantity;
+            const _productTotal: JQuery = $('<div>');
+            _productTotal
+                .addClass('product-total')
+                .html(StringToNumberHelper.toCurrency(this.priceTTC.toString()))
+                .appendTo(_productUpdate);
+
+
+            _productUpdate.appendTo(_cardBody);
+
+            _cardBody.appendTo(_card);
 
             resolve(_card);
             
         });
-    }
+    }Met à jour le panier pour le produit
 
     public getTableRow(): Promise<JQuery> {
         return new Promise((resolve) => {
@@ -191,7 +234,7 @@ export class ProductBasketModel {
         return col;
     }
 
-    public _input(col: JQuery, product: any): JQuery {
+    public _input(product: any): JQuery {
         const group: JQuery = $('<div>');
         group
             .addClass('input-group')
@@ -240,9 +283,7 @@ export class ProductBasketModel {
 
         append.appendTo(group);
 
-        group.appendTo(col);
-
-        return col;
+        return group;
 
     }
 

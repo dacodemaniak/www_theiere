@@ -91,21 +91,18 @@ export class UserService {
     }
 
     private _check(token: string): Promise<boolean> {
-        console.log('Contrôle : ' + token);
         return new Promise((resolve) => {
             $.ajax({
                 url: Constants.apiRoot + 'token/' + token,
                 method: 'get',
                 dataType: 'json',
                 success: (datas) => {
-                    console.log('Authentification du token réussie');
                     // Définit l'utilisateur courant
                     this.user = new UserModel();
                     this.user.deserialize(datas);
                     resolve(true);
                 },
                 error: (xhr, error) => {
-                    console.log('Token invalide ou expiré');
                     localStorage.removeItem('eshopUser');
                     const router: RouterModule = new RouterModule();
                     router.changeLocation('/signin');

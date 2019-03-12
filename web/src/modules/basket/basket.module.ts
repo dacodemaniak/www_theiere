@@ -26,7 +26,6 @@ export class BasketModule {
     private init() {
         this.userService.hasUser().then((datas) => {
             if (datas) {
-                console.log('Un utilisateur dans localStorage');
                 const user: UserModel = this.userService.getUser();
                 const menus: Array<any> = user.getMenus();
 
@@ -53,6 +52,7 @@ export class BasketModule {
             }
         });
 
+        /**
         if (this.userService.hasUser()) {
             console.log('Un utilisateur dans localStorage');
         } else {
@@ -67,5 +67,6 @@ export class BasketModule {
                 menu.render();
             })
         }
+        **/
     }
 }

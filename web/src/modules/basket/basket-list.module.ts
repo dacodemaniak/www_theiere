@@ -11,6 +11,7 @@ import { UserModel } from '../user/models/user.model';
 import { UserMenuModel } from '../user/models/user-menu.model';
 
 import * as $ from 'jquery';
+import { SmoothRemoveHelper } from '../../helpers/smooth-remove.helper';
 
 /**
  * @name BasketListModule
@@ -73,7 +74,6 @@ export class BasketListModule {
             // Gestion des alertes
             const warning: JQuery = $('#basket-warns');
             if (!has) {
-                console.log('Gestion des alertes::Aucun utilisateur connecté');
                 // Pas encore d'utilisateur connecté
                 //const noUser: JQuery = warning.children('p.no-user').eq(0);
                 const noUser: JQuery = $('#no-user');
@@ -82,7 +82,6 @@ export class BasketListModule {
                 disableButton = true;
             } else {
                 if (!this.userService.getUser().hasAddresses()) {
-                    console.log('Gestion des alertes::Aucune adresse définie');
                     //const noAddress: JQuery = warning.children('.no-address').eq(0);
                     const noAddress: JQuery = $('#no-address');
                     noAddress.removeClass('inactive');
@@ -110,7 +109,7 @@ export class BasketListModule {
     }
 
     private _listeners(): void {
-        $('#basket-list tbody').on(
+        $('#basket-list').on(
             'click',
             (event: any): void => this._click(event)
         );
@@ -133,7 +132,7 @@ export class BasketListModule {
 
     private _click(event: any): void {
         const element: JQuery = $(event.target);
-        const bundleId: string = element.parents('tr').attr('id');
+        const bundleId: string = element.parents('.basket-card').attr('data-rel');
 
         if (element.hasClass('remove-product')) {
             console.info('Suppression d\'un produit de la liste : ' + bundleId);
@@ -147,9 +146,7 @@ export class BasketListModule {
         }
     }
 
-    private closeModal(event: any): void {
-        console.log('Fermeture de la modale signin');
-    }
+    private closeModal(event: any): void {}
 
     private _signin(event: any) {
         event.preventDefault();
@@ -166,7 +163,6 @@ export class BasketListModule {
             dataType: 'json',
             data: formContent,
             success: (datas) => {
-                console.log('Authentication success');
                 const toast: ToastModule = new ToastModule({
                     title: 'Bonjour ' + datas.name,
                     message: datas.name + ' bienvenue sur la boutique des Soeurs Théière',
@@ -185,7 +181,6 @@ export class BasketListModule {
                 // Ajoute le token dans le localStorage
                 this.userService.setToken(datas.token);
 
-                console.log('Fermeture de la modale signin après validation');
                 $('#login-modal').modal('hide');
 
                 this.userService.hasUser().then((has) => {
@@ -255,7 +250,7 @@ export class BasketListModule {
     }
 
     private _remove(element: JQuery): void {
-        const productName: string = element.parents('tr').eq(0).children('td').eq(0).html();
+        const productName: string = element.parents('.basket-card').eq(0).find('h3').eq(0).html();
         const dialog: DialogModule = new DialogModule(
             element,
             {
@@ -282,14 +277,15 @@ export class BasketListModule {
                 basketService.removeProduct($(event.target).attr('data-rel')).then((result) => {
                     if (result) {
                         // Suppression de la ligne dans le tableau HTML
-                        $('tr#' + $(event.target).attr('data-rel')).remove();
+
+                        SmoothRemoveHelper.remove($('div#' + $(event.target).attr('data-rel')));
+                        
                         const product: ProductBasketModel = basketService.get();
                         // Recalcule les totaux...
-                        let totalHT: number = StringToNumberHelper.toNumber($('.gran-total').html());
+                        
                         let totalTTC: number = StringToNumberHelper.toNumber($('.fulltax-total').html());
 
                         const removeHT: number = product.quantity * product.priceHT;
-                        totalHT -= removeHT;
 
                         if (product.product.vat === 0.05) {
                             product.product.vat = 0.055;
@@ -298,10 +294,9 @@ export class BasketListModule {
                         totalTTC -= removeTTC;
 
                         // Réaffiche les totaux
-                        $('.gran-total').html(StringToNumberHelper.toCurrency(totalHT.toString()));
                         $('.fulltax-total').html(StringToNumberHelper.toCurrency(totalTTC.toString()));
 
-                        const remainingLines: number = $('#basket-list tbody tr').length;
+                        const remainingLines: number = $('#basket-list .card-body').length;
 
                         if (remainingLines === 0) {
                             // Si plus aucune ligne dans le panier, on réactive le hidden
@@ -340,44 +335,44 @@ export class BasketListModule {
         let currentQty: number = parseInt(input.val().toString());
         const max: number = parseInt(input.attr('max'));
 
-        let totalHT: number = StringToNumberHelper.toNumber($('.gran-total').html());
+        
         let totalTTC: number = StringToNumberHelper.toNumber($('.fulltax-total').html());
 
-        console.log('Totaux courants : ' + totalHT + ' (ttc) ' + totalTTC);
+        console.log('Total du panier TTC : ' + totalTTC);
 
         if (currentQty + 1 <= max) {
             currentQty++;
             input.val(currentQty);
 
             // Met à jour le panier en conséquence
-            const trId: string = input.parents('tr').attr('id');
+            const productId: string = input.parents('div.basket-card').attr('data-rel');
+            const productFullTaxPrice: number = parseFloat(input.parents('div.basket-card').attr('data-pricing'));
+
+            //console.log('Prix du produit : (ttc) ' + productFullTaxPrice);
+
             const basketService: BasketService = new BasketService();
-            basketService.updateProduct(trId, currentQty).then((product) => {
+            basketService.updateProduct(productId, currentQty).then((product) => {
                 if (product) {
                     // Recalcul des totaux
                     let newHT: number = currentQty * product.priceHT;
  
+                    console.log('Nouveau prix HT : ' + newHT);
                     if (product.product.vat === 0.05) {
                         product.product.vat = 0.055;
                     }
-                    const ttc: number = StringToNumberHelper.toNumber(input.parents('tr').children('td').eq(3).html());
-                    let newTTC: number = currentQty * ttc;
+
+                    let newTTC: number = currentQty * productFullTaxPrice;
 
                     //let newTTC: number = parseFloat(((currentQty * product.priceHT) * (1 + product.product.vat)).toFixed(2));
                     let totalIncrement: number = parseFloat(((product.priceHT) * (1 + product.product.vat)).toFixed(2));
 
                     // Mise à jour de la colonne associée
-                    const _col: JQuery = input.parents('tr').children('td').eq(4);
-                    _col.html(StringToNumberHelper.toCurrency(newTTC.toString()));
+                    const _total: JQuery = input.parents('div.basket-card').find('div.product-total').eq(0);
+                    _total.html(StringToNumberHelper.toCurrency(newTTC.toString()));
 
 
-
-                    console.log('Avant mise à jour total HT : ' + totalHT);
-
-                    totalHT += newHT;
                     totalTTC += totalIncrement;
 
-                    $('.gran-total').html(StringToNumberHelper.toCurrency(totalHT.toString()));
                     $('.fulltax-total').html(StringToNumberHelper.toCurrency(totalTTC.toString()));
                 }
             });

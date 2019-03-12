@@ -14,12 +14,8 @@ export class BannerComponent {
         let eShopCookies: string;
         eShopCookies = sessionStorage.getItem('eshopCookies');
 
-        console.log('cookie : ' + eShopCookies);
-
         if (eShopCookies) {
-            console.log('Traite la valeur de sessionStorage ' + eShopCookies);
             if (eShopCookies === 'true') {
-                console.warn('A priori, la valeur est vraie !!!');
                 this.alreadyChecked = true;
             }
         }
@@ -80,7 +76,6 @@ export class BannerComponent {
             'click',
             '#dismiss-btn',
             (event: any): void => {
-                console.log('Click sur le bouton détecté');
                 const button: JQuery = $(event.target);
                 const bannerId: string = button.attr('data-rel');
                 const banner: JQuery = $('#' + bannerId);
