@@ -11,11 +11,8 @@ namespace ContentBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\View\View;
 use MenuBundle\Entity\Categorie;
 use AppBundle\Service\SiteService;
 use ContentBundle\Entity\Article;
@@ -25,7 +22,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 
-class CategoryController extends FOSRestController implements ContainerAwareInterface {
+class CategoryController extends Controller implements ContainerAwareInterface {
 	
     /**
      * Catégorie traitée
@@ -128,116 +125,6 @@ class CategoryController extends FOSRestController implements ContainerAwareInte
 	    );
 	}
 	
-	/**
-	 * @Rest\Get("/category/{slug}")
-	 */
-	public function byCategoryAction(Request $request) {
-		
-		$routeComponent = $request->get("slug");
-		
-		if (filter_var($routeComponent, FILTER_VALIDATE_INT)) {
-		    $id = (int) $routeComponent;
-		    $slug = "";
-		} else {
-		    $slug = $routeComponent;
-		    $id = 0;
-		}
-		
-		// Récupère la catégorie
-		if ($id !== 0) {
-		    // Récupère la catégorie par son id
-		    $this->category = $this->getById($id);
-		} else {
-		    // Récupère la catégorie par son slug
-		    $this->category = $this->getBySlug($slug);
-		}
-		
-		if ($this->category) {
-		    if ($this->category->hasParent()) {
-		        // Récupère le noeud le plus haut dans l'arborescence
-		        $this->ancestor = $this->category->getAncestor();
-		    } else {
-		        $this->ancestor = $this->category;
-		    }
-		    
-		    // Produits de la catégorie courante
-		    $this->categoryProducts = $this->getCategoryProducts();
-		    
-		    // Produits des catégories descendantes de la catégorie courante
-		    $this->childrenProducts = $this->getChildrenProducts();
-		    
-		    // Catégories parentes de la catégorie courante
-		    $this->parentCategories = $this->getParentCategories();
-		    
-		    $taxonomy = [
-		        "currentCategory" => [
-		            "id" => $this->category->getId(),
-		            "slug" => $this->category->getSlug(),
-		            "content" => $this->category->getRawContent()
-		        ],
-		        "categoryProducts" => $this->categoryProducts,
-		        "childrenProducts" => $this->childrenProducts,
-		        "ancestors" => $this->parentCategories
-		    ];
-		    return new View($taxonomy, Response::HTTP_OK);
-		}
-		
-		return new View("La catégorie n'existe pas ou n'est pas disponible !", Response::HTTP_NOT_FOUND);
-		
-	}
-	
-	/**
-	 * @Rest\Get("/promotions")
-	 */
-	public function promotions() {
-	    $this->category = $this->getBySlug("promotions");
-	    
-	    // Produits de la catégorie courante
-	    $this->categoryProducts = $this->getCategoryProducts();
-	    
-	    if (count($this->categoryProducts)) {
-	        // @todo Récupérer la lead image de la promotion pour ce produit
-	        return new View($this->categoryProducts, Response::HTTP_OK);
-	    }
-	    
-	    return new View("Aucune promotion en cours", Response::HTTP_NOT_FOUND);
-	}
-	
-	/**
-	 * @Rest\Get("/news")
-	 */
-	public function nouveautes() {
-	    $this->category = $this->getBySlug("news");
-	    
-	    // Produits de la catégorie courante
-	    $this->categoryProducts = $this->getCategoryProducts();
-	    
-	    if (count($this->categoryProducts)) {
-	        // @todo Récupérer la lead image de la promotion pour ce produit
-	        return new View($this->categoryProducts, Response::HTTP_OK);
-	    }
-	    
-	    return new View("Aucune nouveauté", Response::HTTP_NOT_FOUND);
-	}
-	
-	
-	/**
-	 * @Rest\Get("/topsales")
-	 */
-	public function topSales() {
-	    $repository = $this->getDoctrine()
-	       ->getManager()
-	       ->getRepository(Categorie::class);
-	    
-	    $topSales = $this->getTopSelling($repository->getTopSelling());
-	    
-	    if (count($topSales)) {
-	        // @todo Récupérer la lead image de la promotion pour ce produit
-	        return new View($topSales, Response::HTTP_OK);
-	    }
-	    
-	    return new View("Meilleures ventes non disponibles pour l'instant", Response::HTTP_NOT_FOUND);
-	}
 	
 	/**
 	 * Récupère la catégorie par l'intermédiaire de son ID
