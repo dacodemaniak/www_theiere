@@ -4,6 +4,7 @@ import { Constants } from './../../shared/constants';
 import { ToastModule } from '../toast/toast.module';
 
 import * as $ from 'jquery';
+import { EmailHelper } from '../../helpers/email.helper';
 
 /**
  * @name SignupModule
@@ -39,6 +40,9 @@ export class SignupModule {
      */
     private button: JQuery = $('#login-btn');
 
+    private forgotPasswordLink: JQuery = $('#forgot-password');
+
+
     private fromInstance: string;
 
     public constructor(from: string) {
@@ -59,6 +63,21 @@ export class SignupModule {
         this.form.on(
             'submit',
             (event: any): void => this._authenticate(event)
+        );
+
+        $('#passwordRecovering-modal').on(
+            'hidden.bs.modal',
+            (event: any): void => this.closeModal(event)
+        );
+
+        $('#modal-passwordrecovering-form').on(
+            'keyup',
+            (event: any) => this._manageRecoveryForm(event)
+        );
+
+        $('#modal-passwordrecovering-form').on(
+            'submit',
+            (event: any) => this._sendRecoveryQuery(event)
         );
     }
 
@@ -145,7 +164,89 @@ export class SignupModule {
                 this.password.val('');
                 this.button.attr('disabled', 'disabled');
             }
-        })
+        });
     }
 
+    private closeModal(event: any): void {}
+
+    private _manageRecoveryForm(event: any): void {
+        const fields: Array<JQuery> = new Array<JQuery>(
+            $('#loginEmail-content'),
+            $('#userName-content')
+        );
+
+        let enableButton: boolean = true;
+
+        const _invalidEMailAlert: JQuery = $('#invalid-email');
+        const _invalidPairAlert: JQuery = $('#invalid-pair');
+
+        fields.forEach((element) => {
+            if (element.val() === '') {
+                enableButton = false;
+            } else {
+                if (element.attr('id') === 'loginEmail-content') {
+                    if (!EmailHelper.validate(element.val().toString())) {
+                        enableButton = false;
+                    } else {
+                        $.ajax({
+                            url: Constants.apiRoot + 'user/email/' + element.val(),
+                            method: 'get',
+                            dataType: 'json',
+                            success: (datas: any) => {
+                                _invalidEMailAlert.addClass('hidden');
+                            },
+                            error: (xhr, error) => {
+                                _invalidEMailAlert.removeClass('hidden');
+                                enableButton = false;
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+        if (enableButton) {
+            $.ajax({
+                url: Constants.apiRoot + 'user/email/' + $('#loginEmail-content').val() + '/' + $('#userName-content').val(),
+                method: 'get',
+                dataType: 'json',
+                success: (datas: any) => {
+                    _invalidPairAlert.addClass('hidden');
+                },
+                error: (xhr, error) => {
+                    _invalidPairAlert.removeClass('hidden');
+                    $('#modal-recovering').attr('disabled', 'disabled');
+                }
+            });
+            $('#modal-recovering').removeAttr('disabled');
+        } else {
+            $('#modal-recovering').attr('disabled', 'disabled');
+        }
+    }
+
+    private _sendRecoveryQuery(event: any): void {
+        event.preventDefault();
+        const _data: any = {
+            login: $('#loginEmail-content').val()
+        };
+
+        // Envoyer la requête au serveur
+        $.ajax({
+            url: Constants.apiRoot + 'user/recover',
+            method: 'post',
+            data: _data,
+            dataType: 'json',
+            success: (result) => {
+                $('.toggle').hide();
+                $('.modal-body').append(result);
+                // Masque le bouton submit
+                $('#modal-recovering').hide().attr('disabled', 'disabled');
+                // Change le contenu du bouton Annuler
+                $('#recover-modal-dismiss').html('Fermer');
+            },
+            error: (xhr, error) => {
+                // TODO Toast pour indiquer l'erreur
+            }
+        });
+    }
 }

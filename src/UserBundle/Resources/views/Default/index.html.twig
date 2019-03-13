@@ -27,7 +27,7 @@
 				</div>
 				
 				<div class="text-center">
-					<a href="#" title="Mot de passe oublié">
+					<a href="#" data-toggle="modal" data-target="#passwordRecovering-modal" title="Mot de passe oublié" id="forgot-password" role="button">
 						Mot de passe oublié ?
 					</a>
 				</div>
@@ -137,4 +137,6 @@
 		</div>
 		
 	</section>
+	
+	{{ include("@User/Default/passwordrecovering.html.twig") }}
 {% endblock %}
