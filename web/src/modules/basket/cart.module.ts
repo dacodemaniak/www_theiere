@@ -171,7 +171,8 @@ import * as $ from 'jquery';
                     message: 'Le produit a bien été ajouté au panier.',
                     //position: 'middle-center',
                     top: position.top,
-                    left: position.left + 50
+                    left: position.left + 50,
+                    duration: 4
                 });
                 toast.show();
             });

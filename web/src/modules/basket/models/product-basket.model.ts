@@ -137,7 +137,13 @@ export class ProductBasketModel {
                 .appendTo(_productDetail);
 
             const _productInfo: JQuery = $('<blockquote>');
-            const _content: string = '<p class="product-detail">' + product.abstract.fr + '</p>' +
+            let _detail: string;
+            if (product.hasOwnProperty('abstract')) {
+                _detail = product.abstract.fr;
+            } else {
+                _detail = product.description.fr;
+            }
+            const _content: string = '<p class="product-detail">' + _detail + '</p>' +
                 '<strong class="product-unit-price">Prix : ' + StringToNumberHelper.toCurrency(unitFullTaxPrice.toString()) + '</strong></>'
             
             _productInfo.html(_content);
@@ -173,53 +179,6 @@ export class ProductBasketModel {
 
             resolve(_card);
             
-        });
-    }Met à jour le panier pour le produit
-
-    public getTableRow(): Promise<JQuery> {
-        return new Promise((resolve) => {
-            const _tr: JQuery = $('<tr>');
-            _tr.attr('id', this.id + '_' + this.servingSize);
-
-            const _productTD: JQuery = $('<td>');
-            _productTD.attr('data-rel', this.id);
-    
-            const product: any = this.product;
-
-            this.vat = product.vat;
-            if (this.vat === 0.05) {
-                    this.vat = 0.055;
-            }
-
-            this.priceTTC = (this.priceHT * (1 + this.vat)) * this.quantity;
-            console.log('Prix TTC : ' + this.priceTTC);
-
-            let unitFullTaxPrice: number = this.priceHT * (1 + this.vat);
-
-            _productTD.html(product.title.fr);
-            _productTD.appendTo(_tr);
-    
-            const _servingTD: JQuery = $('<td>');
-            _servingTD.html(this.servingSize);
-            _servingTD.appendTo(_tr);
-    
-
-            const _quantityTD: JQuery = this._input($('<td>'), product);
-            _quantityTD.appendTo(_tr);
-    
-            const _priceTD: JQuery = $('<td>');
-            _priceTD.html(StringToNumberHelper.toCurrency(unitFullTaxPrice.toString()));
-            _priceTD.appendTo(_tr);
-    
-            const _totalTD: JQuery = $('<td>');
-            const total: number = this.priceHT * this.quantity;
-            _totalTD.html(StringToNumberHelper.toCurrency(this.priceTTC.toString()));
-            _totalTD.appendTo(_tr);
-    
-            const _removeTD: JQuery = this._removeElement($('<td>'));
-            _removeTD.appendTo(_tr);
-    
-            resolve(_tr);
         });
     }
 

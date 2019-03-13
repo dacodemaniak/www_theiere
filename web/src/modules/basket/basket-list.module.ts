@@ -296,7 +296,7 @@ export class BasketListModule {
                         // Réaffiche les totaux
                         $('.fulltax-total').html(StringToNumberHelper.toCurrency(totalTTC.toString()));
 
-                        const remainingLines: number = $('#basket-list .card-body').length;
+                        const remainingLines: number = $('#basket-list .basket-card').length;
 
                         if (remainingLines === 0) {
                             // Si plus aucune ligne dans le panier, on réactive le hidden

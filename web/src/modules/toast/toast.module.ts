@@ -46,7 +46,7 @@ export class ToastModule {
     public show() {
         const toast: JQuery = $('<div>');
         toast
-            .addClass('toast')
+            .addClass('toastr')
             .addClass('animated')
             .addClass(this.options.appear)
             .addClass(this.options.type)
@@ -69,7 +69,7 @@ export class ToastModule {
                     .addClass(this.options.disappear)
                 setTimeout(
                     () => {
-                        toast.remove()
+                        //toast.remove()
                     },
                     1500
                 );
