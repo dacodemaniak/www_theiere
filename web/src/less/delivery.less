@@ -4,8 +4,19 @@
     #address-selector {
         margin-top: 2em;
         margin-bottom: 2em;
+
+        &.hidden {
+            display: none;
+        }
     }
 
+    form {
+        &#form-selected-address {
+            &.hidden {
+                display: none;
+            }
+        }
+    }
     .total-payment {
         border-top-left-radius: 0;
         border-top-right-radius: 1em;

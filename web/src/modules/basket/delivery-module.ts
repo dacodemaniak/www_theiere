@@ -10,6 +10,8 @@ import { ToastModule } from "../toast/toast.module";
 import { CarryingModel } from "./models/carrying.model";
 
 import * as $ from 'jquery';
+import { UserMenuModel } from '../user/models/user-menu.model';
+import { UserModel } from '../user/models/user.model';
 
 /**
  * @name DeliveryModule
@@ -56,7 +58,30 @@ export class DeliveryModule {
             });
 
             this.userService.hasUser().then((has) => {
+                
+                // Intégration du contrôle des adresses de livraison
+                // Gestion des alertes
+                const warning: JQuery = $('#basket-warns');
+                if (!has) {
+                    // Pas encore d'utilisateur connecté
+                    //const noUser: JQuery = warning.children('p.no-user').eq(0);
+                    const noUser: JQuery = $('#no-user');
+                    noUser.removeClass('inactive');
+                    warning.removeClass('hidden');
+                    //disableButton = true;
+                } else {
+                    if (!this.userService.getUser().hasAddresses()) {
+                        //const noAddress: JQuery = warning.children('.no-address').eq(0);
+                        const noAddress: JQuery = $('#no-address');
+                        noAddress.removeClass('inactive');
+                        warning.removeClass('hidden');
+                        //disableButton = true;
+                    }
+                }
+                // Fin de l'intégration du contrôle des adresses de livraison
+
                 this._init().then((panier) => {
+                    
                     this.basket = panier;
                     
                     // Calcule les totaux : prix TTC et Poids totaux
@@ -66,23 +91,11 @@ export class DeliveryModule {
                     // Instancie le gestionnaire de progression
                     this.stepComponent = new StepComponent(this.userService, this.basket);
                     this.stepComponent.markAsComplete('basketStep');
-                    // Initialise la liste des Adresses de livraison
-                    this.deliveryAddresses = this.userService.getUser().getDeliveryAddresses();
                     
-                    if (this.deliveryAddresses.size === 0) {
-                        $('#manage-address').attr('disabled', 'disabled');
-                    } else {
-                        if (this.deliveryAddresses.size > 1) {
-                            // Créer la liste des adresses de livraison
-                            this._addOptions();
-                        }                    
+                    if (has) {
+                        
+                        this._initForm();
                     }
-                    
-                    // Choix du mode de livraison
-                    this._carryingModePicker();
-
-                    // Passe les données au formulaire
-                    this._setForm();
     
                     // Définit les listeners
                     this._setListeners();
@@ -126,6 +139,23 @@ export class DeliveryModule {
     }
 
     private _setListeners(): void {
+        console.log('Définition des listeners de livraison');
+        // Gestionnaires de la boîte modale
+        $('#login-modal').on(
+            'hidden.bs.modal',
+            (event: any): void => this.closeModal(event)
+        );
+
+        $('#modal-login-form').on(
+            'submit',
+            (event: any): void => this._signin(event)
+        );
+
+        $('#modal-login-form').on(
+            'keyup',
+            (event: any) => this._manageLoginForm(event)
+        );
+
         $('#btn-add-address').on(
             'click',
             (event: any): void => this._addForm(event)
@@ -281,6 +311,111 @@ export class DeliveryModule {
         }
     }
 
+    private closeModal(event: any): void {}
+
+    private _signin(event: any) {
+        event.preventDefault();
+
+        // Consomme le service d'identification
+        const formContent: any = {
+            login: $('#login-content').val(),
+            password: $('#password-content').val()
+        };
+
+        $.ajax({
+            url: Constants.apiRoot + 'signin',
+            method: 'post',
+            dataType: 'json',
+            data: formContent,
+            success: (datas) => {
+                const toast: ToastModule = new ToastModule({
+                    title: 'Bonjour ' + datas.name,
+                    message: datas.name + ' bienvenue sur la boutique des Soeurs Théière',
+                    type: 'success',
+                    position: 'top-center'
+                });
+                toast.show();
+
+                // Reset le formulaire
+                $('#login-content').val('');
+                $('#password-content').val('');
+                $('#modal-signin').attr('disabled', 'disabled');
+                
+                // Ajoute le token dans le localStorage
+                this.userService.setToken(datas.token);
+
+                $('#login-modal').modal('hide');
+
+                this.userService.hasUser().then((has) => {
+                    const user: UserModel = this.userService.getUser();
+                    const menus: Array<any> = user.getMenus();
+
+                    const accountMenu = menus.filter(
+                        (element) => { return element.region === '_top-left'}
+                    );
+                    const userMenu = new UserMenuModel();
+                    userMenu.deserialize(accountMenu[0]);
+                    
+                    // Vider user-menu
+                    $('#user-menu div.wrapper a').remove();
+
+                    userMenu.render(user);
+
+                    // Effacer le bandeau d'avertissement
+                    $('#no-user').addClass('inactive');
+                    $('#basket-warns').addClass('hidden');
+
+                    // Regénère les adresses de livraison, ...
+                    setTimeout(
+                        () => this._initForm(),
+                        1500
+                    );
+                    
+                });
+            },
+            error: (xhr, error) => {
+                const httpError: number = xhr.status;
+                const response: string = xhr.responseJSON;
+
+                const toast: ToastModule = new ToastModule(
+                    {
+                        title: 'Erreur d\'identification',
+                        message: response,
+                        type: 'danger'
+                    }
+                );
+                toast.show();
+
+                // Reset le formulaire
+                $('#login-content').val('');
+                $('#password-content').val('');
+                $('#modal-signin').attr('disabled', 'disabled');
+            }
+        });
+    }
+
+    private _manageLoginForm(event: any): void {
+        const fields: Array<JQuery> = new Array<JQuery>(
+            $('#login-content'),
+            $('#password-content')
+        );
+
+        let enableButton: boolean = true;
+
+        fields.forEach((element) => {
+            if (element.val() === '') {
+                enableButton = false;
+            }
+        });
+
+        if (enableButton) {
+            $('#modal-signin').removeAttr('disabled');
+        } else {
+            $('#modal-signin').attr('disabled', 'disabled');
+        }
+        
+    }
+    
     /**
      * Routage vers une autre page
      */
@@ -288,6 +423,32 @@ export class DeliveryModule {
         const router: RouterModule = new RouterModule();
 
         router.changeLocation(location);
+    }
+
+    private _initForm(): void {
+        // Initialise la liste des Adresses de livraison
+        this.deliveryAddresses = this.userService.getUser().getDeliveryAddresses();
+         
+        if (this.deliveryAddresses.size === 0) {
+            $('#manage-address').attr('disabled', 'disabled');
+        } else {
+            if (this.deliveryAddresses.size > 1) {
+                // Créer la liste des adresses de livraison
+                this._addOptions();
+            }                    
+        }
+        
+        // Affiche la zone de sélection de l'adresse
+        $('#address-selector').removeClass('hidden');
+
+        // Choix du mode de livraison
+        this._carryingModePicker();
+
+        // Passe les données au formulaire
+        this._setForm();
+
+        // Affiche le formulaire
+        $('#form-selected-address').removeClass('hidden');
     }
 
     private _addOptions(): void {
