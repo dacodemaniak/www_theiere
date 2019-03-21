@@ -29,7 +29,7 @@ class BasketController extends Controller {
         return $this->render(
             "@Content/basket/basketlist.html.twig",
             [
-                "phone" => $siteService->getPhoneNumber()
+                "site" => $siteService
             ]
         );
     }
@@ -45,9 +45,9 @@ class BasketController extends Controller {
         return $this->render(
             "@Content/basket/delivery.html.twig",
             [
-                "phone" => $siteService->getPhoneNumber()
+                "site" => $siteService
             ]
-            );
+        );
     }
     
     /**
@@ -81,7 +81,7 @@ class BasketController extends Controller {
             "@Content/basket/checkout.html.twig",
             [
                 "address" => $address,
-                "phone" => $siteService->getPhoneNumber()
+                "site" => $siteService
             ]
         );
     }

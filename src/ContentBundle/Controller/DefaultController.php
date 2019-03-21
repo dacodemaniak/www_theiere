@@ -52,7 +52,7 @@ class DefaultController extends Controller
             [
                 "currentCategory" => $this->category,
                 "articles" => $this->getCategoryArticlesCollection(),
-                "phone" => $siteService->getPhoneNumber()
+                "site" => $siteService
             ]
         );
     }

@@ -4,7 +4,7 @@
     	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0">
         <meta charset="UTF-8">
         
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{{ site.getSiteTitle() }}{% endblock %}</title>
         
         {% block stylesheets %}
         	<link rel="stylesheet" href="{{ asset("node_modules/bootstrap/dist/css/bootstrap.min.css") }}">
@@ -63,8 +63,8 @@
     						</a>
     						<br>
     						<spanclass="phone-number">
-    							<a href="tel:{{ phone.callNumber }}">
-    								{{ phone.affNumber }}
+    							<a href="tel:{{ site.getPhoneNumber().callNumber }}">
+    								{{ site.getPhoneNumber().affNumber }}
     							</a>
     						</span>
     					</div>

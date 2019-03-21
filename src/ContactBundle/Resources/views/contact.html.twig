@@ -1,6 +1,6 @@
 {%  extends "base.html.twig" %}
 
-{%  block title %}Les Soeurs Théière - Contactez-nous{%  endblock %}
+{%  block title %}Contactez-nous - {{ parent() }}{%  endblock %}
 
 {% block body %}
 	<div class="row">
@@ -9,7 +9,7 @@
 				
 				<fieldset>
 					<legend>
-						Contactez les Soeurs Théière
+						Contactez {{ site.getName() }}
 					</legend>
 					
 					<div class="form-group">
