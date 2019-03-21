@@ -22,7 +22,7 @@ class DefaultController extends Controller
         return $this->render(
             "@Contact/contact.html.twig",
             [
-                "phone" => $siteService->getPhoneNumber()
+                "site" => $siteService
             ]
         );
     }

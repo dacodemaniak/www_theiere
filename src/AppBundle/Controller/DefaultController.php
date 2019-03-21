@@ -88,7 +88,7 @@ class DefaultController extends Controller
 		      "monthProduct" => $monthProduct,
 		      "heartProduct" => $heartProduct,
 		      "homeMeeting" => $homeMeeting,
-		      "phone" => $siteService->getPhoneNumber()
+		      "site" => $siteService
 		  ]
 		);
 	}

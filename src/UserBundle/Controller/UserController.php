@@ -62,7 +62,7 @@ class UserController extends FOSRestController {
 	        return $this->render(
 	            "@User/Default/account.html.twig",
 	            [
-	                "phone" => $siteService->getPhoneNumber()
+	                "site" => $siteService
 	            ]
 	        );
 	    }
