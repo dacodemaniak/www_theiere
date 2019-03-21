@@ -53,7 +53,7 @@ class DefaultController extends Controller
                 "ancestors" => $ancestors,
                 "sliderImages" => $sliderImages,
                 "decorators" => $decorators,
-                "phone" => $siteService->getPhoneNumber()
+                "site" => $siteService
             ]
         );
     }
