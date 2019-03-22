@@ -90,3 +90,34 @@
         }
     }
 }
+
+#checkout {
+    div {
+        &#basket-total {
+            margin: 1em 0 1em 0;
+            background-color: @dark;
+            div {
+                &#fulltax-total {
+                    color: @default_menu_color;
+                    span {
+                        &.fulltax-total {
+                            font-weight: bold;
+                        }
+                    }
+                }
+                &#next-step-wrapper {
+                    a {
+                        &.btn {
+                            &.btn {
+                                &.btn-success {
+                                    background-color: @default_hover_color;
+                                    border-color: @default_hover_color;
+                                }
+                            }
+                        }
+                    }                    
+                }
+            }
+        }
+    }
+}
