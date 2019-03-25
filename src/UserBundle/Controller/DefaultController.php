@@ -31,5 +31,20 @@ class DefaultController extends Controller
 	        ]
 	    );
 	}
+	
+	/**
+	 * @Route("/user/passwordreset/{status}", defaults={"_format"="html", "from"="anywhere"}, methods={"GET","HEAD"}, name="password-reset-confirmation")
+	 */
+	public function passwordResetAction(Request $request, SiteService $siteService): Response {
+	    $request->setRequestFormat("html");
+	    
+	    return $this->render(
+	        "@User/Default/passwordreset.html.twig",
+	        [
+	            "site" => $siteService,
+	            "status" => $request->get("status")
+	        ]
+	    );
+	}
     
 }
