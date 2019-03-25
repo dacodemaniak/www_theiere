@@ -29,7 +29,7 @@ export class BasketListModule {
         this.userService = new UserService();
 
         this.userService.hasUser().then((has: boolean) => {
-            let disableButton: boolean = !has;
+            let disableButton: boolean = false;
             this._init().then((panier) => {
                 this.basket = panier;
     
@@ -47,13 +47,6 @@ export class BasketListModule {
                         granTotal += total;
     
                         fullTaxTotal += this._getTTC(product, product.product);
-    
-                        // product.getTableRow().then((row: JQuery) => {
-                        //     tbody.append(row);
-                        //     // Ajouter le total HT au pied de tableau
-                        //     $('.gran-total').html(StringToNumberHelper.toCurrency(granTotal.toString()));
-                        //     $('.fulltax-total').html(StringToNumberHelper.toCurrency(fullTaxTotal.toString()));
-                        // });
 
                         product.getCardItem().then((card: JQuery) => {
                             $('#basket-list').append(card);
@@ -71,24 +64,6 @@ export class BasketListModule {
                 }
             });
 
-            // Gestion des alertes
-            const warning: JQuery = $('#basket-warns');
-            if (!has) {
-                // Pas encore d'utilisateur connecté
-                //const noUser: JQuery = warning.children('p.no-user').eq(0);
-                const noUser: JQuery = $('#no-user');
-                noUser.removeClass('inactive');
-                warning.removeClass('hidden');
-                disableButton = true;
-            } else {
-                if (!this.userService.getUser().hasAddresses()) {
-                    //const noAddress: JQuery = warning.children('.no-address').eq(0);
-                    const noAddress: JQuery = $('#no-address');
-                    noAddress.removeClass('inactive');
-                    warning.removeClass('hidden');
-                    disableButton = true;
-                }
-            }
             if (disableButton) {
                 $('#next-step').addClass('disabled');
             }
@@ -113,21 +88,6 @@ export class BasketListModule {
             'click',
             (event: any): void => this._click(event)
         );
-
-        $('#login-modal').on(
-            'hidden.bs.modal',
-            (event: any): void => this.closeModal(event)
-        );
-
-        $('#modal-login-form').on(
-            'submit',
-            (event: any): void => this._signin(event)
-        );
-
-        $('#modal-login-form').on(
-            'keyup',
-            (event: any) => this._manageLoginForm(event)
-        );
     }
 
     private _click(event: any): void {
@@ -144,109 +104,6 @@ export class BasketListModule {
             console.info('Diminuer la quantité de produit ' + bundleId);
             this._decrease(element);
         }
-    }
-
-    private closeModal(event: any): void {}
-
-    private _signin(event: any) {
-        event.preventDefault();
-
-        // Consomme le service d'identification
-        const formContent: any = {
-            login: $('#login-content').val(),
-            password: $('#password-content').val()
-        };
-
-        $.ajax({
-            url: Constants.apiRoot + 'signin',
-            method: 'post',
-            dataType: 'json',
-            data: formContent,
-            success: (datas) => {
-                const toast: ToastModule = new ToastModule({
-                    title: 'Bonjour ' + datas.name,
-                    message: datas.name + ' bienvenue sur la boutique des Soeurs Théière',
-                    type: 'success',
-                    position: 'top-center'
-                });
-                toast.show();
-
-                // Reset le formulaire
-                $('#login-content').val('');
-                $('#password-content').val('');
-                $('#modal-signin').attr('disabled', 'disabled');
-
-                // TODO  Mettre à jour le menu Utilisateur
-                
-                // Ajoute le token dans le localStorage
-                this.userService.setToken(datas.token);
-
-                $('#login-modal').modal('hide');
-
-                this.userService.hasUser().then((has) => {
-                    const user: UserModel = this.userService.getUser();
-                    const menus: Array<any> = user.getMenus();
-
-                    const accountMenu = menus.filter(
-                        (element) => { return element.region === '_top-left'}
-                    );
-                    const userMenu = new UserMenuModel();
-                    userMenu.deserialize(accountMenu[0]);
-                    
-                    // Vider user-menu
-                    $('#user-menu div.wrapper a').remove();
-
-                    userMenu.render(user);
-
-                    // Effacer le bandeau d'avertissement
-                    $('#no-user').addClass('inactive');
-                    $('#basket-warns').addClass('hidden');
-
-                    // Activer le bouton de passage à la livraison
-                    $('#next-step').removeClass('disabled');
-                });
-            },
-            error: (xhr, error) => {
-                const httpError: number = xhr.status;
-                const response: string = xhr.responseJSON;
-
-                const toast: ToastModule = new ToastModule(
-                    {
-                        title: 'Erreur d\'identification',
-                        message: response,
-                        type: 'danger'
-                    }
-                );
-                toast.show();
-
-                // Reset le formulaire
-                $('#login-content').val('');
-                $('#password-content').val('');
-                $('#modal-signin').attr('disabled', 'disabled');
-            }
-        });
-    }
-
-    private _manageLoginForm(event: any): void {
-        const fields: Array<JQuery> = new Array<JQuery>(
-            $('#login-content'),
-            $('#password-content')
-        );
-
-        let enableButton: boolean = true;
-
-        fields.forEach((element) => {
-            if (element.val() === '') {
-                enableButton = false;
-            }
-        });
-
-        if (enableButton) {
-            $('#modal-signin').removeAttr('disabled');
-        } else {
-            $('#modal-signin').attr('disabled', 'disabled');
-        }
-        
     }
 
     private _remove(element: JQuery): void {
