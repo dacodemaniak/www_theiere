@@ -1,0 +1,59 @@
+<form id="delivery-address-form" class="form material-like hidden">
+	<fieldset>
+				
+		<legend>Adresse de facturation</legend>	
+				
+		<div class="form-group">
+			<textarea name="address" id="address-content" class="form-control" data-rel="address" autocomplete="nope" required></textarea>
+			<span class="hightlight"></span>
+			<span class="bar"></span>
+			<label for="message-content">Adresse complète</label>
+					
+			<div class="alert alert-danger hidden" data-rel="addresscontent-content">
+				Précisez votre adresse pour recevoir plus facilement vos produits
+			</div>
+		</div>
+				
+		<div class="form-group">
+			<input type="text" class="form-control" required name="zipcode" id="zipcode-content" data-rel="zipcode" data-content="true" autocomplete="nope">
+			<span class="hightlight"></span>
+			<span class="bar"></span>
+			<label for="zipcode-content">Code postal</label>
+						
+			<div class="alert alert-danger hidden" data-rel="zipcode-content">
+					Le code postal ne peut pas être vide.
+			</div>
+		</div>
+				
+		<div class="form-group">
+			<input type="text" class="form-control" required name="city" id="city-content" data-rel="city" data-content="true" autocomplete="nope">
+			<span class="hightlight"></span>
+			<span class="bar"></span>
+			<label for="city-content">Ville</label>
+						
+			<div class="alert alert-danger hidden" data-rel="addresscity-content">
+					La ville est obligatoire.
+			</div>
+		</div>
+				
+		<div class="form-group">
+			<input type="text" class="form-control" required readonly name="country" value="France" id="country-content" data-rel="country" data-content="true" autocomplete="nope">
+			<span class="hightlight"></span>
+			<span class="bar"></span>
+			<label for="country-content">Pays</label>
+		</div>
+				
+			
+		<input type="checkbox" id="billing-content" checked name="billing" data-rel="asDelivery" class="switch-input">
+		<label for="billing-content" class="switch-label">Utilisez cette adresse comme adresse de livraison 
+			<span class="toggle--on">Oui</span>
+			<span class="toggle--off">Non</span>
+		</label>				
+	</fieldset>
+			
+	<fieldset class="text-center">
+		<button type="submit" id="manage-address" disabled class="btn btn-success">
+			Validez votre adresse
+		</button>
+	</fieldset>
+</form>

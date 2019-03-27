@@ -129,11 +129,15 @@
     			
     			<div class="form-group">
 					<button type="submit" disabled id="signin-btn" class="btn btn-outline-success">
-						Créez un compte
+						Etape suivante >>>
 					</button>
 					<input type="checkbox" class="hidden" aria-hidden="true" id="suck-robot" name="suckrobot">
 				</div>	
 			</form>
+			
+			<!-- Formulaire de création de l'adresse de livraison -->
+			{{ include("@User/Default/forms/deliveryaddress.html.twig") }}
+
 		</div>
 		
 	</section>

@@ -5,6 +5,8 @@ import { RouterModule } from '../router/router.module';
 
 import * as $ from 'jquery';
 import { UserService } from '../../services/user.service';
+import { UserModel } from './models/user.model';
+import { UserMenuModel } from './models/user-menu.model';
 
 /**
  * @name SigninModule
@@ -25,12 +27,17 @@ export class SigninModule {
      */
     private form: JQuery = $('#signin');
 
+    private addressForm: JQuery = $('#delivery-address-form');
+
     private fields: Array<JQuery>;
 
+    private addressIds: Map<string, string> = new Map<string, string>();
     /**
      * Bouton Login
      */
     private button: JQuery = $('#signin-btn');
+
+    private addressButton: JQuery = $('#manage-address');
 
     private fromInstance: string;
 
@@ -44,6 +51,14 @@ export class SigninModule {
         this.fields.push($('#email-content'));
         this.fields.push($('#original-password-content'));
         this.fields.push($('#confirm-password-content'));
+
+        // Données du formulaire de création de l'adresse de livraison
+        this.addressIds
+            .set('address', 'address')
+            .set('zipcode', 'zipcode')
+            .set('city', 'city')
+            .set('country', 'country')
+            .set('billing', 'asDelivery');
 
         this.fromInstance = from;
 
@@ -67,6 +82,15 @@ export class SigninModule {
         this.form.on(
             'submit',
             (event: any): void => this._register(event)
+        );
+
+        // Définit les gestionnaires du formulaire de gestion de l'adresse
+        this.addressForm.on(
+            'keyup',
+            (event: any): void => this._manageAddressForm(event)
+        ).on(
+            'submit',
+            (event: any): void => this._submitAddressForm(event)
         );
     }
 
@@ -120,8 +144,6 @@ export class SigninModule {
             }
         }
 
-        console.log('Contenu : ' + JSON.stringify(formContent));
-
         // Appel à l'API pour la création du compte
         $.ajax({
             url: Constants.apiRoot + 'register',
@@ -129,7 +151,6 @@ export class SigninModule {
             dataType: 'json',
             data: formContent,
             success: (datas: any) => {
-                console.log(JSON.stringify(datas));
                 const toast: ToastModule = new ToastModule({
                     title: 'Bienvenue sur le site des Soeurs Théière',
                     message: 'Bonjour ' + datas.name + ' Bienvenue sur le site des Soeurs Théière.\n<br>Complétez votre profil en allant sur "Mon Compte" et créez votre adresse.',
@@ -141,23 +162,34 @@ export class SigninModule {
 
                 // Reset le formulaire
                 this._resetForm();
-                setTimeout(
-                    () => {
-                        // Ajoute le token dans le localStorage
-                        const userService: UserService = new UserService();
-                        userService.setToken(datas.token);
 
-                        // Redirige vers la page d'accueil
-                        const router: RouterModule = new RouterModule();
-                        if (this.fromInstance == 'checkout') {
-                            router.changeLocation('/basket');
-                        } else {
-                            router.changeLocation('/');
-                        }
-                    },
-                    5000
-                )
+                // Masque le formulaire courant
+                $('form#signin').addClass('hidden');
 
+                // Montre le formulaire de définition de l'adresse de livraison
+                $('#delivery-address-form').removeClass('hidden');
+
+                // Ajoute le token dans le localStorage
+                const userService: UserService = new UserService();
+                userService.setToken(datas.token);
+
+                // Change le menu utilisateur
+                userService.hasUser().then((has) => {
+                    const user: UserModel = userService.getUser();
+                    const menus: Array<any> = user.getMenus();
+
+                    const accountMenu = menus.filter(
+                        (element) => { return element.region === '_top-left'}
+                    );
+                    const userMenu = new UserMenuModel();
+                    userMenu.deserialize(accountMenu[0]);
+                    
+                    // Vider user-menu
+                    $('#user-menu div.wrapper a').remove();
+
+                    userMenu.render(user);
+                    
+                });
             },
             error: (xhr: JQueryXHR, error) => {
                 console.log(JSON.stringify(xhr));
@@ -223,6 +255,86 @@ export class SigninModule {
                 }
             }
         }
+    }
+
+    private _manageAddressForm(event: any): void {
+        this.addressIds.forEach((value, key) => {
+            const field: JQuery = $('#' + key + "-content");
+            //console.log('Check : ' + key + '-content : ' + field.val());
+            if (field.val() !== '') {
+                if (field.attr('id') === 'zipcode-content') {
+                    if (field.val().toString().length < 5) {
+                        this.addressButton.attr('disabled', 'disabled');
+                        return;
+                    }
+                }
+            } else {
+                this.addressButton.attr('disabled', 'disabled');
+                return;               
+            }
+        });
+
+        this.addressButton.removeAttr('disabled');
+    }
+
+    private _submitAddressForm(event: any): void {
+        event.preventDefault();
+
+        let formContent: any = {};
+
+        const userService: UserService = new UserService();
+
+        this.addressIds.forEach((value, key) => {
+            let field: JQuery = $('#' + key + '-content');
+            let propertyName: string = field.data('rel');
+            formContent[propertyName] = field.val();
+        });
+
+        const headers: any = {
+            'X-Auth-Token': userService.getToken()
+        };
+
+        // Appel à l'API pour la création du compte
+        $.ajax({
+            headers: headers,
+            url: Constants.apiRoot + 'account/address/billing',
+            method: 'post',
+            dataType: 'json',
+            data: formContent,
+            success: (datas: any) => {
+                console.log(JSON.stringify(datas));
+                const toast: ToastModule = new ToastModule({
+                    title: 'Vos informations ont été mises à jour',
+                    message: 'Votre adresse de facturation a été mise à jour',
+                    type: 'success'
+                });
+                toast.show();
+
+                setTimeout(
+                    () => {
+                        // Redirige vers la page d'accueil
+                        const router: RouterModule = new RouterModule();
+                        if (this.fromInstance == 'checkout') {
+                            router.changeLocation('/basket');
+                        } else {
+                            router.changeLocation('/');
+                        }
+                    },
+                    2500
+                );
+            },
+            error: (xhr: JQueryXHR, error) => {
+                console.log(JSON.stringify(xhr));
+                const toast: ToastModule = new ToastModule({
+                    title: 'Une erreur est survenue !',
+                    message: xhr.responseJSON,
+                    duration: 4,
+                    position: 'middle-center',
+                    type: 'warning'
+                });
+                toast.show();
+            } 
+        });        
     }
 
 }
