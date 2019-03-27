@@ -20,6 +20,7 @@ import { UserModel } from '../user/models/user.model';
  * @package modules/basket
  * @version 1.0.0
  * @version 1.0.1 Modification de la gestion du bouton si ajout d'une nouvelle adresse de livraison
+ * @version 1.0.2 Gestion de la modale de création des adresses
  */
 export class DeliveryModule {
     private basket: Array<ProductBasketModel>;
@@ -93,8 +94,9 @@ export class DeliveryModule {
                     this.stepComponent.markAsComplete('basketStep');
                     
                     if (has) {
-                        
-                        this._initForm();
+                        if (this.userService.getUser().hasAddresses()) {
+                            this._initForm();
+                        }
                     }
     
                     // Définit les listeners

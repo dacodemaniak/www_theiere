@@ -4,6 +4,7 @@ import { EmailHelper } from '../../helpers/email.helper';
 import { RouterModule } from '../router/router.module';
 
 import * as $ from 'jquery';
+import { UserService } from '../../services/user.service';
 
 /**
  * @name SigninModule
@@ -131,22 +132,32 @@ export class SigninModule {
                 console.log(JSON.stringify(datas));
                 const toast: ToastModule = new ToastModule({
                     title: 'Bienvenue sur le site des Soeurs Théière',
-                    message: 'Bonjour ' + datas.name + '\n<br>Confirmez votre inscription en vérifiant votre boîte de réception et en suivant le lien indiqué.',
+                    message: 'Bonjour ' + datas.name + ' Bienvenue sur le site des Soeurs Théière.\n<br>Complétez votre profil en allant sur "Mon Compte" et créez votre adresse.',
                     duration: 5,
-                    type: 'success'
+                    type: 'success',
+                    position: 'middle-center'
                 });
                 toast.show();
 
                 // Reset le formulaire
                 this._resetForm();
+                setTimeout(
+                    () => {
+                        // Ajoute le token dans le localStorage
+                        const userService: UserService = new UserService();
+                        userService.setToken(datas.token);
 
-                // Redirige vers la page d'accueil
-                const router: RouterModule = new RouterModule();
-                if (this.fromInstance == 'checkout') {
-                    router.changeLocation('/basket');
-                } else {
-                    router.changeLocation('/');
-                }
+                        // Redirige vers la page d'accueil
+                        const router: RouterModule = new RouterModule();
+                        if (this.fromInstance == 'checkout') {
+                            router.changeLocation('/basket');
+                        } else {
+                            router.changeLocation('/');
+                        }
+                    },
+                    5000
+                )
+
             },
             error: (xhr: JQueryXHR, error) => {
                 console.log(JSON.stringify(xhr));
