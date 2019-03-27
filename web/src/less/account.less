@@ -25,6 +25,15 @@ section {
                 &.hidden {
                     display: none;
                 }
+                button {
+                    &#manage-address {
+                        background-color: @default_hover_color;
+                        border-color: @default_hover_color;
+                        &:hover {
+                            background-color: darken(@default_hover_color, 20%);
+                        }
+                    }
+                }
             }
             &#signin {
                 &.hidden {
