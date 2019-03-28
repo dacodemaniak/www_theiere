@@ -17,8 +17,14 @@ export class Constants {
     public static get apiRoot() {
         if (Constants.hostname === 'api.lessoeurstheiere.com' || Constants.hostname === 'lessoeurstheiere.com' || Constants.hostname === 'www.lessoeurstheiere.com') {
             return 'https://api.lessoeurstheiere.com/';
+        }  else {
+            if (Constants.hostname === 'preprod.lessoeurstheiere.com' || Constants.hostname === 'preprodapi.lessoeurstheiere.com') {
+                return 'https://preprodapi.lessoeurstheiere.com/';
+            }
         }
+
         return 'http://api.lessoeurstheiere.wrk/';
+
     }
 
     public static get paymentUrl(): string {
