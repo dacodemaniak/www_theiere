@@ -277,7 +277,7 @@ export class BasketListModule {
                     _total.html(StringToNumberHelper.toCurrency(newTTC.toString()));
 
 
-                    totalTTC += totalIncrement;
+                    totalTTC -= totalIncrement;
 
                     $('.fulltax-total').html(StringToNumberHelper.toCurrency(totalTTC.toString()));
                 }
