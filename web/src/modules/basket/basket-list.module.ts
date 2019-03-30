@@ -239,46 +239,46 @@ export class BasketListModule {
     private _decrease(button: JQuery): void {
         const input: JQuery = button.parent().next();
         let currentQty: number = parseInt(input.val().toString());
-        const min: number = parseInt(input.attr('min'));
+        const min: number = parseInt(input.attr('max'));
 
-        let totalHT: number = StringToNumberHelper.toNumber($('.gran-total').html());
+        
         let totalTTC: number = StringToNumberHelper.toNumber($('.fulltax-total').html());
 
-        console.log('Totaux courants : ' + totalHT + ' (ttc) ' + totalTTC);
+        console.log('Total du panier TTC : ' + totalTTC);
 
-        if (currentQty - 1 >= min) {
+        if (currentQty - 1 <= min) {
             currentQty--;
             input.val(currentQty);
 
             // Met à jour le panier en conséquence
-            const trId: string = input.parents('tr').attr('id');
+            const productId: string = input.parents('div.basket-card').attr('data-rel');
+            const productFullTaxPrice: number = parseFloat(input.parents('div.basket-card').attr('data-pricing'));
+
+            //console.log('Prix du produit : (ttc) ' + productFullTaxPrice);
+
             const basketService: BasketService = new BasketService();
-            basketService.updateProduct(trId, currentQty).then((product) => {
+            basketService.updateProduct(productId, currentQty).then((product) => {
                 if (product) {
                     // Recalcul des totaux
                     let newHT: number = currentQty * product.priceHT;
  
+                    console.log('Nouveau prix HT : ' + newHT);
                     if (product.product.vat === 0.05) {
                         product.product.vat = 0.055;
                     }
-                    const ttc: number = StringToNumberHelper.toNumber(input.parents('tr').children('td').eq(3).html());
-                    let newTTC: number = currentQty * ttc;
-                    
+
+                    let newTTC: number = currentQty * productFullTaxPrice;
+
                     //let newTTC: number = parseFloat(((currentQty * product.priceHT) * (1 + product.product.vat)).toFixed(2));
                     let totalIncrement: number = parseFloat(((product.priceHT) * (1 + product.product.vat)).toFixed(2));
 
                     // Mise à jour de la colonne associée
-                    const _col: JQuery = input.parents('tr').children('td').eq(4);
-                    _col.html(StringToNumberHelper.toCurrency(newTTC.toString()));
+                    const _total: JQuery = input.parents('div.basket-card').find('div.product-total').eq(0);
+                    _total.html(StringToNumberHelper.toCurrency(newTTC.toString()));
 
 
+                    totalTTC += totalIncrement;
 
-                    console.log('Avant mise à jour total HT : ' + totalHT);
-
-                    totalHT -= newHT;
-                    totalTTC -= totalIncrement;
-
-                    $('.gran-total').html(StringToNumberHelper.toCurrency(totalHT.toString()));
                     $('.fulltax-total').html(StringToNumberHelper.toCurrency(totalTTC.toString()));
                 }
             });
