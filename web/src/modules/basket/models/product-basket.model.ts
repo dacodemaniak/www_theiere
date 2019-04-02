@@ -68,6 +68,10 @@ export class ProductBasketModel {
         return quantity * fullTaxPrice;
     }
 
+    public getFullTaxPrice(): number {
+        return this._getFullTaxPrice();
+    }
+
     public getFullLoad(): number {
         const quantity: number = this.quantity;
         if (this.servingSize !== null) {
@@ -86,9 +90,9 @@ export class ProductBasketModel {
                     this.vat = 0.055;
             }
 
-            this.priceTTC = (this.priceHT * (1 + this.vat)) * this.quantity;
+            this.priceTTC = this._getFullTaxPrice();
 
-            const unitFullTaxPrice: number = this.priceHT * (1 + product.vat);
+            const unitFullTaxPrice: number = this.priceTTC;
 
             const _card: JQuery = $('<div>');
             _card
@@ -165,11 +169,11 @@ export class ProductBasketModel {
             this._input(product).appendTo(_productUpdate);
 
             // Colonnne pour le prix total pour ce produit
-            const total: number = this.priceHT * this.quantity;
+            const total: number = unitFullTaxPrice * this.quantity;
             const _productTotal: JQuery = $('<div>');
             _productTotal
                 .addClass('product-total')
-                .html(StringToNumberHelper.toCurrency(this.priceTTC.toString()))
+                .html(StringToNumberHelper.toCurrency(total.toString()))
                 .appendTo(_productUpdate);
 
 

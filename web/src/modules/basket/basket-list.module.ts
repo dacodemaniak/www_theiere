@@ -95,13 +95,10 @@ export class BasketListModule {
         const bundleId: string = element.parents('.basket-card').attr('data-rel');
 
         if (element.hasClass('remove-product')) {
-            console.info('Suppression d\'un produit de la liste : ' + bundleId);
             this._remove(element);
         } else if (element.hasClass('increase')) {
-            console.info('Augmenter la quantité du produit ' + bundleId);
             this._increase(element);
         } else if (element.hasClass('decrease')) {
-            console.info('Diminuer la quantité de produit ' + bundleId);
             this._decrease(element);
         }
     }
@@ -142,12 +139,7 @@ export class BasketListModule {
                         
                         let totalTTC: number = StringToNumberHelper.toNumber($('.fulltax-total').html());
 
-                        const removeHT: number = product.quantity * product.priceHT;
-
-                        if (product.product.vat === 0.05) {
-                            product.product.vat = 0.055;
-                        }
-                        const removeTTC: number = (product.quantity * product.priceHT) * (1 + product.product.vat);
+                        const removeTTC: number = (product.quantity * product.getFullTaxPrice());
                         totalTTC -= removeTTC;
 
                         // Réaffiche les totaux
@@ -195,8 +187,6 @@ export class BasketListModule {
         
         let totalTTC: number = StringToNumberHelper.toNumber($('.fulltax-total').html());
 
-        console.log('Total du panier TTC : ' + totalTTC);
-
         if (currentQty + 1 <= max) {
             currentQty++;
             input.val(currentQty);
@@ -205,23 +195,15 @@ export class BasketListModule {
             const productId: string = input.parents('div.basket-card').attr('data-rel');
             const productFullTaxPrice: number = parseFloat(input.parents('div.basket-card').attr('data-pricing'));
 
-            //console.log('Prix du produit : (ttc) ' + productFullTaxPrice);
-
             const basketService: BasketService = new BasketService();
             basketService.updateProduct(productId, currentQty).then((product) => {
                 if (product) {
                     // Recalcul des totaux
                     let newHT: number = currentQty * product.priceHT;
- 
-                    console.log('Nouveau prix HT : ' + newHT);
-                    if (product.product.vat === 0.05) {
-                        product.product.vat = 0.055;
-                    }
 
                     let newTTC: number = currentQty * productFullTaxPrice;
 
-                    //let newTTC: number = parseFloat(((currentQty * product.priceHT) * (1 + product.product.vat)).toFixed(2));
-                    let totalIncrement: number = parseFloat(((product.priceHT) * (1 + product.product.vat)).toFixed(2));
+                    let totalIncrement: number = productFullTaxPrice;
 
                     // Mise à jour de la colonne associée
                     const _total: JQuery = input.parents('div.basket-card').find('div.product-total').eq(0);
@@ -244,8 +226,6 @@ export class BasketListModule {
         
         let totalTTC: number = StringToNumberHelper.toNumber($('.fulltax-total').html());
 
-        console.log('Total du panier TTC : ' + totalTTC);
-
         if (currentQty - 1 <= min) {
             currentQty--;
             input.val(currentQty);
@@ -254,23 +234,17 @@ export class BasketListModule {
             const productId: string = input.parents('div.basket-card').attr('data-rel');
             const productFullTaxPrice: number = parseFloat(input.parents('div.basket-card').attr('data-pricing'));
 
-            //console.log('Prix du produit : (ttc) ' + productFullTaxPrice);
 
             const basketService: BasketService = new BasketService();
             basketService.updateProduct(productId, currentQty).then((product) => {
                 if (product) {
                     // Recalcul des totaux
                     let newHT: number = currentQty * product.priceHT;
- 
-                    console.log('Nouveau prix HT : ' + newHT);
-                    if (product.product.vat === 0.05) {
-                        product.product.vat = 0.055;
-                    }
 
                     let newTTC: number = currentQty * productFullTaxPrice;
 
                     //let newTTC: number = parseFloat(((currentQty * product.priceHT) * (1 + product.product.vat)).toFixed(2));
-                    let totalIncrement: number = parseFloat(((product.priceHT) * (1 + product.product.vat)).toFixed(2));
+                    let totalIncrement: number = productFullTaxPrice;
 
                     // Mise à jour de la colonne associée
                     const _total: JQuery = input.parents('div.basket-card').find('div.product-total').eq(0);
@@ -292,15 +266,18 @@ export class BasketListModule {
 
         if (priceList.length > 1) {
             const index: number = priceList.findIndex((obj: any) => { return obj.quantity == inBasket.servingSize});
-            price = priceList[index];
+            price = priceList[index].ttc;
         } else {
-            price = priceList[0];
+            price = priceList[0].ttc;
         }
 
+        /**
         let vat: number = product.vat;
         if (vat === 0.05) {
             vat = 0.055;
         }
         return inBasket.quantity * (inBasket.priceHT * (1 + vat));
+         */
+        return inBasket.quantity * price;
     }
 }
