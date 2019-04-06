@@ -19,6 +19,8 @@ import { SmoothRemoveHelper } from '../../helpers/smooth-remove.helper';
  * @author IDea Factory - Déc. 2018 (dev-team@ideafactory.fr)
  * @package modules\basket
  * @version 1.0.0
+ * @version 1.0.1
+ *  Désactivation du bouton de livraison si le panier est vidé
  */
 export class BasketListModule {
     private basket: Array<ProductBasketModel>;
@@ -125,18 +127,16 @@ export class BasketListModule {
         element.off('confirm').on(
             'confirm',
             (event: any) => {
-                console.info('Suppression de la ligne ' + $(event.target).attr('data-rel'));
                 const basketService: BasketService = new BasketService();
                 
                 basketService.removeProduct($(event.target).attr('data-rel')).then((result) => {
                     if (result) {
                         // Suppression de la ligne dans le tableau HTML
-
                         SmoothRemoveHelper.remove($('div#' + $(event.target).attr('data-rel')));
                         
                         const product: ProductBasketModel = basketService.get();
+
                         // Recalcule les totaux...
-                        
                         let totalTTC: number = StringToNumberHelper.toNumber($('.fulltax-total').html());
 
                         const removeTTC: number = (product.quantity * product.getFullTaxPrice());
@@ -147,7 +147,7 @@ export class BasketListModule {
 
                         const remainingLines: number = $('#basket-list .basket-card').length;
 
-                        if (remainingLines === 0) {
+                        if (totalTTC === 0) {
                             // Si plus aucune ligne dans le panier, on réactive le hidden
                             $('#basket-list').addClass('hidden');
 
@@ -161,8 +161,12 @@ export class BasketListModule {
                             toast.show();
 
                             // on redirige vers l'accueil
-                            const router: RouterModule = new RouterModule();
-                            router.changeLocation('/');
+                            setTimeout( () => {
+                                const router: RouterModule = new RouterModule();
+                                router.changeLocation('/');
+                            },
+                            3000 );
+
                         }
 
                     } else {
