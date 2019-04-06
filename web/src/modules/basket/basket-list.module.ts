@@ -61,8 +61,8 @@ export class BasketListModule {
                     // Initialise les listeners
                     this._listeners();
                 } else {
-                    // Le panier est vide...
-    
+                    // Le panier est vide... on désactive le bouton de Livraison
+                    $('#next-step').addClass('disabled');
                 }
             });
 
