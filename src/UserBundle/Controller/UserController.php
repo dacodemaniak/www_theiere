@@ -62,7 +62,8 @@ class UserController extends FOSRestController {
 	        return $this->render(
 	            "@User/Default/account.html.twig",
 	            [
-	                "site" => $siteService
+	                "site" => $siteService,
+	                "orders" => $this->_getOrders()
 	            ]
 	        );
 	    }
@@ -71,6 +72,26 @@ class UserController extends FOSRestController {
 	}
 	
 
+	/**
+	 * @param Request $request
+	 * @return array
+	 */
+	private function _getOrders(): array {
+	   // Récupère le nombre de commandes réalisées
+	   $repository = $this->getDoctrine()
+	        ->getManager()
+	        ->getRepository("UserBundle:Basket");
+	   
+	   $orders = $repository->findBy(
+	       [
+	           "user" => $this->_wholeUser
+	       ]
+	   );
+	   
+	   
+	    return $orders;
+	}
+	    
 	/**
 	 * Retourne l'utilisateur courant à partir du token JWT
 	 * @param Request $request
