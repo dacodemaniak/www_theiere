@@ -35,6 +35,13 @@ export class MyOrdersComponent {
                     if (orders) {
                         this.orders = orders;
                         this._display();
+
+                        // Then set animation toggling
+                        $('#my-orders-table tbody').on(
+                            'click',
+                            'tr',
+                            (event: any): void => this._toggleRow(event)
+                        );
                     }
                 })
             }
@@ -46,7 +53,9 @@ export class MyOrdersComponent {
 
         this.orders.forEach((order) => {
             let tr: JQuery = $('<tr>');
-            tr.attr('id', order.getId());
+            tr
+                .attr('id', order.getId())
+                .addClass('toggle-detail');
 
             let convertTd: JQuery = $('<td>');
             convertTd.html(order.getConvertDate());
@@ -66,7 +75,10 @@ export class MyOrdersComponent {
 
             // Add order detail below in a hidden row
             let detailTr: JQuery = $('<tr>');
-            detailTr.attr('data-rel', order.getId());
+            detailTr
+                .attr('data-rel', order.getId())
+                .addClass('hidden')
+                .addClass('order-products-detail');
 
             let detailTd: JQuery = $('<td>');
             detailTd.attr('colspan', 3);
@@ -76,7 +88,7 @@ export class MyOrdersComponent {
             detailTable
                 .addClass('table')
                 .addClass('table-condensed');
-                
+
             order.getBasket().forEach((product: ProductModel) => {
                 let productTr = $('<tr>');
 
@@ -100,6 +112,36 @@ export class MyOrdersComponent {
 
             detailTr.appendTo(body);
         });
+    }
+
+    private _toggleRow(event: any): void {
+        const target: JQuery = $(event.target).parent('tr');
         
+
+        if (target.hasClass('toggle-detail')) {
+            console.log('Toggle visibility');
+            const detailRow: JQuery = target.next('tr');
+            detailRow
+                .removeClass('animated')
+                .removeClass('slideInDown')
+                .removeClass('slideOutUp');
+
+            if (detailRow.hasClass('hidden')) {
+                detailRow
+                    .addClass('animated')
+                    .addClass('slideInDown')
+                    .removeClass('hidden');
+            } else {
+                detailRow
+                    .addClass('animated')
+                    .addClass('slideOutUp');
+                setTimeout(
+                    (): void => { detailRow.addClass('hidden'); },
+                    1300
+                );
+                
+            }
+           
+        }
     }
 }
