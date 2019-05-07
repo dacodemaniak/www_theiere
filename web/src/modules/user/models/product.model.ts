@@ -4,9 +4,19 @@ export class ProductModel {
     private quantity: number;
     private servingSize: string;
     private title: string;
-    private carrier: string;
-    private carryingType: string;
 
+    public getTitle(): string {
+        return this.title;
+    }
+
+    public getQuantity(): string {
+        return this.quantity.toString();
+    }
+
+    public getServingSize(): string {
+        return this.servingSize;
+    }
+    
     public deserialize(data: any): ProductModel {
         this.title = data.product.title.fr;
         this.id = data.id;

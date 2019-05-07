@@ -10,7 +10,13 @@ export class OrderModel {
     private convertTime: moment;
     private paymentMode: string;
     private fullTaxTotal: number;
+    private carrier: string;
+    private carryingType: string;
     private basket: Array<ProductModel> = new Array<ProductModel>();
+
+    public getId(): string {
+        return this.id.toString();
+    }
 
     public getConvertDate(): string {
         return this.convertDate.format('DD-MM-YYYY');
@@ -24,6 +30,9 @@ export class OrderModel {
         return StringToNumberHelper.toCurrency(this.fullTaxTotal.toString());
     }
 
+    public getBasket(): Array<ProductModel> {
+        return this.basket;
+    }
     public deserialize(data: any): OrderModel {
         // Conversion du content en JSON
         const content = JSON.parse(data.content);
