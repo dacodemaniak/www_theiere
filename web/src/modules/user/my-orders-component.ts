@@ -1,3 +1,4 @@
+import { ProductModel } from './models/product.model';
 import { UserModel } from './models/user.model';
 import { OrderService } from './../../services/order.service';
 
@@ -45,6 +46,7 @@ export class MyOrdersComponent {
 
         this.orders.forEach((order) => {
             let tr: JQuery = $('<tr>');
+            tr.attr('id', order.getId());
 
             let convertTd: JQuery = $('<td>');
             convertTd.html(order.getConvertDate());
@@ -61,6 +63,43 @@ export class MyOrdersComponent {
                 .append(totalTd);
 
             tr.appendTo(body);
+
+            // Add order detail below in a hidden row
+            let detailTr: JQuery = $('<tr>');
+            detailTr.attr('data-rel', order.getId());
+
+            let detailTd: JQuery = $('<td>');
+            detailTd.attr('colspan', 3);
+
+            // Create product table inside the detail column
+            let detailTable: JQuery = $('<table>');
+            detailTable
+                .addClass('table')
+                .addClass('table-condensed');
+                
+            order.getBasket().forEach((product: ProductModel) => {
+                let productTr = $('<tr>');
+
+                let productTitleTd: JQuery = $('<td>');
+                productTitleTd.html(product.getTitle());
+
+                let servingSizeTd: JQuery = $('<td>');
+                servingSizeTd.html(product.getServingSize());
+
+                let quantityTd: JQuery = $('<td>');
+                quantityTd.html(product.getQuantity());
+
+                productTr
+                    .append(productTitleTd)
+                    .append(servingSizeTd)
+                    .append(quantityTd);
+                detailTable.append(productTr);
+            });
+            detailTd.append(detailTable);
+            detailTr.append(detailTd);
+
+            detailTr.appendTo(body);
         });
+        
     }
 }
